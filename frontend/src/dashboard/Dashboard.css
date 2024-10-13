@@ -1,0 +1,1277 @@
+
+
+
+*, html {
+    margin:0;
+    padding:0;  
+    user-select: none 
+}
+
+body{
+
+    margin: 0;
+    padding: 0;
+    overscroll-behavior-y: none;
+
+}
+#root{
+    margin: 0;
+    padding: 0;
+}
+.Dashboard{
+    background-color: blue;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-transform: uppercase;
+    font-family: "Hoefler Text";
+    font-weight: 500;
+
+}
+
+.grid{
+    justify-self: end;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 0.25fr 2.5fr 1fr;
+    grid-template-rows: 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar{
+    background-color: none;
+    padding: 0;
+    font-size: .4em;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    font-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: white;
+
+
+  
+}
+.sidebar p1{
+    color: white;
+    text-decoration: none;
+    font-size: 2em;
+
+}
+
+.getHome{
+    color: white;
+    font-size: 30px;
+    flex: 100%;
+    text-align: center;
+    margin-top: 1em;
+    padding-top: 0em;
+    border: solid white 0px;
+    border-radius: 1em;
+    max-height: 90vh;
+    max-width: 5vw;
+    background-color: blue;
+    border-radius: .5em;
+    border-top: solid white 6px;
+    border-bottom: solid white 6px;
+    margin-left: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+}
+.hello1 h1{
+    max-width: 0px;
+    color: blue;
+    user-select: none;
+    background-color: none;
+    font-size: 40px;
+    z-index: -1;
+}
+
+.home{
+    margin-top: 0em;
+    flex: 100%;
+    font-size: 40px;
+
+}
+.HiHome:hover{
+    opacity: .9;
+
+}
+
+.GiSmart:hover{
+    opacity: .9;
+
+}
+
+.ai{
+    margin-top: 0em;
+    flex: 100%;
+    font-size: 40px;
+}
+
+
+.getSettings{
+    flex: 100%;
+    color: white;
+
+    font-size: 25px;
+    display: flex;
+    justify-items: end;
+    align-items: end;
+    text-align: center;
+    margin-bottom: 1em;
+    max-width: 5vw;
+
+}
+
+.c{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 100%;
+    border: solid white 0px;
+    padding: .5em;
+    margin: 1em;
+    border-radius: .5em;
+    background-color: white;
+    color: blue;
+    
+}
+.c:hover{
+    opacity: .9;
+
+}
+
+.subgrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.1fr 0.6fr .4fr;
+    grid-gap: 1em;
+    margin-left: 2em;
+    margin-right: 1em;
+    margin-top: .25em;
+    margin-bottom: 2em;
+}
+.hello1{
+    margin: 0;
+    padding: 0;
+    height: 1em;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.hello1 p{
+    font-size: 1em;
+    color: White;
+    padding-top: 3em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+
+}
+.hello2{
+    max-height: 10vh;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.calorie{
+    background-color: none;
+    text-align: center;
+    padding: 1em;
+    border-radius: .8em;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    justify-items: center;
+    justify-content: center;
+
+    color: blue;
+    background-color: white;
+
+}
+.calorie p1{
+    font-size: 4em;
+    text-align: center;
+    flex: 100%;
+    padding: 0;
+    margin: 0; 
+    animation: fadeIn 1s;
+
+
+
+}
+.calorie > p2{
+    text-align: left;
+    font-size: 1.7em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    padding-left: 1em;
+    padding-top: 0em;
+
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-weight: 500;
+    font-style: none;
+
+}
+.calorie > p3{
+    text-align: center;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+/* used for detailed calorie info */
+.calorie p4{
+    background-color: none;
+    font-size: 2em;
+    animation: fadeIn 1s;
+    margin: 0em;
+    flex: 100%;
+    padding-left: 0em;
+    padding-top: 0;
+    
+
+    
+}
+.calorie p5{
+    background-color: none;
+    font-size: 1em;
+    animation: fadeIn 1s;
+    flex: 100%;
+    padding-left: 0em;
+    margin: 0em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
+
+.protein{
+    background-color: none;
+    text-align: center;
+    padding: 1em;
+    border-radius: 0.8em;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 50vh;
+    min-width: 310px;
+    justify-content: start;
+    align-items: start;
+    overflow: scroll;
+
+    color: white;
+    border-right: solid white 6px;
+
+}
+.protein > p1{
+    font-size: 4em;
+    text-align: center;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+}
+.protein > p2{
+    text-align: left;
+    font-size: 1.7em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    padding-left: 1em;
+    padding-top: 0em;
+
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-weight: 500;
+    font-style: none;
+
+}
+.protein > p3{
+    text-align: center;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+.protein p4{
+    text-align: left;
+    font-size: 1.25em;
+    flex: 100%;
+    padding: .5em;
+    margin: 0;
+    animation: fadeIn 1s;
+
+    color: white;
+}
+.protein ul{
+    color: white;
+    background-color: none;
+    text-align: left;
+    font-size: .75em;
+    animation: fadeIn 1s;
+    padding: .5em;
+    width: 100%;
+    padding-left: 2em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.protein::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.protein{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.subbergrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1em;
+}
+.fat{
+    background-color: none;
+    padding: 1em;
+    border-radius: 0.8em;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 25vh;
+    overflow-y: scroll;
+    justify-content: start;
+    align-items: start;
+
+    color: blue;
+    background-color: white;
+
+
+}
+.fat > p1{
+    font-size: 2em;
+    text-align: center;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+}
+.fat > p2{
+    text-align: left;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-weight: 500;
+    font-style: none;
+
+}
+.fat > p3{
+    text-align: center;
+    font-size: .8em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
+.fat p4{
+    text-align: left;
+    font-size: .8em;
+    padding: 0em;
+    margin: 0;
+    animation: fadeIn 1s;
+
+}
+.fat p5{
+    text-align: left;
+    font-size: .5em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 0em;
+    animation: fadeIn 1s;
+    padding: 0em;
+    padding-left: 0em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.fat::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.fat{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.carb li{
+    background-color: none;
+    text-align: center;
+    font-size: .75em;
+    animation: fadeIn 1s;
+    color: white;
+    padding: .5em;
+    width: 100%;
+    padding-left: 4em;
+    padding: 0em;
+
+}
+
+.carb{
+    background-color: none;
+    text-align: center;
+    padding: 1em;
+    border-radius: .8em;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    max-height: 24vh;
+    justify-content: center;
+    align-items: center;
+    min-height: 24vh;
+
+    color: white;
+    border: solid white 0px;
+    border-bottom: solid white 6px;
+
+
+}
+.carb > p1{
+    font-size: 2em;
+    text-align: center;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+}
+.carb > p2{
+    text-align: left;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-weight: 500;
+    font-style: none;
+
+}
+.carb > p3{
+    text-align: center;
+    font-size: .8em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
+.carb p4{
+    text-align: center;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    padding: 0;
+    line-height: 1.3em;
+
+}
+.carb p5{
+    color: white;
+    line-height: 0em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+.carb p5{
+    text-align: center;
+    font-size: 2em;
+    animation: fadeIn 1s;
+    width: 100%;
+    padding-left: 0em;
+    text-decoration: none;
+    list-style-type: none;
+    padding-top: 0em;
+    padding-bottom: 1.5em;
+    margin: 0;
+
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.carb::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.carb{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.vitamin{
+    background-color: none;
+    text-align: center;
+    padding: 1em;
+    border-radius: .80em;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 25vh;
+    overflow-y: scroll;
+    justify-content: center;
+    align-items: center;
+
+    color: blue;
+    background-color: white;
+
+    
+}
+
+.vitamin p1{
+    font-size: 2em;
+    text-align: center;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+}
+.vitamin p2{
+    text-align: left;
+    font-size: 1em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-weight: 500;
+    font-style: none;
+
+}
+.vitamin p3{
+    text-align: center;
+    font-size: .8em;
+    flex: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
+.vitamin p4{
+    text-align: Left;
+    font-size: 1.5em;
+    flex: 100%;
+    padding-left: 0em;
+    margin: 0;
+    animation: fadeIn 1s;
+    padding: .5em;
+
+    color: blue;
+
+}
+.vitamin li{
+    background-color: none;
+    text-align: left;
+    font-size: .7em;
+    animation: fadeIn 1s;
+    width: 25vw;
+    padding-left: .5em;
+    text-decoration: none;
+    list-style-type: none;
+    line-height: 1.5em;
+    color: blue;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.vitamin::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .vitamin{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.add{
+    text-align: center;
+    background-color: blue;
+    padding: 0em;
+    margin: 0em;
+    border-radius: 1em;
+    max-height: 85vh;
+    overflow-y: scroll;
+    min-height: 85vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: center;
+    text-transform: uppercase;
+    max-width: 20vw;
+    background-color: blue;
+    padding: 1em;
+    border-top: solid white 6px;
+    border-bottom: solid white 6px;
+    
+}
+
+/* HISTORY */
+.add p6{
+    font-size: 1.75em;
+    padding: 1em;
+    color: blue;
+    text-align: center;
+    margin: 0em;
+    font-style: none;
+    border-radius: .5em;
+    background-color: white;
+    border-right: solid white 10px;
+    border-left: solid white 10px;
+    font-family: "Hoefler Text";
+    font-weight: 500;
+    
+
+
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.itemss::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.itemss{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
+.itemss{
+    max-width: 20vw;
+    max-height: 60vh;
+    min-height: 60vh;
+    overflow-y: scroll;
+    justify-self: start;
+}
+
+
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .add::-webkit-scrollbar {
+        display: none;
+      }
+      
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .add{
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+.add .addfood{
+    font-size: .8em;
+    color: blue;
+    text-align: center;
+    padding: .5em;
+
+    border-radius: .7em;
+    background-color: none;
+    margin: 1em;
+    width: auto;
+    width: 5vw;
+    justify-self: center;
+    flex: 100%;
+
+}
+.add .addfood:active{
+    color: white;
+    background-color: blue;
+}
+.add .addfood:hover{
+    color: white;
+    background-color: blue;
+} 
+
+@media screen and (max-width: 800px)
+{
+
+html, body { 
+margin: 0;
+padding: 0;
+zoom: 1;
+}
+#root{
+    margin: 0;
+    padding: 0;
+}
+
+.Dashboard{
+    width: 98.6vw;
+    height: 99vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    overflow-x: hidden;
+    border: solid 0px white;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.Dashboard::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .Dashboard{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+    .grid{
+
+        display: grid;
+        max-width: 100vw;
+        align-items: center;
+        justify-content: center;
+        grid-gap: 0em;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        overflow-y:  scroll;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 1em;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+.grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .grid{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+    .sidebar{
+        margin:0;
+        padding: 0em;
+        font-size: 0em;
+        line-height: 0em;
+        text-align: center;
+        color: blue;
+        max-height: 0vh;
+        max-width: 0%; 
+        overflow: hidden;
+        text-overflow: clip; 
+        line-height: 0em;
+        text-decoration: none;
+        margin-top: 0em;
+        min-width: 0vw;
+    }
+    .sidebar p1{
+        font-family: "Hoefler Text";
+        font-size: 3em;
+        font-weight: 500;
+        font-style: none;
+        text-decoration: none;
+        min-width: 100vw;
+        line-height: .8em;
+    }
+
+    .getHome{
+        color: white;
+        font-size: 0px;
+        flex: 100%;
+        text-align: center;
+        margin-top: 0em;
+        padding-top: 0em;
+        border: solid white 0px;
+        border-radius: 1em;
+        max-height: 10vh;
+        max-width: 100vw;
+        background-color: blue;
+        border-radius: .5em;
+        border-top: solid white 0px;
+        border-bottom: solid white 0px;
+        margin-left: 0em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    
+    }
+
+
+    .home{
+        margin-top: 0em;
+        flex: 0%;
+        font-size: 0px;
+    
+    }
+    .HiHome:hover{
+        opacity: .9;
+    
+    }
+    
+    .GiSmart:hover{
+        opacity: .9;
+    
+    }
+    
+    .ai{
+        margin-top: 0em;
+        flex: 0%;
+        font-size: 0px;
+    }
+    
+    
+    .getSettings{
+        flex: 0%;
+        color: white;
+
+        font-size: 0px;
+        display: flex;
+        justify-items: end;
+        align-items: end;
+        text-align: center;
+        margin-bottom: 1em;
+        max-width: 5vw;
+    
+    }
+    
+    .c{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 100%;
+        border: solid white 0px;
+        padding: .5em;
+        margin: 1em;
+        border-radius: .5em;
+        background-color: white;
+        color: blue;
+        
+    }
+    .c:hover{
+        opacity: .9;
+    
+    }
+    
+    
+    .hello1{
+        display: flex;
+        margin: 0;
+        padding: 1em;
+        height: auto;
+        margin-bottom: 0;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1em;
+        min-width: 100vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .hello1 h1{
+        flex: 100%;
+        background-color: none;
+        color: white;
+        font-size: 50px;
+        z-index: 1;
+        min-width: 100vw;
+        color: white;
+        user-select: none;
+        background-color: none;
+        z-index: 1;
+        font-weight: 500;
+        font-style: italic;
+    }
+
+    .hello1 p{
+        flex: 100%;
+        font-size: .8em;
+        text-align: center;
+        color: rgb(255, 255, 255);
+        padding: 0em;
+        min-width: 100vw;
+        padding-top: .5em;
+    }
+    .hello2{
+        margin: 0;
+        padding: 0em;
+        height: 2vh;
+        margin-bottom: 0em;
+        text-align: center;
+    }
+    .subgrid{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        padding: 1em;
+        margin: 0;
+        grid-gap: 1em;
+        max-width: 80vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .calorie{
+        border-radius: 1em;
+        padding: .5em;
+        height: 30vh;
+        min-width: 310px;
+        line-height: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 80vw;
+        border-bottom: solid 7px white;
+        background-color: blue;
+        color: white;
+        
+    }
+    .calorie p1{
+        font-size: 2.5em;
+        line-height: 0.8em;
+        flex: 100%;
+
+    }
+    .calorie > p2{
+        font-size: 1.5em;
+        padding: 1em;
+    }
+    .calorie > p3{
+        font-size: 1em;
+        padding-bottom: 1em;
+        line-height: 1em;
+        margin: 0;
+    }
+/* used for detailed calorie info */
+    .calorie ul{
+        background-color: none;
+        text-align: center;
+        font-size: 1.5em;
+        animation: fadeIn 1s;
+        margin: 0;
+    }
+
+    .calorie p4
+    {
+        text-align: center;
+        font-size: 1.2em;
+        padding: 0em;
+    }
+    .calorie p5
+    {
+        text-align: center;
+        font-size: .7em;
+    }
+
+
+    .protein{
+        border-radius: 1em;
+        padding: .5em;
+        height: 35vh;
+        line-height: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: scroll;
+        min-width: 80vw;
+        min-height: auto;
+        border-bottom: solid 7px white;
+
+        background-color: blue;
+        color: white;
+        border-right: 0px;
+    }
+    .protein > p1{
+        font-size: 2.5em;
+        padding: .5em;
+    }
+    .protein > p2{
+        font-size: 1.5em;
+        padding: 1em;
+    }
+    .protein > p3{
+        font-size: 1.25em;
+        margin-bottom: 1em;
+    }
+    .protein p4{
+        margin: 0;
+        padding: 0;
+        font-size: 1em;
+        text-align: center;
+        margin-top: .3em;
+        margin-bottom: .3em;
+    }
+    .protein ul{
+        background-color: none;
+        text-align: center;
+        font-size: .7em;
+        animation: fadeIn 1s;
+        margin: .3em;
+        padding: .5em;
+        line-height: 1.5em;
+    }
+    .carb{
+        border-radius: 1em;
+        padding: .5em;
+        max-width: 40vw;
+        min-width: 35vw;
+        max-height: 30vh;
+        min-height: 30vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: solid 6px white;
+        background-color: blue;
+        color: white;
+    }
+  
+    .carb > p1{
+        font-size: 2em;
+        margin-top: .5em;
+    }
+    .carb > p2{
+        font-size: 1.2em;
+        padding: .5em;
+    }
+    .carb > p3{
+        font-size: 1em;
+        margin-bottom: 1em;
+    }
+    .carb p4{
+        padding: 0;
+        margin: 0;
+        font-size: .7em;
+        text-align: center;
+
+    }
+    .carb ul{
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        font-size: .5em;
+    }
+    .fat{
+        border-radius: 1em;
+        padding: .5em;
+        max-width: 40vw;
+        min-width: 35vw;
+        max-height: 30vh;
+        min-height: 30vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: solid 6px white;
+        background-color: blue;
+        color: white;
+    }
+    .fat > p1{
+        font-size: 2em;
+        margin-top: .5em;
+    }
+    .fat > p2{
+        font-size: 1.2em;
+        padding: .5em;
+    }
+    .fat > p3{
+        font-size: 1em;
+        margin-bottom: 1em;
+    }
+    .fat p4{
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        font-size: .7em;
+
+    }
+    .fat p5{
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        font-size: .5em;
+    }
+    .vitamin{
+        border-radius: 1em;
+        padding: .5em;
+        max-width: 80vw;
+        min-width: 80vw;
+        min-height: 40vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: solid 6px white;
+        background-color: blue;
+        color: white;
+    }
+    .vitamin > p1{
+        font-size: 2em;
+    }
+    .vitamin > p2{
+        font-size: 1.2em;
+        padding: .5em;
+    }
+    .vitamin > p3{
+        font-size: 1em;
+        margin-bottom: 0em;
+        color: white;
+    }
+    .vitamin p4{
+        font-size: 1.5em;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        margin-bottom: .3em;
+        margin-top: .3em;
+        color: white;
+    }
+    .vitamin li{
+        font-size: .7em;
+        margin-bottom: 0em;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        line-height: 1.5em;
+        color: white;
+    }
+    .add{
+        margin-top: .5em;
+        text-align: center;
+        padding-right: 0em;
+        margin-bottom: .5em;
+        min-width: 80vw;
+        overflow-y: scroll;
+        max-height: 70vh;
+        min-width: 85vw;
+        padding: 0em;
+        margin: 0;
+        margin-bottom: 3em;
+        padding-bottom: 3em;
+        border-top: none;
+        border-bottom: solid 6px white;
+        background-color: blue;
+        color: white;
+    }
+    .add p6{
+        margin: 0em;
+        font-size: 2em;
+        background-color: none;
+        padding-left: 1em;
+        padding-right: 1em;
+        background-color: blue;
+        color: white;
+        border-left: solid white 6px;
+        border-right: solid white 6px;
+
+    }
+
+    .itemss{
+        max-width: 70vw;
+        max-height: 60vh;
+        overflow-y: scroll;
+        min-height: 60vh;
+    }
+    
+}
+.foods{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fade-in-text {
+    font-family: Arial;
+    font-size: 60px;
+    animation: fadeIn 5s;
+    -webkit-animation: fadeIn 5s;
+    -moz-animation: fadeIn 5s;
+    -o-animation: fadeIn 5s;
+    -ms-animation: fadeIn 5s;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-o-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+/*   .calorie:hover{
+    color: blue;
+    background-color: white;
+}
+.protein:hover{
+    color: blue;
+    background-color: white;
+}
+.carb:hover{
+    color: blue;
+    background-color: white;
+}
+.fat:hover{
+    color: blue;
+    background-color: white;
+}
+.vitamin:hover{
+    color: blue;
+    background-color: white;
+}
+.sidebar p1:hover{
+    color: blue;
+}
+.add li:hover{
+    color: blue;
+} */
