@@ -1,76 +1,83 @@
+import React, { useState } from 'react';
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from '../authentication/AuthContext';
 import './LogIn.css';
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-const config = {
-  apiKey: "AIzaSyDHKWDEKpWWpKZHsgB6W2ejyjsYNwkUXm4",
-  authDomain: "b-l-u-e-c7591.firebaseapp.com",
-  projectId: "b-l-u-e-c7591",
-  storageBucket: "b-l-u-e-c7591.appspot.com",
-  messagingSenderId: "821156707624",
-  appId: "1:821156707624:web:a39ccb9dce8dfbd403241d",
-  measurementId: "G-7SR89N9KZ4"
-};
-
-const blueapp = initializeApp(config);
-const auth = getAuth();
-
-function LogIn() {
+const LogIn = () => {
+  // Hook to handle navigation
   const navigate = useNavigate();
+  // Get auth state and login function from our auth context
+  const { auth, login } = useAuth();
+  // State for email and password inputs
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // State for any error messages
+  const [error, setError] = useState('');
 
-  function clearEmail() {
-    document.getElementById('loginEmail').value = '';
+  // If user is already logged in, send them to the dashboard
+  if (auth.isAuthenticated) {
+    return <Navigate to="/dashboard" />;
   }
 
-  function clearPassword() {
-    document.getElementById('loginPassword').value = '';
-  }
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError('');
+    console.log('Trying to log in with email:', email);
 
-  function log(event) {
-    let email = document.getElementById('loginEmail').value;
-    let password = document.getElementById('loginPassword').value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        //failed to sign in
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('failed sign in', errorCode);
-
-        //tell user they failed
-        document.getElementById('loginEmail').value = 'Not Found';
-        document.getElementById('loginPassword').value = 'Not Found';
+    try {
+      // Send login request to the server
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
-  }
 
+      console.log('Server responded with status:', response.status);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login successful, got user data:', data);
+
+        // Update our app's auth state
+        await login(data.user, data.token, data.refreshToken);
+
+        console.log('Moving to dashboard page');
+        navigate("/dashboard");
+      } else {
+        const errorData = await response.json();
+        console.log('Login failed:', errorData);
+        setError(errorData.error || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Something went wrong during login:', error);
+      setError('An unexpected error occurred. Please try again.');
+    }
+  };
+
+  // The UI part stays the same
   return (
-    <div className="login-container">
-      <h1>B-L-U-E</h1>
-      <div className="login-form">
+    <div className="LogIn">
+      <div className="loginbox">
+        <h1>B-L-U-E</h1>
+        {error && <p className="error">{error}</p>}
         <input 
           type="text" 
-          id="loginEmail" 
           placeholder="Email" 
-          onClick={clearEmail}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input 
           type="password" 
-          id="loginPassword" 
           placeholder="Password" 
-          onClick={clearPassword}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={log}>Submit</button>
+        <button onClick={handleLogin}>Submit</button>
       </div>
     </div>
   );
-}
+};
 
 export default LogIn;

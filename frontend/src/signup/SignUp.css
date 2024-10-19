@@ -293,12 +293,46 @@ html, body{
       margin: 0;
       text-align: center;
     }
-    .question input{
-      max-width: 80%;
+    .question input {
+      background-color: transparent;
+      border: none;
+      border-bottom: solid 2px white;
       color: white;
+      font-family: "Andale Mono", AndaleMono, monospace;
+      font-size: 1em;
+      font-weight: light;
+      width: 100%;
+      padding: 0;
+      text-align: center;
+      padding-bottom: 1em;
     }
-    .question input::placeholder{
-      color: white;
+    
+    input, .question input, .SignUp input {
+      background-color: transparent !important;
+      background: none !important;
+      border: none !important;
+      border-bottom: solid 2px white !important;
+      color: white !important;
+      font-family: "Andale Mono", AndaleMono, monospace !important;
+      font-size: 1em !important;
+      font-weight: light !important;
+      width: 100% !important;
+      padding: 0 !important;
+      text-align: center !important;
+      padding-bottom: 1em !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+    }
+    
+    input:focus, .question input:focus, .SignUp input:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    
+    /* Update placeholder color */
+    input::placeholder, .question input::placeholder, .SignUp input::placeholder {
+      color: rgba(255, 255, 255, 0.7) !important;
     }
 
     .question button{
@@ -355,4 +389,60 @@ form{
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: white; /* Ensure text is visible */
+}
+
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Styles for autofilled inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent !important;
+    caret-color: white !important; /* This makes the text cursor white */
+}
+
+/* Firefox specific autofill styles */
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent !important;
+    caret-color: white !important; /* This makes the text cursor white */
+}
+
+/* Additional general input styles */
+input, .question input, .SignUp input {
+    background-color: transparent !important;
+    background: none !important;
+    border: none !important;
+    border-bottom: solid 2px white !important;
+    color: white !important;
+    font-family: "Andale Mono", AndaleMono, monospace !important;
+    font-size: 1em !important;
+    font-weight: light !important;
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: center !important;
+    padding-bottom: 1em !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    caret-color: white !important; /* This makes the text cursor white for all inputs */
 }

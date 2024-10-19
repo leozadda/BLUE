@@ -1,204 +1,110 @@
-
-html, body{
-    margin: 0;
-    padding: 0;
-}
-#root{
-    margin: 0;
-    padding: 0;
-}
-.LogIn{
-    background-color: blue;
-    min-width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-.loginbox{
-    justify-content: center;
-    align-items: start;
-    border-radius: 1em;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 25vw;
-    border: solid .1em white;
-    padding: 1em;
-    border-radius: 2em;
-    background-color: blue;
-    animation: fadeIn 3s;
+.LogIn {
+  background-color: blue;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
-.loginbox h1{
-    color: rgb(255, 255, 255);
-    font-family: "Hoefler Text";
-    font-size: 2em;
-    font-weight: 500;
-    font-style: italic;
-    text-align: center;
-    padding: 1em;
-
+.loginbox {
+  justify-content: center;
+  align-items: start;
+  border-radius: 2em;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 25vw;
+  border: solid .1em white;
+  padding: 1em;
+  background-color: blue;
+  animation: fadeIn 3s;
 }
 
-.loginbox h1:hover{
-opacity: .8;
-}
-.loginbox input{
-    background-color: blue;
-    color: white;
-    border: none;
-    text-transform: uppercase;
-    font-family: "Andale Mono", AndaleMono, monospace;
-    /*must be minimum 16px to not zoom on input*/
-    font-size: 16px;
-    font-weight: light;
-    font-style: normal;
-    max-width: 70%;
-    animation: none;
-    border-bottom: solid white 2px;
-    text-transform: lowercase;
-    margin-bottom: .5em;
-    padding: 1em;
-    text-align: left;
-    flex: 100%;
-    text-transform: capitalize;
-  }
-
-  .loginbox textarea:focus, .loginbox input:focus
-  {
-    outline: none;
-    color: white;
-    font-family: "Andale Mono", AndaleMono, monospace;
-    font-weight: light;
-    font-style: normal;
-    animation: none;
-    background-color: blue;
-    text-align: left;
-}
-#loginEmail::placeholder{
-    text-align: left;
-    animation: none;
-    font-style: italic;
-    opacity: .8;
-    color: white;
-    text-transform: capitalize;
-}
-#loginPassword::placeholder{
-    text-align: left;
-    animation: none;
-    font-style: italic;
-    opacity: .8;
-    color: white;
-    animation: none;
-    text-transform: capitalize;
+.loginbox h1 {
+  color: rgb(255, 255, 255);
+  font-family: "Hoefler Text", serif;
+  font-size: 2em;
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
+  padding: 1em;
 }
 
-.loginbox button{
-    text-align: center;
-    text-transform: uppercase;
-    margin: 3em;
-    border: solid white 1.5px;
-    padding: .5em;
-    border-radius: .5em;
-    font-family: "Andale Mono", AndaleMono, monospace;
-    background-color: blue;
-    color: white;
-    flex: 100%;
-    max-width: 7vw;
+.loginbox h1:hover {
+  opacity: .8;
 }
 
-.loginbox button:active{
+.loginbox input {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-bottom: solid white 2px;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  font-size: 16px;
+  font-weight: light;
+  max-width: 70%;
+  margin-bottom: .5em;
+  padding: 1em;
+  text-align: left;
+  flex: 100%;
+}
+
+.loginbox input:focus {
+  outline: none;
+}
+
+.loginbox input::placeholder {
+  text-align: left;
+  font-style: italic;
+  opacity: .8;
+  color: white;
+  text-transform: capitalize;
+}
+
+.loginbox button {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 3em;
+  border: solid white 1.5px;
+  padding: .5em;
+  border-radius: .5em;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  background-color: blue;
+  color: white;
+  flex: 100%;
+  max-width: 7vw;
+}
+
+.loginbox button:active {
   color: blue;
   background-color: aliceblue;
 }
 
-
-@keyframes blinker {
-    50% {
-      opacity: 0;
-    }
-  }
-
-  @media screen and (max-width: 1100px)
-{
-
-    html, body {
-        margin: 0;
-        padding: 0;
-     }
-    html, body { 
-
-        overscroll-behavior-y: auto;
-    }
-    #root{
-        margin: 0;
-        padding: 0;
-    }
-    .loginbox{
-        justify-content: center;
-        align-items: start;
-        border-radius: 1em;
-        margin: 0;
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 80vw;
-        border: none;
-        padding: 1em;
-        border-radius: 2em;
-        background-color: blue;
-    }
-    .loginbox h1{
-      font-size: 2.5em;
-      padding-bottom: .5em;
-
-    }
-
-    .loginbox button{
-        flex: 100%;
-        max-width: 25vw;
-    }
-    
-    .loginbox input{
-        max-width: 80%;
-        flex: 100%;
- 
-    }
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
-.fade-in-text {
-    font-family: Arial;
-    font-size: 60px;
-    animation: fadeIn 5s;
-    -webkit-animation: fadeIn 5s;
-    -moz-animation: fadeIn 5s;
-    -o-animation: fadeIn 5s;
-    -ms-animation: fadeIn 5s;
+
+@media screen and (max-width: 1100px) {
+  .loginbox {
+    max-width: 80vw;
+    border: none;
   }
-  
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  .loginbox h1 {
+    font-size: 2.5em;
+    padding-bottom: .5em;
   }
-  
-  @-moz-keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  .loginbox button {
+    max-width: 25vw;
   }
-  
-  @-webkit-keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  .loginbox input {
+    max-width: 80%;
   }
-  
-  @-o-keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-  
-  @-ms-keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+}

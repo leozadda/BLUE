@@ -3,16 +3,17 @@ import LogIn from './login/LogIn';
 import SignUp from './signup/SignUp';
 import Main from './main/Main';
 import Dashboard from './dashboard/Dashboard';
-import Search from './dashboard/Search';
-import Result from './dashboard/Result';
-import SearchResult from "./dashboard/SearchResult";
+import Search from './dashboard/SearchBar.js';
+import Result from './search/Result.js';
+import SearchResult from "./search/SearchResult.js";
 //import Private from "./Private";
-import No from "./No";
-import { createContext, useState } from 'react';
-import { PrivateDashBoard, PrivateResults } from "./Private";
+import ErrorScreen from "./error/ErrorScreen.js";
+import { createContext, useState, useEffect } from 'react';
+import { PrivateDashBoard, PrivateResults } from "/Users/leo/Desktop/blue/frontend/src/private/PrivateComponents.js";
+import { AuthProvider } from "/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js";
+import { FaMousePointer } from 'react-icons/fa';
+import CustomCursor from '/Users/leo/Desktop/blue/frontend/src/customCursor/CustomCursor.js';
 
-
-export const AuthContext = createContext();
 
 function App() {
 
@@ -74,18 +75,21 @@ function App() {
   
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+<AuthProvider>
+<div className="custom-cursor">
+<CustomCursor />
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/error" element={<No />} />
+          <Route path="/error" element={<ErrorScreen />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/dashboard" element={<PrivateDashBoard />} />
           <Route path="/result" element={<PrivateResults />} />
       </Routes>
     </BrowserRouter>
-    </AuthContext.Provider>
+    </div>
+  </AuthProvider>
   );
 }
 

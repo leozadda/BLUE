@@ -1,231 +1,130 @@
-//React imports
+import React, { useState } from 'react';
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from '../authentication/AuthContext';
 import './SignUp.css';
-import {  useEffect, useState } from 'react';
-import {useNavigate} from "react-router-dom";
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc} from "firebase/firestore"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-//connecting to firebase database
-const config = {
-    apiKey: "AIzaSyDHKWDEKpWWpKZHsgB6W2ejyjsYNwkUXm4",
-    authDomain: "b-l-u-e-c7591.firebaseapp.com",
-    projectId: "b-l-u-e-c7591",
-    storageBucket: "b-l-u-e-c7591.appspot.com",
-    messagingSenderId: "821156707624",
-    appId: "1:821156707624:web:a39ccb9dce8dfbd403241d",
-    measurementId: "G-7SR89N9KZ4"
-};
+const SignUp = () => {
+  const navigate = useNavigate();
+  const { auth, login } = useAuth();
+  
+  // Keep track of which question we're on
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  
+  // Store all user information
+  const [user, setUser] = useState({
+    name: '', sex: 'NULL', age: '', weight: '', height: 'NULL', email: '', password: ''
+  });
 
-// Initialize Cloud Firestore and get a reference to the service
-const blueapp = initializeApp(config);
-const db = getFirestore(blueapp);
-const auth = getAuth();
+  // If user is already logged in, go to dashboard
+  if (auth.isAuthenticated) return <Navigate to="/dashboard" />;
 
-const App = () => {
-    // Replace context with local state
-    const [user, setUser] = useState({
-        name: 'NULL',
-        height: 'NULL',
-        weight: 'NULL',
-        age: 'NULL',
-        sex: 'NULL',
-        email: 'NULL',
-        password: 'NULL',
-        authenticated: false
-    });
+  // List of all questions and their properties
+  const questions = [
+    { question: 'What is your name?', id: 'name', type: 'text', placeholder: "'Shrek'" },
+    { question: 'What is your height?', id: 'height', type: 'select', options: ['5\'0', '5\'1', '5\'2', '5\'3', '5\'4', '5\'5', '5\'6', '5\'7', '5\'8', '5\'9', '5\'10', '5\'11', '6\'0', '6\'1', '6\'2', '6\'3', '6\'4', '6\'5', '6\'6', '6\'7', '6\'8', '6\'9', '6\'10', '6\'11'] },
+    { question: 'What is your weight?', id: 'weightID', type: 'number', placeholder: "(lbs)" },
+    { question: 'What is your age?', id: 'ageID', type: 'number', placeholder: "(years)" },
+    { question: 'What is your sex?', id: 'sex', type: 'select', options: ['Male', 'Female'] },
+    { question: 'What is your email?', id: 'emailID', type: 'email', placeholder: "we don't spam" },
+    { question: 'Choose Password.', id: 'passwordID', type: 'password', placeholder: "(6 characters)" },
+  ];
 
-    function emailCheck(text){
-        let perfect = /([a-z]|[A-Z]|[0-9])+\@([a-z])+\.(com|org|net|ai)/g;
-        let result = perfect.test(text);
-        return result;
-    }
+  // Rules for checking if each answer is valid
+  const validators = {
+    name: (value) => /^[A-Za-z]+$/.test(value),
+    height: (value) => value !== 'NULL',
+    weightID: (value) => value >= 10 && value <= 1000,
+    ageID: (value) => value >= 1 && value <= 120,
+    sex: (value) => value !== 'NULL',
+    emailID: (value) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value),
+    passwordID: (value) => value.length >= 6,
+  };
 
-    function nameCheck(text){
-        let perfect = /^([A-Z]|[a-z])+$/g;
-        let result = perfect.test(text);
-        return result;
-    }
+  // Update user info when an input changes
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
-    //used to switch to dashboard
-    const navigate = useNavigate();
-
-    //this code is neutral
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-
-    const questions = [
-        {
-            question: 'What is your name?',
-            input: <input id='nameID' type="text" placeholder="'Shrek'" onChange={(event) => setUser({ ...user, name: event.target.value })}/>
-        },
-        {
-            question: 'What is your height?',
-            input: (
-                <select onChange={(event) => setUser({ ...user, height: event.target.value })}>
-                    <option value="NULL">(feet)</option>
-                    <option value="5'0">5'0</option>
-                    <option value="5'1">5'1</option>
-                    <option value="5'2">5'2</option>
-                    <option value="5'3">5'3</option>
-                    <option value="5'4">5'4</option>
-                    <option value="5'5">5'5</option>
-                    <option value="5'6">5'6</option>
-                    <option value="5'7">5'7</option>
-                    <option value="5'8">5'8</option>
-                    <option value="5'9">5'9</option>
-                    <option value="5'10">5'10</option>
-                    <option value="5'11">5'11</option>
-                    <option value="6'0">6'0</option>
-                    <option value="6'1">6'1</option>
-                    <option value="6'2">6'2</option>
-                    <option value="6'3">6'3</option>
-                    <option value="6'4">6'4</option>
-                    <option value="6'5">6'5</option>
-                    <option value="6'6">6'6</option>
-                    <option value="6'7">6'7</option>
-                    <option value="6'8">6'8</option>
-                    <option value="6'9">6'9</option>
-                    <option value="6'10">6'10</option>
-                    <option value="6'100">6'11</option>
-                </select>
-            )
-        },
-        {
-            question: 'What is your weight?',
-            input: <input id='weightID' type="number" placeholder="(lbs)" onChange={(event) => setUser({ ...user, weight: event.target.value })}/>
-        },
-        {
-            question: 'What is your age?',
-            input: <input id='ageID' type="number" placeholder="(years)" onChange={(event) => setUser({ ...user, age: event.target.value })}/>
-        },
-        {
-            question: 'What is your sex?',
-            input: (
-                <select onChange={(event) => setUser({ ...user, sex: event.target.value })}>
-                    <option value="NULL">(sex)</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            )
-        },
-        {
-            question: 'What is your email?',
-            input: <input id='emailID' type="text" placeholder="we don't spam" onChange={(event) => setUser({ ...user, email: event.target.value })}/>
-        },
-        {
-            question: 'Choose Password.',
-            input: <input id='passwordID' type="password" placeholder="(6 characters)" onChange={(event) => setUser({ ...user, password: event.target.value })}/>
-        },
-    ];
-
-    function nameSubmit(event){
-        event.preventDefault();
-
-        if(currentQuestion == 0){
-            if(user.name == 'NULL' || nameCheck(user.name) == false){
-                document.getElementById('nameID').value = '';
-                document.getElementById('nameID').placeholder = 'try again';
-            } else {
-                console.log("Name:", user.name);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 1){
-            if(user.height == 'NULL'){
-                console.log('Height not allowed');
-            } else {
-                console.log("Height:", user.height);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 2){
-            if(user.weight == 'NULL' || user.weight < 10 || user.weight > 1000){
-                document.getElementById('weightID').value = '';
-                document.getElementById('weightID').placeholder = 'try again';
-            } else {
-                console.log("Weight:", user.weight);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 3){
-            if(user.age == 'NULL' || user.age < 1 || user.age > 120){
-                document.getElementById('ageID').value = '';
-                document.getElementById('ageID').placeholder = 'try again';
-            } else {
-                console.log("Age:", user.age);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 4){
-            if(user.sex == 'NULL'){
-                console.log('Sex not allowed');
-            } else {
-                console.log("Sex:", user.sex);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 5){
-            if(user.email == 'NULL' || emailCheck(user.email) == false){
-                document.getElementById('emailID').value = '';
-                document.getElementById('emailID').placeholder = 'try again';
-            } else {
-                console.log("Email:", user.email);
-                setCurrentQuestion(currentQuestion + 1);
-            }
-        } else if(currentQuestion == 6){
-            if(user.password == 'NULL'){
-                document.getElementById('passwordID').value = '';
-                document.getElementById('passwordID').placeholder = 'try again';
-            } else {
-                console.log("Password:", user.password);
-
-                createUserWithEmailAndPassword(auth, user.email, user.password)
-                    .then((userCredential) => {
-                        const usero = userCredential.user;
-                        console.log(usero);
-                        setUser({ ...user, authenticated: true });
-
-                        // Convert the object to a string
-                        let useroo = JSON.stringify(user);
-
-                        // Store the string in localStorage
-                        localStorage.setItem('usero', useroo);
-                
-                        navigate("/dashboard");
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        console.log('failed sign in', errorCode);
-                    });
-            }
-        }
-    }
-
-    //let person pass as soon as they are validated
-    if(user.authenticated == true){
-        navigate("/dashboard"); 
-    }
+  // Handle form submission for each question
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const currentField = questions[currentQuestion].id;
     
-    return (
-        <div className="SignUp">
-            <div id="box" className='box'>
-                <div id='question' className='question'>
-                    {questions.map((question, index) => {
-                        if (index === currentQuestion) {
-                            return (
-                                <div className='mid' key={question.question}>
-                                    <h1>{question.question}</h1>
-                                    <form onSubmit={nameSubmit}>
-                                        {question.input}
-                                        <div className='done'>
-                                            <button type='submit'>NEXT</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            );
-                        }
-                        return null;
-                    })}
+    // Check if the current answer is valid
+    if (!validators[currentField](user[currentField])) {
+      // If not valid, clear the input and ask to try again
+      document.getElementById(currentField).value = '';
+      document.getElementById(currentField).placeholder = 'try again';
+      return;
+    }
+
+    // If not the last question, move to the next one
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      // If it's the last question, try to sign up the user
+      try {
+        const response = await fetch('http://localhost:3001/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          await login(data.user, data.token, data.refreshToken);
+          navigate("/dashboard");
+        } else {
+          console.error('Signup failed');
+        }
+      } catch (error) {
+        console.error('Error during signup:', error);
+      }
+    }
+  };
+
+  // Create the right type of input for each question
+  const renderInput = ({ type, id, placeholder, options }) => {
+    switch (type) {
+      case 'select':
+        return (
+          <select name={id} id={id} onChange={handleChange} value={user[id]}>
+            <option value="NULL">{`(${id})`}</option>
+            {options.map(option => <option key={option} value={option}>{option}</option>)}
+          </select>
+        );
+      default:
+        return <input type={type} id={id} name={id} placeholder={placeholder} onChange={handleChange} />;
+    }
+  };
+
+  // The main component UI
+  return (
+    <div className="SignUp">
+      <div id="box" className='box'>
+        <div id='question' className='question'>
+          {questions.map((question, index) => {
+            if (index === currentQuestion) {
+              return (
+                <div className='mid' key={question.question}>
+                  <h1>{question.question}</h1>
+                  <form onSubmit={handleSubmit}>
+                    {renderInput(question)}
+                    <div className='done'>
+                      <button type='submit'>
+                        {currentQuestion === questions.length - 1 ? 'SUBMIT' : 'NEXT'}
+                      </button>
+                    </div>
+                  </form>
                 </div>
-            </div>
+              );
+            }
+            return null;
+          })}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default App;
+export default SignUp;
