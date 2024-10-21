@@ -5,21 +5,17 @@ import { ImSwitch, ImHome3 } from "react-icons/im";
 import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
 import SearchBar from './SearchBar';
 import Result from '../search/AddedResult';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Dashboard.css';
 
-// Utility function to format numbers to 0 decimal places only if it's a number
-const formatNumber = (num) => { if (!isNaN(num)) return Number(num).toFixed(0); };
+// This function rounds numbers to 0 decimal places
+const formatNumber = (num) => {
+  if (!isNaN(num)) return Number(num).toFixed(0);
+  return num; // If it's not a number, return it as is
+};
 
-/**
- * Component for displaying nutrition information
- * @param {string} id - The ID of the component
- * @param {string} title - The title of the nutrition box
- * @param {number} mainValue - The main value to display
- * @param {number} subValue - The secondary value to display
- * @param {function} onClick - The function to call when the box is clicked
- * @param {string} unit - The unit of measurement (default: 'g')
- */
-
+// This component creates a box to display nutrition information
 const NutritionBox = ({ id, title, mainValue, subValue, onClick, unit = 'g' }) => (
   <div id={id} className={id} onClick={onClick}>
     <p2>{title}</p2>
@@ -30,195 +26,250 @@ const NutritionBox = ({ id, title, mainValue, subValue, onClick, unit = 'g' }) =
 );
 
 function Dashboard() {
-  // State for the current day of the week
-  const [dateString, setDateString] = useState('');
-  // State for user information
-  const [userInfo, setUserInfo] = useState(null);
-  // Destructure logout function from useAuth hook
-  const { logout } = useAuth();
-
-  useEffect(() => {
-    // Load user info from localStorage
-    const storedUser = localStorage.getItem('usero');
-    if (storedUser) {
-      setUserInfo(JSON.parse(storedUser));
+    // These state variables hold important data for the component
+    const [dateString, setDateString] = useState('');
+    const [userDailyLog, setUserDailyLog] = useState(null);
+    
+    // We get these functions and data from our authentication system
+    const { auth } = useAuth();
+  
+    useEffect(() => {
+      console.log('Dashboard: useEffect triggered. Auth:', auth);
+  
+      const fetchUserDailyLog = async () => {
+        if (auth.isAuthenticated && auth.user && auth.user.id) {
+          try {
+            const today = new Date();
+            const date = today.toISOString().split('T')[0];
+            const dayIndex = today.getDay();
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayName = daysOfWeek[dayIndex];
+            console.log('Dashboard: Fetching data for user ID:', auth.user.id, 'on date:', date);
+  
+            const response = await fetch(`http://localhost:3001/user-daily-log?user_id=${auth.user.id}&date=${date}`);
+            const data = await response.json();
+  
+            console.log('Dashboard: Fetched user daily log:', data);
+            setUserDailyLog(data); // Store the fetched data
+            setDateString(dayName); //Set date forr user
+          } catch (error) {
+            console.error('Dashboard: Error fetching user daily log:', error);
+          }
+        }
+      };
+  
+      if (!auth.isLoading) {
+        fetchUserDailyLog(); // Fetch the daily log if user is authenticated
+      } else {
+        console.log('Dashboard: Auth is still loading, waiting to fetch data');
+      }
+    }, [auth]);  // This useEffect runs when the `auth` state changes
+  
+    // Loading state when waiting for authentication
+    if (auth.isLoading) {
+      console.log('Dashboard: Auth is still loading');
+      return <div>Loading user data...</div>;
+    }
+  
+    // Redirect to login if not authenticated
+    if (!auth.isAuthenticated || !auth.user) {
+      console.log('Dashboard: User not authenticated, redirecting to login');
+      return;
+    }
+  
+    // Loading state while fetching daily log
+    if (!userDailyLog) {
+      console.log('Dashboard: Fetching user daily log');
+      return <div>Fetching your daily log...</div>;
     }
 
-    // Set current day of the week
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    setDateString(weekdays[new Date().getDay()]);
-  }, []);
+  // Calculate total nutrition values from the daily log
+  const totalNutrition = userDailyLog.reduce((acc, item) => {
+    acc.calories += item.calories || 0;
+    acc.protein += item.protein || 0;
+    acc.fat += item.fat || 0;
+    acc.carbs += item.carbs || 0;
+    acc.saturatedFat += item.saturated_fat || 0;
+    acc.monoUnsaturatedFat += item.monounsaturated_fat || 0;
+    acc.polyUnsaturatedFat += item.polyunsaturated_fat || 0;
+    acc.transFat += item.trans_fat || 0;
+    acc.cholesterol += item.cholesterol || 0;
+    acc.sugar += item.sugar || 0;
+    acc.calcium += item.calcium || 0;
+    acc.vitaminA += item.vitamina || 0;
+    acc.vitaminC += item.vitaminc || 0;
+    acc.vitaminD += item.vitamind || 0;
+    acc.vitaminE += item.vitamine || 0;
+    acc.vitaminK += item.vitamink || 0;
+    acc.iron += item.iron || 0;
+    acc.magnesium += item.magnesium || 0;
+    acc.zinc += item.zinc || 0;
+    acc.potassium += item.potassium || 0;
+    return acc;
+  }, {
+    calories: 0, protein: 0, fat: 0, carbs: 0, saturatedFat: 0,
+    monoUnsaturatedFat: 0, polyUnsaturatedFat: 0, transFat: 0,
+    cholesterol: 0, sugar: 0, calcium: 0, vitaminA: 0, vitaminC: 0,
+    vitaminD: 0, vitaminE: 0, vitaminK: 0, iron: 0, magnesium: 0,
+    zinc: 0, potassium: 0
+  });
 
-  // Show loading state if user info is not yet loaded
-  if (!userInfo) return <div>Loading...</div>;
+  console.log('Calculated total nutrition:', totalNutrition); // Debug log
 
-  /**
-   * Function to toggle detailed view of nutritional information
-   * @param {string} id - The ID of the element to toggle
-   * @param {string} originalContent - The original HTML content
-   * @param {string} detailedContent - The detailed HTML content to show
-   */
+  // This function switches between simple and detailed views of nutrition info
   const toggleDetailView = (id, originalContent, detailedContent) => {
     const element = document.getElementById(id);
     const isOriginal = element.innerHTML.replace(/\s/g, '') === originalContent.replace(/\s/g, '');
     element.innerHTML = isOriginal ? detailedContent : originalContent;
+    console.log(`Toggled ${id} to ${isOriginal ? 'detailed' : 'original'} view`); // Debug log
   };
 
-  // Detailed view toggle functions
+  // These functions handle showing detailed information for different nutrients
   const toggleCalorieDetail = () => {
-    const total = userInfo.food.carbs + userInfo.food.fat + userInfo.food.protein;
+    const total = totalNutrition.carbs + totalNutrition.fat + totalNutrition.protein;
     toggleDetailView('calorie', 
-      `<p2>Calorie</p2><p1>${formatNumber(userInfo.food.calories)}</p1><p3>_______</p3><p3>${formatNumber(userInfo.food.protein)}left</p3>`,
-      `<p4>Carb</p4><p5>${formatNumber(userInfo.food.carbs/Math.max(1, total))}%</p5>
-       <p4>Protein</p4><p5>${formatNumber(userInfo.food.protein/Math.max(1, total))}%</p5>
-       <p4>Fat</p4><p5>${formatNumber(userInfo.food.fat/Math.max(1, total))}%</p5>`
+      `<p2>Calorie</p2><p1>${formatNumber(totalNutrition.calories)}</p1><p3>_______</p3><p3>${formatNumber(totalNutrition.protein)}left</p3>`,
+      `<p4>Carb</p4><p5>${formatNumber(totalNutrition.carbs/Math.max(1, total)*100)}%</p5>
+       <p4>Protein</p4><p5>${formatNumber(totalNutrition.protein/Math.max(1, total)*100)}%</p5>
+       <p4>Fat</p4><p5>${formatNumber(totalNutrition.fat/Math.max(1, total)*100)}%</p5>`
     );
   };
 
   const toggleFatDetail = () => {
     toggleDetailView('fat',
-      `<p2>Fat</p2><p1>${formatNumber(userInfo.food.fat)} g</p1><p3>_______</p3><p3>${formatNumber(userInfo.food.fat)}g over</p3>`,
-      `<p4>Saturated</p4><p5>${formatNumber(userInfo.food.saturatedFat)}mg</p5>
-       <p4>Unsaturated</p4><p5>${formatNumber(userInfo.food.monoUnsaturatedFat + userInfo.food.polyUnsaturatedFat)}mg</p5>
-       <p4>Trans</p4><p5>${formatNumber(userInfo.food.transFat)}mg</p5>
-       <p4>Cholesterol</p4><p5>${formatNumber(userInfo.food.cholesterol)}mg</p5>`
+      `<p2>Fat</p2><p1>${formatNumber(totalNutrition.fat)} g</p1><p3>_______</p3><p3>${formatNumber(totalNutrition.fat)}g over</p3>`,
+      `<p4>Saturated</p4><p5>${formatNumber(totalNutrition.saturatedFat)}mg</p5>
+       <p4>Unsaturated</p4><p5>${formatNumber(totalNutrition.monoUnsaturatedFat + totalNutrition.polyUnsaturatedFat)}mg</p5>
+       <p4>Trans</p4><p5>${formatNumber(totalNutrition.transFat)}mg</p5>
+       <p4>Cholesterol</p4><p5>${formatNumber(totalNutrition.cholesterol)}mg</p5>`
     );
   };
 
   const toggleCarbDetail = () => {
     toggleDetailView('carb',
-      `<p2>Carb</p2><p1>${formatNumber(userInfo.food.carbs)} g</p1><p3>_______</p3><p3>${formatNumber(userInfo.food.carbs)}g over</p3>`,
-      `<p4>Total Sugar</p4><p5>${formatNumber(userInfo.food.sugar)}g</p5>`
+      `<p2>Carb</p2><p1>${formatNumber(totalNutrition.carbs)} g</p1><p3>_______</p3><p3>${formatNumber(totalNutrition.carbs)}g over</p3>`,
+      `<p4>Total Sugar</p4><p5>${formatNumber(totalNutrition.sugar)}g</p5>`
     );
   };
 
   const toggleVitaminDetail = () => {
     toggleDetailView('vitamin',
-      `<p2>Vitamin</p2><p1>Low Calcium</p1><p3>_______</p3><p3>${formatNumber(userInfo.food.calcium)}mg under</p3>`,
+      `<p2>Vitamin</p2><p1>Low Calcium</p1><p3>_______</p3><p3>${formatNumber(totalNutrition.calcium)}mg under</p3>`,
       `<p4>Fat Soluble</p4>
        <ul>
-         <li>A ${formatNumber(userInfo.food.vitaminA)}mg</li>
-         <li>D ${formatNumber(userInfo.food.vitaminD)}mg</li>
-         <li>E ${formatNumber(userInfo.food.vitaminE)}mg</li>
-         <li>K ${formatNumber(userInfo.food.vitaminK)}mg</li>
+         <li>A ${formatNumber(totalNutrition.vitaminA)}mg</li>
+         <li>D ${formatNumber(totalNutrition.vitaminD)}mg</li>
+         <li>E ${formatNumber(totalNutrition.vitaminE)}mg</li>
+         <li>K ${formatNumber(totalNutrition.vitaminK)}mg</li>
        </ul>
        <p4>Water Soluble</p4>
        <ul>
-         <li>B1 ${formatNumber(userInfo.food.vitaminB1)}mg</li>
-         <li>B2 ${formatNumber(userInfo.food.vitaminB2)}mg</li>
-         <li>B3 ${formatNumber(userInfo.food.vitaminB3)}mg</li>
-         <li>B6 ${formatNumber(userInfo.food.vitaminB6)}mg</li>
-         <li>B9 ${formatNumber(userInfo.food.vitaminB9)}mg</li>
-         <li>B12 ${formatNumber(userInfo.food.vitaminB12)}mg</li>
-         <li>C ${formatNumber(userInfo.food.vitaminC)}mg</li>
-       </ul>
-       <p4>Total Fiber</p4>
-       <ul>
-         <li>Soluble ${formatNumber(userInfo.food.totalfiber)}g</li>
+         <li>C ${formatNumber(totalNutrition.vitaminC)}mg</li>
        </ul>
        <p4>Minerals</p4>
        <ul>
-         <li>Sodium ${formatNumber(userInfo.food.sodium)}mg</li>
-         <li>Iron ${formatNumber(userInfo.food.iron)}mg</li>
-         <li>Calcium ${formatNumber(userInfo.food.calcium)}mg</li>
-         <li>Magnesium ${formatNumber(userInfo.food.magnesium)}mg</li>
-         <li>Phosphorous ${formatNumber(userInfo.food.phosphorous)}mg</li>
-         <li>Potassium ${formatNumber(userInfo.food.potassium)}mg</li>
-         <li>Zinc ${formatNumber(userInfo.food.zinc)}mg</li>
-         <li>Caffeine ${formatNumber(userInfo.food.caffeine)}mg</li>
+         <li>Calcium ${formatNumber(totalNutrition.calcium)}mg</li>
+         <li>Iron ${formatNumber(totalNutrition.iron)}mg</li>
+         <li>Magnesium ${formatNumber(totalNutrition.magnesium)}mg</li>
+         <li>Potassium ${formatNumber(totalNutrition.potassium)}mg</li>
+         <li>Zinc ${formatNumber(totalNutrition.zinc)}mg</li>
        </ul>`
     );
   };
 
+  // This is the main part of the component that gets rendered
   return (
     <div id="dash" className="Dashboard">
       <div id="dash" className='grid'>
-        {/* Sidebar */}
+        {/* This is the sidebar */}
         <div className='sidebar'>
           <div className='getHome'>
-          <div className='home'><Link to="/" style={{ color: 'white' }}><ImHome3 /></Link></div>
-          <button onClick={logout} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}><ImSwitch /></button>
+            <div className='home'><Link to="/" style={{ color: 'white' }}><ImHome3 /></Link></div>
+            <button style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
           </div>
           <div className='getSettings'>
             <div className='c'><VscSettings className='VscSettings' style={{ color: 'blue' }}/></div>
           </div>
         </div>
 
-        {/* Main Content */}
+        {/* This is the main content area */}
         <div id="dash" className='subgrid'>
           {/* Header */}
           <div className='hello1'>
             <Link to="/" style={{ color: 'white', textDecoration: 'none' }}><h1>B-L-U-E</h1></Link>
-            <p>Happy {dateString} {userInfo.name}</p>
+            <p>Happy {dateString}, {auth.user.username} </p>
           </div>
           
-          {/* Search Component */}
+          {/* Search bar */}
           <div className='hello2'>
             <SearchBar/>
-            </div>
+          </div>
 
-          {/* Nutrition Information Boxes */}
+          {/* Nutrition information boxes */}
           <NutritionBox 
             id="calorie" 
             title="Calorie" 
-            mainValue={userInfo.food.calories} 
-            subValue={userInfo.food.protein} 
+            mainValue={totalNutrition.calories} 
+            subValue={totalNutrition.protein} 
             onClick={toggleCalorieDetail} 
             unit=""
           />
           <NutritionBox 
             id="protein" 
             title="Protein" 
-            mainValue={userInfo.food.protein} 
-            subValue={userInfo.food.protein} 
+            mainValue={totalNutrition.protein} 
+            subValue={totalNutrition.protein} 
           />
 
-          {/* Fat and Carb Information */}
+          {/* Fat and Carb information */}
           <div className='subbergrid'>
             <NutritionBox 
               id="fat" 
               title="Fat" 
-              mainValue={userInfo.food.fat} 
-              subValue={userInfo.food.fat} 
+              mainValue={totalNutrition.fat} 
+              subValue={totalNutrition.fat} 
               onClick={toggleFatDetail}
             />
             <NutritionBox 
               id="carb" 
               title="Carb" 
-              mainValue={userInfo.food.carbs} 
-              subValue={userInfo.food.carbs} 
+              mainValue={totalNutrition.carbs} 
+              subValue={totalNutrition.carbs} 
               onClick={toggleCarbDetail}
             />
           </div>
 
-          {/* Vitamin Information */}
+          {/* Vitamin information */}
           <NutritionBox 
             id="vitamin" 
             title="Vitamin" 
             mainValue={"Low Calcium"} 
-            subValue={userInfo.food.calcium} 
+            subValue={totalNutrition.calcium} 
             onClick={toggleVitaminDetail}
             unit="mg"
           />
         </div>
 
-        {/* Food History */}
+        {/* Food history */}
         <div className='foods'>
           <div className='add'>
             <p6>History</p6>
             <div id='history' className='itemss'>
-              {Object.entries(userInfo.foodsAte).map(([foodName, foodData]) => (
-                <Result 
-                  key={foodName}
-                  food={{
-                    name: foodName,
-                    calories: foodData.calories.amount,
-                    carbs: foodData.carbs.amount,
-                    protein: foodData.protein.amount,
-                    fats: foodData.fat.amount
-                  }}
-                />
-              ))}
+              {userDailyLog.map((food, index) => {
+                console.log('Rendering food item:', food); // Debug log
+                return (
+                  <Result 
+                    key={index}
+                    food={{
+                      name: food.food_name,
+                      calories: food.calories,
+                      carbs: food.carbs,
+                      protein: food.protein,
+                      fats: food.fat
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

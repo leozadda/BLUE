@@ -7,6 +7,16 @@ function roundToTwoDecimals(num) {
     return Math.round(num * 100) / 100;
 }
 
+function scaleNutrients(nutrients, scaleFactor) {
+    return Object.entries(nutrients).reduce((acc, [key, value]) => {
+        acc[key] = {
+            amount: roundToTwoDecimals(value.amount * scaleFactor),
+            unit: value.unit
+        };
+        return acc;
+    }, {});
+}
+
 function SearchResult() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,30 +42,41 @@ function SearchResult() {
                     return null;
                 }
 
-                return {
-                    num: index,
-                    description: food.food_name,
-                    ingredients: "", // Add ingredients if available in your data
-                    serving: roundToTwoDecimals(serving.metric_serving_amount) || 'N/A',
-                    servingUnit: serving.metric_serving_unit || 'N/A',
-                    selected: 0,
+                const originalServingSize = serving.metric_serving_amount || 1;
+
+                const nutrients = {
                     calories: { amount: serving.calories || 0, unit: 'Kcal' },
                     protein: { amount: serving.protein || 0, unit: 'g' },
                     fat: { amount: serving.fat || 0, unit: 'g' },
                     cholesterol: { amount: serving.cholesterol || 0, unit: 'mg' },
-                    saturatedFat: { amount: roundToTwoDecimals(serving.saturated_fat) || '0', unit: 'g'},
-                    monoUnsaturatedFat: { amount: roundToTwoDecimals(serving.monounsaturated_fat) || '0', unit: 'g'  }, // Add if available
-                    polyUnsaturatedFat: { amount: roundToTwoDecimals(serving.polyunsaturated_fat) || '0', unit: 'g'}, // Add if available
-                    transFat: { amount: 0, unit: 'g' }, // Add if available
+                    saturatedFat: { amount: roundToTwoDecimals(serving.saturated_fat) || 0, unit: 'g'},
+                    monoUnsaturatedFat: { amount: roundToTwoDecimals(serving.monounsaturated_fat) || 0, unit: 'g' },
+                    polyUnsaturatedFat: { amount: roundToTwoDecimals(serving.polyunsaturated_fat) || 0, unit: 'g'},
+                    transFat: { amount: 0, unit: 'g' },
                     carbs: { amount: serving.carbohydrate || 0, unit: 'g' },
                     sugar: { amount: serving.sugar || 0, unit: 'g' },
                     sodium: { amount: serving.sodium || 0, unit: 'mg' },
                     potassium: { amount: serving.potassium || 0, unit: 'mg' },
                     fiber: { amount: serving.fiber || 0, unit: 'g' },
-                    vitaminA: { amount: serving.vitamin_a || 0, unit: 'µ' },
+                    vitaminA: { amount: serving.vitamin_a || 0, unit: 'µg' },
                     vitaminC: { amount: serving.vitamin_c || 0, unit: 'mg' },
                     calcium: { amount: serving.calcium || 0, unit: 'mg' },
                     iron: { amount: serving.iron || 0, unit: 'mg' },
+                };
+
+                const scaledNutrients = scaleNutrients(nutrients, 1 / originalServingSize);
+
+                return {
+                    num: index,
+                    description: food.food_name,
+                    ingredients: "", // Add ingredients if available in your data
+                    serving: 1,
+                    servingUnit: 'g',
+                    selected: 0,
+                    originalServingSize,
+                    originalServingUnit: serving.metric_serving_unit || 'g',
+                    baseNutrients: scaledNutrients,
+                    displayNutrients: scaledNutrients
                 };
             }).filter(Boolean); // Remove any null items
             setFoods(processedFoods);
@@ -87,6 +108,16 @@ function SearchResult() {
         setFoods(updatedFoods);
     }
 
+    function handleServingChange(event, index) {
+        event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
+        const newServing = parseFloat(event.target.value) || 0;
+        const updatedFoods = [...foods];
+        const food = updatedFoods[index];
+        food.serving = newServing;
+        food.displayNutrients = scaleNutrients(food.baseNutrients, newServing);
+        setFoods(updatedFoods);
+    }
+
     return (
         <div className='searchresult'>
             <div className="searchtitle">
@@ -101,48 +132,56 @@ function SearchResult() {
                             <p>{food.description}</p>
                         </div>
                         <div className='servingS'>
-                            <h1>Serving Size {food.serving}{food.servingUnit}</h1>
+                            <h1>Serving Size: 
+                                <input 
+                                    type="number" 
+                                    //value={food.serving} 
+                                    onChange={(e) => handleServingChange(e, food.num)}
+                                    onClick={(e) => e.stopPropagation()} // Prevent click from bubbling up
+                                    min="0"
+                                    step="0.1"
+                                    placeholder='1g'
+                                />
+                                {//(Originally {food.originalServingSize}{food.originalServingUnit})
+                                }
+                            </h1>
                         </div>
+
                         <div className='calorieS'>
-                            <p1>Calories per serving</p1>
-                            <p3>{food.calories.amount}</p3>
+                            <p1>Calories per {food.serving}g</p1>
+                            <p3>{food.displayNutrients.calories.amount}</p3>
                         </div>
-                        {/*<div className='ingredients'>
-                            <p1>Ingredients:</p1>
-                            <p2>{food.ingredients}</p2>
-                        </div>
-                        */}
                     </div>
 
                     <div className='grid2'>
                         <div className='serving'>
-                            <p>Amount/Serving</p>
+                            <p>Amount per {food.serving}g</p>
                         </div>
                         <div className='secondColumn'>
                             <div className='fatS'>
                                 <div className='totalfat'>
                                     <p1>Total Fat</p1>
-                                    <p2>{food.fat.amount}{food.fat.unit}</p2>
+                                    <p2>{food.displayNutrients.fat.amount}{food.displayNutrients.fat.unit}</p2>
                                 </div>
                                 <div className='sat'>
                                     <p1>Saturated Fat</p1>
-                                    <p2>{food.saturatedFat.amount}{food.saturatedFat.unit}</p2>
+                                    <p2>{food.displayNutrients.saturatedFat.amount}{food.displayNutrients.saturatedFat.unit}</p2>
                                 </div>
                                 <div className='mono'>
                                     <p1>Mono-Unsaturated Fat</p1>
-                                    <p2>{food.monoUnsaturatedFat.amount}{food.monoUnsaturatedFat.unit}</p2>
+                                    <p2>{food.displayNutrients.monoUnsaturatedFat.amount}{food.displayNutrients.monoUnsaturatedFat.unit}</p2>
                                 </div>
                                 <div className='poly'>
                                     <p1>Poly-Unsaturated</p1>
-                                    <p2>{food.polyUnsaturatedFat.amount}{food.polyUnsaturatedFat.unit}</p2>
+                                    <p2>{food.displayNutrients.polyUnsaturatedFat.amount}{food.displayNutrients.polyUnsaturatedFat.unit}</p2>
                                 </div>
                                 <div className='trans'>
                                     <p1>Trans Fat</p1>
-                                    <p2>{food.transFat.amount}{food.transFat.unit}</p2>
+                                    <p2>{food.displayNutrients.transFat.amount}{food.displayNutrients.transFat.unit}</p2>
                                 </div>
                                 <div className='chol'>
                                     <p1>Cholesterol</p1>
-                                    <p2>{food.cholesterol.amount}{food.cholesterol.unit}</p2>
+                                    <p2>{food.displayNutrients.cholesterol.amount}{food.displayNutrients.cholesterol.unit}</p2>
                                 </div>
                             </div>
                         </div>
@@ -153,37 +192,37 @@ function SearchResult() {
             
                     <div className='grid3'>
                         <div className='serving'>
-                            <p>Amount/Serving</p>
+                            <p>Amount per {food.serving}g</p>
                         </div>
                         <div className='thirdColumn'>
                             <div className='carbS'>
                                 <div className='totalcarb'>
                                     <p1>Total Carbohydrate</p1>
-                                    <p2>{food.carbs.amount}{food.carbs.unit}</p2>
+                                    <p2>{food.displayNutrients.carbs.amount}{food.displayNutrients.carbs.unit}</p2>
                                 </div>
                                 <div className='fiber'>
                                     <p1>Dietary Fiber</p1>
-                                    <p2>{food.fiber.amount}{food.fiber.unit}</p2>
+                                    <p2>{food.displayNutrients.fiber.amount}{food.displayNutrients.fiber.unit}</p2>
                                 </div>
                                 <div className='sugar'>
                                     <p1>Total Sugar</p1>
-                                    <p2>{food.sugar.amount}{food.sugar.unit}</p2>
+                                    <p2>{food.displayNutrients.sugar.amount}{food.displayNutrients.sugar.unit}</p2>
                                 </div>
                             </div>
                             <div className='sodium'>
                                 <p1>Sodium</p1>
-                                <p2>{food.sodium.amount}{food.sodium.unit}</p2>
+                                <p2>{food.displayNutrients.sodium.amount}{food.displayNutrients.sodium.unit}</p2>
                             </div>
                             <div className='proteinS'>
                                 <p1>Protein</p1>
-                                <p2>{food.protein.amount}{food.protein.unit}</p2> 
+                                <p2>{food.displayNutrients.protein.amount}{food.displayNutrients.protein.unit}</p2> 
                             </div>
                         </div>
                         <div className='mineralS'>
                             <p1>Vitamin C</p1>
-                            <p2>{food.vitaminC.amount}{food.vitaminC.unit}</p2> 
+                            <p2>{food.displayNutrients.vitaminC.amount}{food.displayNutrients.vitaminC.unit}</p2> 
                             <p1>Vitamin A</p1>
-                            <p2>{food.vitaminA.amount}{food.vitaminA.unit}</p2> 
+                            <p2>{food.displayNutrients.vitaminA.amount}{food.displayNutrients.vitaminA.unit}</p2> 
                             {/* Add mineral details here */}
                         </div>
                     </div>

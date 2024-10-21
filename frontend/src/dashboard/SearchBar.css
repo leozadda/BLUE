@@ -101,20 +101,32 @@
 .searchBar {
     display: flex;
     align-items: center; /* Vertically aligns items */
-    gap: 0px; /* Space between input and barcode button */
-    background-color: none;
+    gap: .5em; /* Space between input and barcode button */
+    background-color: blue;
     border-radius: 0%;
+    color: white;
+    text-align: center;
+
 }
 
 #searchInput {
     flex: 1; /* This makes the input take up remaining space */
-    padding: 0px; /* Add padding to input for spacing */
-    background-color: none;
+    padding: .5em; /* Add padding to input for spacing */
+    background-color: blue;
+    border: 0;
+    border-bottom: solid white 3px;
+    color: white;
+    text-align: center;
+    font-family: "Andale Mono", AndaleMono, monospace;
+
 }
 
-input::placeholder{
+#searchInput::placeholder {
     color: white;
+    text-transform: uppercase;
 }
+
+
 
 .UPC {
     cursor: pointer; /* Makes it clear it's clickable */

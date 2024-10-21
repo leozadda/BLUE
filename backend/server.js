@@ -430,11 +430,17 @@ app.post('/search-or-create-food', async (req, res) => {
 app.get('/user-daily-log', async (req, res) => {
     const { user_id, date } = req.query;
 
+    // Log the incoming parameters
+    console.log('Received /user-daily-log request with parameters:', { user_id, date });
+
+    // Validate the parameters
     if (!user_id || !date) {
+        console.error('Missing user_id or date parameter');
         return res.status(400).json({ error: 'Missing user_id or date parameter' });
     }
 
     try {
+        // Prepare the SQL query to fetch the daily log data
         const query = `
             SELECT 
                 dl.id, dl.date, dl.quantity, dl.meal_type,
@@ -449,26 +455,49 @@ app.get('/user-daily-log', async (req, res) => {
             WHERE dl.user_id = $1 AND dl.date = $2
             ORDER BY dl.meal_type, dl.id
         `;
+
         const values = [user_id, date];
-        
+
+        // Log the SQL query and values
+        console.log('Executing query:', query);
+        console.log('With values:', values);
+
+        // Execute the SQL query
         const result = await pool.query(query, values);
+
+        // Log the raw query result
+        console.log('Query result:', result.rows);
 
         // Calculate the actual nutritional values based on the quantity consumed
         const calculatedResults = result.rows.map(row => {
-            const factor = row.quantity / row.serving_size;
+            // Calculate the factor based on the quantity consumed relative to the serving size
+            const factor = row.quantity / (row.serving_size / 100);
             const calculated = {};
+        
+            console.log(`Calculating nutrition for food item: ${row.food_name}`);
+            console.log(`Quantity consumed: ${row.quantity}${row.serving_unit}`);
+            console.log(`Serving size: ${row.serving_size}${row.serving_unit}`);
+            console.log(`Calculation factor: ${factor}`);
+        
+            // Multiply the nutritional values by the factor
             for (const [key, value] of Object.entries(row)) {
                 if (typeof value === 'number' && key !== 'id' && key !== 'quantity' && key !== 'serving_size') {
                     calculated[key] = value * factor;
+                    console.log(`${key}: ${value} * ${factor} = ${calculated[key]}`);
                 } else {
-                    calculated[key] = value;
+                    calculated[key] = value; // Retain non-numeric values as is
                 }
             }
+        
+            console.log('Calculated result for food item:', calculated);
             return calculated;
         });
 
+        // Return the calculated results
+        console.log('Sending calculated results:', calculatedResults);
         res.json(calculatedResults);
     } catch (error) {
+        // Log the error if something goes wrong
         console.error('Error fetching user daily log:', error);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }

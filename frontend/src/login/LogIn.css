@@ -42,7 +42,7 @@ html, body {
 }
 
 .loginbox input {
-  background-color: blue;
+  background-color: none;
   color: white;
   border: none;
   border-bottom: solid white 2px;

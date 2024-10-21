@@ -307,7 +307,7 @@ html, body{
       padding-bottom: 1em;
     }
     
-    input, .question input, .SignUp input {
+    .question input, .SignUp input {
       background-color: transparent !important;
       background: none !important;
       border: none !important;
@@ -325,13 +325,13 @@ html, body{
       appearance: none !important;
     }
     
-    input:focus, .question input:focus, .SignUp input:focus {
+   .question input:focus, .SignUp input:focus {
       outline: none !important;
       box-shadow: none !important;
     }
     
     /* Update placeholder color */
-    input::placeholder, .question input::placeholder, .SignUp input::placeholder {
+.question input::placeholder, .SignUp input::placeholder {
       color: rgba(255, 255, 255, 0.7) !important;
     }
 
@@ -390,18 +390,20 @@ form{
   align-items: center;
   flex-wrap: wrap;
 }
-
+/*
 input {
   background-color: transparent;
   border: none;
   outline: none;
-  color: white; /* Ensure text is visible */
+  color: white; 
 }
+
 
 input:focus {
   outline: none;
   box-shadow: none;
 }
+*/
 
 /* Styles for autofilled inputs */
 input:-webkit-autofill,
@@ -428,7 +430,7 @@ input:autofill:active {
 }
 
 /* Additional general input styles */
-input, .question input, .SignUp input {
+.question input, .SignUp input {
     background-color: transparent !important;
     background: none !important;
     border: none !important;
