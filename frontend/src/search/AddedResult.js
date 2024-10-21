@@ -1,4 +1,4 @@
-import './Result.css';
+import './AddedResult.css';
 
 
 function Result(props){

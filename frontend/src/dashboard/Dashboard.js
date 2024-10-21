@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
 import { ImSwitch, ImHome3 } from "react-icons/im";
 import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
-import Search from './SearchBar';
-import Result from '../search/Result';
+import SearchBar from './SearchBar';
+import Result from '../search/AddedResult';
 import './Dashboard.css';
 
 // Utility function to format numbers to 0 decimal places only if it's a number
@@ -153,7 +153,9 @@ function Dashboard() {
           </div>
           
           {/* Search Component */}
-          <div className='hello2'><Search/></div>
+          <div className='hello2'>
+            <SearchBar/>
+            </div>
 
           {/* Nutrition Information Boxes */}
           <NutritionBox 

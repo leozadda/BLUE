@@ -24,71 +24,6 @@
 
 
 
-/*the one underneath*/
-.searchBar{
-
-    font-size: 16px;
-    font-weight: light;
-    font-style: italic;
-    color: blue;
-    background-color: none;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: .75em;
-    border-radius: 1em;
-    border: none;
-    max-width: 30vw;
-    min-width: 30vw;
-    background-color: white;
-    color: black;
-    max-height: 1vh;
-
-}
-
-
-.searchBar input{
-    max-width: 25vw;
-    min-width: 25vw;
-    height: 100%;
-    border: none;
-    font-family: "Andale Mono", AndaleMono, monospace;
-    font-size: 16px;
-    font-weight: light;
-    font-style: normal;
-    box-sizing: content-box;
-    margin-right: 1em;
-    color: blue;
-    background-color: white;
-}
-
-.searchBar input::placeholder{
-    
-color: blue;
-}
-
-.UPC{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: blue;
-    font-size: 20px;
-    background-color: white;
-}
-.searchBar input:active{
-    width: 100%;
-    height: 100%;
-    border: none;
-    background-color: white;
-
-}
-.searchBar input:focus{
-    width: 100%;
-    height: 100%;
-    background-color: white;
-
-}
 *:focus {
     outline: none;
 }
@@ -102,7 +37,7 @@ color: blue;
     font-weight: light;
     font-style: normal;
     color: rgb(0, 0, 0);
-    background-color: white;
+    background-color: none;
     box-sizing: content-box;
     padding: 1em;
     border-radius: 1em;
@@ -136,11 +71,13 @@ color: blue;
         margin: 0;
     }
 
+
     .searchBar{
         min-width: 60vw;
         max-height: 1vh;
 
     }
+    /*
     .searchBar input{
         min-width: 50vw;
         min-height: auto;
@@ -158,4 +95,123 @@ color: blue;
         width: 9vw;
     }
 
+    */
 }
+
+.searchBar {
+    display: flex;
+    align-items: center; /* Vertically aligns items */
+    gap: 0px; /* Space between input and barcode button */
+    background-color: none;
+    border-radius: 0%;
+}
+
+#searchInput {
+    flex: 1; /* This makes the input take up remaining space */
+    padding: 0px; /* Add padding to input for spacing */
+    background-color: none;
+}
+
+input::placeholder{
+    color: white;
+}
+
+.UPC {
+    cursor: pointer; /* Makes it clear it's clickable */
+    padding: 0px; /* Adds spacing around the icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: none; /* Background color for the barcode button */
+    border-radius: 0px; /* Rounded edges for the button */
+    color: white;
+    font-size: 2em;
+}
+
+.UPC button:hover{
+    color: darkgrey;
+}
+
+.loading{
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1em;
+    font-weight: light;
+    font-style: normal;
+    color: white;
+    background-color: none;
+    display: flex;
+    align-items: center; /* Vertically aligns items */
+
+}
+
+/*
+
+
+
+the one underneath
+.searchBar{
+
+    font-size: 16px;
+    font-weight: light;
+    font-style: italic;
+    color: blue;
+    background-color: none;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .75em;
+    border-radius: 1em;
+    border: none;
+    max-width: 30vw;
+    min-width: 30vw;
+    background-color: red;
+    color: black;
+    max-height: 1vh;
+
+}
+
+
+.searchBar input{
+    max-width: 25vw;
+    min-width: 25vw;
+    height: 100%;
+    border: none;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 16px;
+    font-weight: light;
+    font-style: normal;
+    box-sizing: content-box;
+    margin-right: 1em;
+    color: blue;
+    background-color: black;
+}
+
+.searchBar input::placeholder{
+    
+color: blue;
+}
+
+.UPC{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+    font-size: 20px;
+    background-color: none;
+}
+.searchBar input:active{
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: none;
+
+}
+.searchBar input:focus{
+    width: 100%;
+    height: 100%;
+    background-color: none;
+
+}
+
+*/
