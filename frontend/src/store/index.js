@@ -17,7 +17,7 @@ const authSlice = createSlice({
             state.firstName = action.payload.firstName;
             state.lastName = action.payload.lastName;
         },
-        logout(state) {
+        logOff(state) {
             state.isLoggedIn = false;
             state.userName = "";
             state.firstName = "";

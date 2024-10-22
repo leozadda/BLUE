@@ -207,13 +207,17 @@ html, body{
     text-decoration: none;
     color: blue;
     background-color: white;
+    width: auto;
+    border: solid 2px blue;
+
   }
-  .done button:active{
+  .done button:hover{
     text-decoration: none;
     color: white;
     background-color: blue;
     border: solid 2px white;
   }
+
 
   .SignUp input,   .SignUp select,   .SignUp textarea{
     background-color: blue;
@@ -343,6 +347,7 @@ html, body{
       font-size: 20px;
       font-weight: 900;
       text-transform: uppercase;
+      width: auto;
     }
     .question button:active{
       background-color: blue;

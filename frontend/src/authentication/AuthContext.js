@@ -36,12 +36,12 @@ export const AuthProvider = ({ children }) => {
       } else {
         // If we couldn't get a new key, log out the user
         console.log('Failed to refresh token. Logging out user.');
-        logout();
+        logOff();
         throw new Error('Unable to refresh token');
       }
     } catch (error) {
       console.error('Error refreshing token:', error);
-      logout();
+      logOff();
     }
   }, [auth.refreshToken]);
 
@@ -80,8 +80,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   // This function runs when a user logs out
-  const logout = () => {
-    console.log('Logout called. Clearing auth data.');
+  const logOff = () => {
+    console.log('LogOff called. Clearing auth data.');
     setAuth({ isAuthenticated: false, user: null, token: null, refreshToken: null, isLoading: false });
     // Remove saved login info
     localStorage.removeItem('auth');
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   // Provide the authentication info and functions to all child components
   return (
-    <AuthContext.Provider value={{ auth, login, logout, refreshAccessToken }}>
+    <AuthContext.Provider value={{ auth, login, logOff, refreshAccessToken }}>
       {children}
     </AuthContext.Provider>
   );

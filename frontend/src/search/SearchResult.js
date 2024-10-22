@@ -1,12 +1,18 @@
+
+ 
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SearchResult.css';
 import { ImExit } from "react-icons/im";
+import axios from 'axios'; // Assuming axios is used for API requests
+import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
 
+// Utility function to round numbers to two decimal places
 function roundToTwoDecimals(num) {
     return Math.round(num * 100) / 100;
 }
 
+// Utility function to scale nutrients based on the serving size
 function scaleNutrients(nutrients, scaleFactor) {
     return Object.entries(nutrients).reduce((acc, [key, value]) => {
         acc[key] = {
@@ -18,15 +24,22 @@ function scaleNutrients(nutrients, scaleFactor) {
 }
 
 function SearchResult() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [foods, setFoods] = useState([]);
-    const [items, setItems] = useState(0);
+    const navigate = useNavigate(); // Used to navigate between pages
+    const location = useLocation(); // To access the food data passed from previous page
+    const [foods, setFoods] = useState([]); // State to store food items
+    const [items, setItems] = useState(0); // Counter for selected food items
+        // We get these functions and data from our authentication system
+        const { auth } = useAuth();
 
+    // Effect that runs once when the component is mounted
     useEffect(() => {
         console.log('SearchResult component mounted');
+        
+        // Check if there's food data in the location's state
         if (location.state && location.state.foodData) {
             console.log('Food data received:', location.state.foodData);
+            
+            // Process each food item and extract nutrients and serving info
             const processedFoods = location.state.foodData.map((item, index) => {
                 const food = item.food;
                 if (!food || !food.servings || !food.servings.serving) {
@@ -64,12 +77,12 @@ function SearchResult() {
                     iron: { amount: serving.iron || 0, unit: 'mg' },
                 };
 
+                // Scale the nutrients based on the original serving size
                 const scaledNutrients = scaleNutrients(nutrients, 1 / originalServingSize);
 
                 return {
                     num: index,
                     description: food.food_name,
-                    ingredients: "", // Add ingredients if available in your data
                     serving: 1,
                     servingUnit: 'g',
                     selected: 0,
@@ -85,6 +98,7 @@ function SearchResult() {
         }
     }, [location.state]);
 
+    // Function to toggle selection of food items
     function selectFoodItem(food) {
         console.log('selectFoodItem called with:', food);
 
@@ -108,6 +122,7 @@ function SearchResult() {
         setFoods(updatedFoods);
     }
 
+    // Function to handle changes to the custom serving size
     function handleServingChange(event, index) {
         event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
         const newServing = parseFloat(event.target.value) || 0;
@@ -118,11 +133,60 @@ function SearchResult() {
         setFoods(updatedFoods);
     }
 
+    // Function to save selected foods by calling the /log-food endpoint
+    async function saveSelectedFoods() {
+        const selectedFoods = foods.filter(food => food.selected === 1).map(food => ({
+            food_item: {
+                name: food.description,
+                calories: food.displayNutrients.calories.amount,
+                protein: food.displayNutrients.protein.amount,
+                fat: food.displayNutrients.fat.amount,
+                carbs: food.displayNutrients.carbs.amount,
+                saturated_fat: food.displayNutrients.saturatedFat.amount,
+                monounsaturated_fat: food.displayNutrients.monoUnsaturatedFat.amount,
+                polyunsaturated_fat: food.displayNutrients.polyUnsaturatedFat.amount,
+                trans_fat: food.displayNutrients.transFat.amount,
+                fiber: food.displayNutrients.fiber.amount,
+                sugar: food.displayNutrients.sugar.amount,
+                sodium: food.displayNutrients.sodium.amount,
+                cholesterol: food.displayNutrients.cholesterol.amount,
+                potassium: food.displayNutrients.potassium.amount,
+                vitaminA: food.displayNutrients.vitaminA.amount,
+                vitaminC: food.displayNutrients.vitaminC.amount,
+                calcium: food.displayNutrients.calcium.amount,
+                iron: food.displayNutrients.iron.amount,
+                serving_size: food.serving,
+                serving_unit: food.originalServingUnit,
+                is_manual: true // Assuming manual input
+            },
+            quantity: food.serving, // Use the custom serving size as quantity
+            date: new Date().toISOString().split('T')[0], // Today's date
+            meal_type: 'snack' // You can customize this based on user input
+        }));
+
+        const user_id = auth.user.id;
+
+        try {
+            for (const food of selectedFoods) {
+                console.log('search-rersult:', food);
+                // Send each selected food item to the /log-food route
+                const response = await axios.post('http://localhost:3001/log-food', {
+                    user_id,
+                    ...food // Spread food_item, quantity, date, and meal_type
+                });
+                console.log('Food logged-searrch result:', response.data);
+            }
+        } catch (error) {
+            console.error('Error logging selected foods:', error);
+        }
+    }
+
+    // Render the food items and handle navigation
     return (
         <div className='searchresult'>
             <div className="searchtitle">
                 <div className='text'><p>Add: {items}</p></div>
-                <div className='exit'><ImExit onClick={() => navigate("/dashboard")}/></div>
+                <div className='exit'><ImExit onClick={() => { saveSelectedFoods(); navigate("/dashboard"); }} /></div>
             </div>
             {foods.length === 0 && <h1 className="null">Sorry, Nothing Found.</h1>}
             {foods.map((food) => (

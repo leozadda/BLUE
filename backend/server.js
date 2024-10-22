@@ -389,7 +389,6 @@ app.post('/search-or-create-food', async (req, res) => {
 
 
 
-  
   app.post('/log-food', async (req, res) => {
     const { user_id, food_item, date, quantity, meal_type } = req.body;
 
@@ -409,7 +408,7 @@ app.post('/search-or-create-food', async (req, res) => {
             INSERT INTO daily_logs (user_id, food_item_id, date, quantity, meal_type)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *`;
-        const values = [user_id, food_item_id, date, quantity, meal_type];
+        const values = [user_id, food_item_id, new Date(date), quantity, meal_type];
         
         console.log('Executing query:', query);
         console.log('With values:', values);
@@ -423,10 +422,13 @@ app.post('/search-or-create-food', async (req, res) => {
         
     } catch (error) {
         console.error('Error adding daily food log:', error);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
+        if (error.response && error.response.data) {
+            res.status(500).json({ error: 'Internal server error', details: error.response.data });
+        } else {
+            res.status(500).json({ error: 'Internal server error', details: error.message });
+        }
     }
 });
-
 app.get('/user-daily-log', async (req, res) => {
     const { user_id, date } = req.query;
 

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 
+
 // This function rounds numbers to 0 decimal places
 const formatNumber = (num) => {
   if (!isNaN(num)) return Number(num).toFixed(0);
@@ -30,8 +31,8 @@ function Dashboard() {
     const [dateString, setDateString] = useState('');
     const [userDailyLog, setUserDailyLog] = useState(null);
     
-    // We get these functions and data from our authentication system
-    const { auth } = useAuth();
+  // Get authentication state and logOff function
+  const { auth, logOff } = useAuth();
   
     useEffect(() => {
       console.log('Dashboard: useEffect triggered. Auth:', auth);
@@ -185,7 +186,7 @@ function Dashboard() {
         <div className='sidebar'>
           <div className='getHome'>
             <div className='home'><Link to="/" style={{ color: 'white' }}><ImHome3 /></Link></div>
-            <button style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
+            <button  onClick={logOff} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
           </div>
           <div className='getSettings'>
             <div className='c'><VscSettings className='VscSettings' style={{ color: 'blue' }}/></div>

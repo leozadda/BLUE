@@ -233,7 +233,9 @@ li > a:hover{
     border-radius: .3em;
     border: none;
     padding: .5em;
+    width: auto;
 }
+
 
 
 .solution-child button:hover{

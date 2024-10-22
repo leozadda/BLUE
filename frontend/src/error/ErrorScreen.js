@@ -9,8 +9,8 @@ function ErrorScreen() {
         <div className='ErrorScreen'>
             <p className='ErrorMessage'>
                 Sorry, we are bad engineers.
+                <button onClick={() => navigate("/dashboard")}>Go back</button>
             </p>
-            <button onClick={() => navigate("/dashboard")}>Go back</button>
         </div>
     );
 }
