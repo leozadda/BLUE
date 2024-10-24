@@ -4,7 +4,6 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const OAuth = require('oauth-1.0a');
 const crypto = require('crypto');
 const axios = require('axios');
 
@@ -49,7 +48,7 @@ async function searchFoods(foodName) {
         const response = await axios.get(baseUrl, { params });
         return response.data;
     } catch (error) {
-        console.error('Error:', error.message);
+            console.error('Error:', error.message);
         if (error.response) {
             console.error('Response data:', error.response.data);
             console.error('Response status:', error.response.status);
