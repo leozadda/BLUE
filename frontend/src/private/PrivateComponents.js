@@ -2,7 +2,7 @@
 import React from 'react';
 import Dashboard from '../dashboard/Dashboard';
 import SearchResult from '../search/SearchResult';
-import PrivateRoute from '/Users/leo/Desktop/blue/frontend/src/private/PrivateRoutes.js';
+import PrivateRoute from './PrivateRoutes.js';
 
 // This function wraps the Dashboard component with our guard (PrivateRoute)
 export function PrivateDashBoard() {

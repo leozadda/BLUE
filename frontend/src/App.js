@@ -2,12 +2,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LogIn from './login/LogIn';
 import SignUp from './signup/SignUp';
 import Main from './main/Main';
-//import Private from "./Private";
 import ErrorScreen from "./error/ErrorScreen.js";
-import { createContext, useState, useEffect } from 'react';
-import { PrivateDashBoard, PrivateResults } from "/Users/leo/Desktop/blue/frontend/src/private/PrivateComponents.js";
-import { AuthProvider } from "/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js";
-import CustomCursor from '/Users/leo/Desktop/blue/frontend/src/customCursor/CustomCursor.js';
+import { PrivateDashBoard, PrivateResults } from "../src/private/PrivateComponents.js";
+import { AuthProvider } from "../src/authentication/AuthContext.js";
+import CustomCursor from '../src/customCursor/CustomCursor.js';
 
 
 function App() {

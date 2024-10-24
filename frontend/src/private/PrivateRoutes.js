@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
+import { useAuth } from '../authentication/AuthContext.js';
 
 // This component is like a guard for our private pages
 const PrivateRoute = ({ children }) => {

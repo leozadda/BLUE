@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
 import { ImSwitch, ImHome3 } from "react-icons/im";
-import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
+import { useAuth } from '../authentication/AuthContext.js';
+
 import SearchBar from './SearchBar';
 import Result from '../search/AddedResult';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Dashboard.css';
 
 

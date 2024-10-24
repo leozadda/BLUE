@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './SearchResult.css';
 import { ImExit } from "react-icons/im";
 import axios from 'axios'; // Assuming axios is used for API requests
-import { useAuth } from '/Users/leo/Desktop/blue/frontend/src/authentication/AuthContext.js';
+import { useAuth } from '../authentication/AuthContext.js';
 
 // Utility function to round numbers to two decimal places
 function roundToTwoDecimals(num) {
