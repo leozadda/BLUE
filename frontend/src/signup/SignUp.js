@@ -69,7 +69,7 @@ const SignUp = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
-        process.env.REACT_APP_BACKEND_URL
+        
         if (response.ok) {
           const data = await response.json();
           await login(data.user, data.token, data.refreshToken);
