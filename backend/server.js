@@ -97,13 +97,20 @@ async function getFoodDetails(foodId) {
 // Create our Express app
 const app = express();
 
-// Set up security and data parsing
+/* Set up security and data parsing (FUTURE CODE MAYBE)
 app.use(cors({
-    origin: '*',  // Allow requests from any website
+    origin: 'https://b-l-u-e.vercel.app',  // Your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true
 }));
+*/
+app.use(cors({
+    origin: '*', // Allow all origins
+    methods: '*', // Allow all HTTP methods
+    allowedHeaders: '*' // Allow all headers
+  }));
+
 app.use(express.json());  // Let our app understand JSON data
 
 // Set up database connection for Vercel
