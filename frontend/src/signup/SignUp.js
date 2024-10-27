@@ -64,12 +64,12 @@ const SignUp = () => {
     } else {
       // If it's the last question, try to sign up the user
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}signup`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
-
+        
         if (response.ok) {
           const data = await response.json();
           await login(data.user, data.token, data.refreshToken);
