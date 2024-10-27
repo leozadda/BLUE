@@ -15,7 +15,7 @@ function SearchBar(props) {
             setIsLoading(true); // Show loading message
             setError(''); // Clear any previous errors
             try {
-                let result = await fetch(`http://localhost:3001/food-search/${searchTerm}`);
+                let result = await fetch(`${process.env.BACKEND_URL}/food-search/${searchTerm}`);
                 let data = await result.json();
                 
                 // If valid data is received, navigate to results

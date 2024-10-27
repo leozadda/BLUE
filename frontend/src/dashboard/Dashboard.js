@@ -46,7 +46,7 @@ function Dashboard() {
             const dayName = daysOfWeek[dayIndex];
             console.log('Dashboard: Fetching data for user ID:', auth.user.id, 'on date:', date);
   
-            const response = await fetch(`http://localhost:3001/user-daily-log?user_id=${auth.user.id}&date=${date}`);
+            const response = await fetch(`${process.env.BACKEND_URL}/user-daily-log?user_id=${auth.user.id}&date=${date}`);
             const data = await response.json();
   
             console.log('Dashboard: Fetched user daily log:', data);

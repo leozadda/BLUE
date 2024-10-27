@@ -170,7 +170,7 @@ function SearchResult() {
             for (const food of selectedFoods) {
                 console.log('search-rersult:', food);
                 // Send each selected food item to the /log-food route
-                const response = await axios.post('http://localhost:3001/log-food', {
+                const response = await axios.post(`${process.env.BACKEND_URL}/log-food`, {
                     user_id,
                     ...food // Spread food_item, quantity, date, and meal_type
                 });

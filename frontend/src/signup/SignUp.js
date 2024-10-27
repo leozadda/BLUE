@@ -64,7 +64,7 @@ const SignUp = () => {
     } else {
       // If it's the last question, try to sign up the user
       try {
-        const response = await fetch('http://localhost:3001/signup', {
+        const response = await fetch(`${process.env.BACKEND_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
