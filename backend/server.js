@@ -105,11 +105,19 @@ app.use(cors({
     credentials: true
 }));
 */
+
+// Replace your existing CORS configuration with this:
 app.use(cors({
-    origin: '*', // Allow all origins
-    methods: '*', // Allow all HTTP methods
-    allowedHeaders: '*' // Allow all headers
-  }));
+    origin: ['https://b-l-u-e.vercel.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    credentials: true,
+    maxAge: 86400 // 24 hours
+}));
+
+// Add this before your routes to handle preflight requests
+app.options('*', cors());
+
 
 app.use(express.json());  // Let our app understand JSON data
 
