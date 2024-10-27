@@ -6,9 +6,6 @@ import './SignUp.css';
 const SignUp = () => {
   const navigate = useNavigate();
   const { auth, login } = useAuth();
-
-  console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
-  console.log('Request being sent to:', `${process.env.REACT_APP_BACKEND_URL}/signup`);
   
   // Keep track of which question we're on
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -67,12 +64,12 @@ const SignUp = () => {
     } else {
       // If it's the last question, try to sign up the user
       try {
-        const response = await fetch(`${process.env.BACKEND_URL}/signup`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
-
+        process.env.REACT_APP_BACKEND_URL
         if (response.ok) {
           const data = await response.json();
           await login(data.user, data.token, data.refreshToken);
