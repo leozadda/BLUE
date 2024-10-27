@@ -1,4 +1,4 @@
-// Import all the packages we need
+// Import required modules
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
@@ -7,10 +7,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const axios = require('axios');
 
-// Load our environment variables
-require('dotenv').config();
+require('dotenv').config(); // Ensure this is at the top of your file
 
-// This function helps create a special signature for FatSecret API
 function generateOAuthSignature(method, url, params, consumerSecret) {
     const signatureBaseString = Object.keys(params)
         .sort()
@@ -27,7 +25,6 @@ function generateOAuthSignature(method, url, params, consumerSecret) {
         .digest('base64');
 }
 
-// Function to search foods in FatSecret API
 async function searchFoods(foodName) {
     const method = 'GET';
     const baseUrl = process.env.BASE_FAT_SECRET_URL;
@@ -51,7 +48,7 @@ async function searchFoods(foodName) {
         const response = await axios.get(baseUrl, { params });
         return response.data;
     } catch (error) {
-        console.error('Error:', error.message);
+            console.error('Error:', error.message);
         if (error.response) {
             console.error('Response data:', error.response.data);
             console.error('Response status:', error.response.status);
@@ -60,7 +57,6 @@ async function searchFoods(foodName) {
     }
 }
 
-// Function to get detailed info about a specific food
 async function getFoodDetails(foodId) {
     const method = 'GET';
     const baseUrl = process.env.BASE_FAT_SECRET_URL;
@@ -82,6 +78,7 @@ async function getFoodDetails(foodId) {
 
     try {
         const response = await axios.get(baseUrl, { params });
+        console.log(JSON.stringify(response.data, null, 2));
         return response.data;
     } catch (error) {
         console.error('Error:', error.message);
@@ -94,41 +91,19 @@ async function getFoodDetails(foodId) {
     }
 }
 
-// Create our Express app
+// Initialize Express app
 const app = express();
 
-// Set up security and data parsing
+// Middleware setup
 app.use(cors({
-    origin: '*',  // Allow requests from any website
+    origin: '*',  // Allow all origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true
 }));
-app.use(express.json());  // Let our app understand JSON data
+app.use(express.json());  // Parse JSON request bodies
 
-// Set up database connection for Vercel
-let pool;
-if (process.env.DATABASE_URL) {
-    // Production database connection
-    pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        },
-        max: 10 // Connection pool limit for Vercel
-    });
-} else {
-    // Local development connection
-    pool = new Pool({
-        user: process.env.DB_USER,
-        host: process.env.DB_HOST,
-        database: process.env.DB_NAME,
-        password: process.env.DB_PASSWORD,
-        port: process.env.DB_PORT
-    });
-};
-
-// Print our environment settings (keeping your existing logging)
+// Log environment variables for debugging
 console.log('Environment variables:');
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_HOST:', process.env.DB_HOST);
@@ -138,7 +113,25 @@ console.log('SERVER_PORT:', process.env.SERVER_PORT);
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
 console.log('REFRESH_TOKEN_SECRET:', process.env.REFRESH_TOKEN_SECRET ? 'Set' : 'Not set');
 
-// [ALL YOUR EXISTING ROUTES STAY EXACTLY THE SAME]
+// Set up PostgreSQL connection pool
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
+});
+
+// Log database connection details
+console.log('Database connection details:', {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+});
+
+
+
 // Test database connection route
 app.get('/test-db', async (req, res) => {
     try {
@@ -155,19 +148,23 @@ app.post('/signup', async (req, res) => {
     console.log('Received signup request:', req.body);
     const { username, email, age, weight_kg, height_cm, sex, password } = req.body;
 
+    // Validate required fields
     if (!username || !email || !password) {
         return res.status(400).json({ error: 'Username, email, and password are required' });
     }
 
     try {
+        // Check if user already exists
         const existingUser = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
         if (existingUser.rows.length > 0) {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
 
+        // Hash password
         const saltRounds = 10;
         const password_hash = await bcrypt.hash(password, saltRounds);
 
+        // Insert new user into database
         const result = await pool.query(
             'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, username, email, created_at',
             [username, email, age, weight_kg, height_cm, sex, password_hash]
@@ -188,12 +185,14 @@ app.post('/login', async (req, res) => {
     console.log('Login attempt received:', req.body);
     const { email, password } = req.body;
 
+    // Validate required fields
     if (!email || !password) {
         console.log('Login failed: Email or password missing');
         return res.status(400).json({ error: 'Email and password are required' });
     }
 
     try {
+        // Find user in database
         console.log('Querying database for user');
         const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
@@ -204,6 +203,7 @@ app.post('/login', async (req, res) => {
 
         const user = result.rows[0];
 
+        // Compare passwords
         console.log('User found, comparing passwords');
         const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
@@ -212,6 +212,7 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
+        // Generate JWT
         console.log('Password match, generating JWT');
         if (!process.env.JWT_SECRET) {
             console.error('JWT_SECRET is not defined in the environment variables');
@@ -224,6 +225,7 @@ app.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
+        // Generate refresh token
         console.log('JWT generated, creating refresh token');
         if (!process.env.REFRESH_TOKEN_SECRET) {
             console.error('REFRESH_TOKEN_SECRET is not defined in the environment variables');
@@ -236,6 +238,7 @@ app.post('/login', async (req, res) => {
             { expiresIn: '7d' }
         );
 
+        // Send successful response
         console.log('Login successful, sending response');
         res.json({
             message: 'Login successful',
@@ -254,18 +257,25 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Food search routes
+// ------------------------------------------------------------------------
+// search routes 
+
+// Express route to get food search results and their details
 app.get('/food-search/:foodName', async (req, res) => {
     const foodName = req.params.foodName;
     
+    // Search for the foods based on the food name
     const searchResults = await searchFoods(foodName);
     
+    // Map over the food items to get food details for each food_id
     const foodDetailsPromises = searchResults.foods.food.map(item => {
         return getFoodDetails(item.food_id);
     });
 
+    // Wait for all the getFoodDetails promises to resolve
     const foodDetails = await Promise.all(foodDetailsPromises);
 
+    // Send the gathered food details as a JSON response
     res.json({ foodDetails });
 });
 
@@ -298,6 +308,7 @@ app.post('/api/logFood', async (req, res) => {
                 iron
             } = log;
 
+            // Insert log into the daily_logs table
             const result = await pool.query(`
                 INSERT INTO daily_logs (user_id, food_item_id, quantity, meal_type, date, 
                                         calories, protein, fat, carbs, saturated_fat, trans_fat, 
@@ -319,6 +330,14 @@ app.post('/api/logFood', async (req, res) => {
     }
 });
 
+
+
+// ------------------------------------------------------------------------
+// food log routes 
+// Route to search for a food item or create it if it doesn't exist
+
+
+
 app.post('/search-or-create-food', async (req, res) => {
     const {
       name, calories, protein, fat, carbs, saturated_fat, monounsaturated_fat,
@@ -330,42 +349,46 @@ app.post('/search-or-create-food', async (req, res) => {
     console.log('Received food item data:', req.body);
   
     try {
-        console.log('Searching for existing food item with name:', name);
-        const searchResult = await pool.query(
-            `SELECT id FROM food_items WHERE name = $1 LIMIT 1`, [name]
-        );
+      console.log('Searching for existing food item with name:', name);
+      const searchResult = await pool.query(
+        `SELECT id FROM food_items WHERE name = $1 LIMIT 1`, [name]
+      );
   
-        if (searchResult.rows.length > 0) {
-            console.log('Food item found with ID:', searchResult.rows[0].id);
-            return res.status(200).json({ id: searchResult.rows[0].id });
-        }
+      if (searchResult.rows.length > 0) {
+        console.log('Food item found with ID:', searchResult.rows[0].id);
+        return res.status(200).json({ id: searchResult.rows[0].id });
+      }
   
-        console.log('Inserting new food item:', name);
-        const insertResult = await pool.query(
-            `INSERT INTO food_items (name, calories, protein, fat, carbs, saturated_fat, monounsaturated_fat,
-            polyunsaturated_fat, trans_fat, fiber, sugar, sodium, cholesterol, potassium, vitamina, vitaminc,
-            calcium, iron, vitamind, vitamine, vitamink, magnesium, zinc, phosphorus, omega_3, omega_6,
-            serving_size, serving_unit, is_manual)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)
-            RETURNING id`,
-            [
-            name, calories, protein, fat, carbs, saturated_fat, monounsaturated_fat, polyunsaturated_fat,
-            trans_fat, fiber, sugar, sodium, cholesterol, potassium, vitaminA, vitaminC, calcium, iron,
-            vitaminD, vitaminE, vitaminK, magnesium, zinc, phosphorus, omega_3, omega_6, serving_size,
-            serving_unit, is_manual
-            ]
-        );
+      console.log('Inserting new food item:', name);
+      const insertResult = await pool.query(
+        `INSERT INTO food_items (name, calories, protein, fat, carbs, saturated_fat, monounsaturated_fat,
+          polyunsaturated_fat, trans_fat, fiber, sugar, sodium, cholesterol, potassium, vitamina, vitaminc,
+          calcium, iron, vitamind, vitamine, vitamink, magnesium, zinc, phosphorus, omega_3, omega_6,
+          serving_size, serving_unit, is_manual)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)
+         RETURNING id`,
+        [
+          name, calories, protein, fat, carbs, saturated_fat, monounsaturated_fat, polyunsaturated_fat,
+          trans_fat, fiber, sugar, sodium, cholesterol, potassium, vitaminA, vitaminC, calcium, iron,
+          vitaminD, vitaminE, vitaminK, magnesium, zinc, phosphorus, omega_3, omega_6, serving_size,
+          serving_unit, is_manual
+        ]
+      );
   
-        console.log('New food item inserted with ID:', insertResult.rows[0].id);
-        return res.status(201).json({ id: insertResult.rows[0].id });
+      console.log('New food item inserted with ID:', insertResult.rows[0].id);
+      return res.status(201).json({ id: insertResult.rows[0].id });
   
     } catch (error) {
-        console.error('Error searching or creating food item:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error('Error searching or creating food item:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-});
+  });
 
-app.post('/log-food', async (req, res) => {
+
+
+
+
+  app.post('/log-food', async (req, res) => {
     const { user_id, food_item, date, quantity, meal_type } = req.body;
 
     console.log('Received daily log data:', req.body);
@@ -373,16 +396,12 @@ app.post('/log-food', async (req, res) => {
     try {
         // Step 1: Search or create the food item
         console.log('Calling /search-or-create-food with:', food_item);
-        // Update the URL to use environment variable for production
-        const apiUrl = process.env.VERCEL 
-            ? process.env.VERCEL_URL 
-            : 'http://localhost:3001';
-        const foodItemResponse = await axios.post(`${apiUrl}/search-or-create-food`, food_item);
+        const foodItemResponse = await axios.post('http://localhost:3001/search-or-create-food', food_item);
         const food_item_id = foodItemResponse.data.id;
 
         console.log('Food item ID returned from /search-or-create-food:', food_item_id);
 
-        // Step 2: Insert the daily log
+        // Step 2: Insert the daily log with the retrieved food_item_id
         console.log('Inserting daily log for user:', user_id);
         const query = `
             INSERT INTO daily_logs (user_id, food_item_id, date, quantity, meal_type)
@@ -409,18 +428,20 @@ app.post('/log-food', async (req, res) => {
         }
     }
 });
-
 app.get('/user-daily-log', async (req, res) => {
     const { user_id, date } = req.query;
 
+    // Log the incoming parameters
     console.log('Received /user-daily-log request with parameters:', { user_id, date });
 
+    // Validate the parameters
     if (!user_id || !date) {
         console.error('Missing user_id or date parameter');
         return res.status(400).json({ error: 'Missing user_id or date parameter' });
     }
 
     try {
+        // Prepare the SQL query to fetch the daily log data
         const query = `
             SELECT 
                 dl.id, dl.date, dl.quantity, dl.meal_type,
@@ -438,14 +459,19 @@ app.get('/user-daily-log', async (req, res) => {
 
         const values = [user_id, date];
 
+        // Log the SQL query and values
         console.log('Executing query:', query);
         console.log('With values:', values);
 
+        // Execute the SQL query
         const result = await pool.query(query, values);
 
+        // Log the raw query result
         console.log('Query result:', result.rows);
 
+        // Calculate the actual nutritional values based on the quantity consumed
         const calculatedResults = result.rows.map(row => {
+            // Calculate the factor based on the quantity consumed relative to the serving size
             const factor = row.quantity / (row.serving_size / 100);
             const calculated = {};
         
@@ -454,12 +480,13 @@ app.get('/user-daily-log', async (req, res) => {
             console.log(`Serving size: ${row.serving_size}${row.serving_unit}`);
             console.log(`Calculation factor: ${factor}`);
         
+            // Multiply the nutritional values by the factor
             for (const [key, value] of Object.entries(row)) {
                 if (typeof value === 'number' && key !== 'id' && key !== 'quantity' && key !== 'serving_size') {
                     calculated[key] = value * factor;
                     console.log(`${key}: ${value} * ${factor} = ${calculated[key]}`);
                 } else {
-                    calculated[key] = value;
+                    calculated[key] = value; // Retain non-numeric values as is
                 }
             }
         
@@ -467,37 +494,26 @@ app.get('/user-daily-log', async (req, res) => {
             return calculated;
         });
 
+        // Return the calculated results
         console.log('Sending calculated results:', calculatedResults);
         res.json(calculatedResults);
     } catch (error) {
+        // Log the error if something goes wrong
         console.error('Error fetching user daily log:', error);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
-// Error handling
+
+
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: 'An internal server error occurred', details: err.message });
 });
 
-// Modified server startup for Vercel
-if (process.env.VERCEL) {
-    // Export the app for Vercel serverless deployment
-    module.exports = app;
-} else {
-    // Start the server normally for local development
-    const port = process.env.SERVER_PORT || 3001;
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
-}
-
-
-/*
-
-
-and how is the postgresSQL database handled? doen't it need to connstantly run? how does this work on headless and what shouuld i specifically do with my project?
-
-
-*/
+// Start the server
+const port = process.env.SERVER_PORT || 3001;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
