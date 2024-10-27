@@ -7,8 +7,8 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { auth, login } = useAuth();
 
-  console.log('Backend URL:', process.env.BACKEND_URL);
-console.log('Request being sent to:', `${process.env.BACKEND_URL}/signup`);
+  console.log('Backend URL:', process.env.REACT_APP_BACKEND_URL);
+  console.log('Request being sent to:', `${process.env.REACT_APP_BACKEND_URL}/signup`);
   
   // Keep track of which question we're on
   const [currentQuestion, setCurrentQuestion] = useState(0);
