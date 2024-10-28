@@ -7,28 +7,75 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const axios = require('axios');
 
-// Load our environment variables
+// Load our environment variables from .env file
 require('dotenv').config();
+
+// Global logging middleware - logs every request that hits our server
+const requestLogger = (req, res, next) => {
+    console.log('\n=== Incoming Request ===');
+    console.log('Time:', new Date().toISOString());
+    console.log('Method:', req.method);
+    console.log('URL:', req.url);
+    console.log('Headers:', JSON.stringify(req.headers, null, 2));
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+    console.log('Query Parameters:', JSON.stringify(req.query, null, 2));
+    console.log('========================\n');
+    next();
+};
+
+// Response logging middleware - logs what we're sending back
+const responseLogger = (req, res, next) => {
+    // Store the original send function
+    const originalSend = res.send;
+    
+    // Override the send function to log the response
+    res.send = function(data) {
+        console.log('\n=== Outgoing Response ===');
+        console.log('URL:', req.url);
+        console.log('Status:', res.statusCode);
+        console.log('Body:', typeof data === 'string' ? data : JSON.stringify(data, null, 2));
+        console.log('========================\n');
+        
+        // Call the original send function
+        originalSend.call(this, data);
+    };
+    
+    next();
+};
 
 // This function helps create a special signature for FatSecret API
 function generateOAuthSignature(method, url, params, consumerSecret) {
+    console.log('\n=== Generating OAuth Signature ===');
+    console.log('Method:', method);
+    console.log('URL:', url);
+    console.log('Params:', params);
+    
     const signatureBaseString = Object.keys(params)
         .sort()
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
 
-    const signatureBaseStringEncoded = `${method.toUpperCase()}&${encodeURIComponent(url)}&${encodeURIComponent(signatureBaseString)}`;
+    console.log('Signature Base String:', signatureBaseString);
     
+    const signatureBaseStringEncoded = `${method.toUpperCase()}&${encodeURIComponent(url)}&${encodeURIComponent(signatureBaseString)}`;
     const signingKey = `${encodeURIComponent(consumerSecret)}&`;
     
-    return crypto
+    const signature = crypto
         .createHmac('sha1', signingKey)
         .update(signatureBaseStringEncoded)
         .digest('base64');
+        
+    console.log('Generated Signature:', signature);
+    console.log('========================\n');
+    
+    return signature;
 }
 
 // Function to search foods in FatSecret API
 async function searchFoods(foodName) {
+    console.log('\n=== Searching Foods in FatSecret ===');
+    console.log('Search Term:', foodName);
+    
     const method = 'GET';
     const baseUrl = process.env.BASE_FAT_SECRET_URL;
     const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
@@ -48,20 +95,25 @@ async function searchFoods(foodName) {
     params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
 
     try {
+        console.log('Making API Request to FatSecret');
         const response = await axios.get(baseUrl, { params });
+        console.log('API Response:', JSON.stringify(response.data, null, 2));
+        console.log('========================\n');
         return response.data;
     } catch (error) {
-        console.error('Error:', error.message);
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
-        }
+        console.error('FatSecret API Error:', error.message);
+        console.error('Response data:', error.response?.data);
+        console.error('Response status:', error.response?.status);
+        console.error('Response headers:', error.response?.headers);
+        throw error;
     }
 }
 
 // Function to get detailed info about a specific food
 async function getFoodDetails(foodId) {
+    console.log('\n=== Getting Food Details ===');
+    console.log('Food ID:', foodId);
+    
     const method = 'GET';
     const baseUrl = process.env.BASE_FAT_SECRET_URL;
     const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
@@ -81,15 +133,13 @@ async function getFoodDetails(foodId) {
     params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
 
     try {
+        console.log('Making API Request for Food Details');
         const response = await axios.get(baseUrl, { params });
+        console.log('API Response:', JSON.stringify(response.data, null, 2));
+        console.log('========================\n');
         return response.data;
     } catch (error) {
-        console.error('Error:', error.message);
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
-        }
+        console.error('Error getting food details:', error);
         throw error;
     }
 }
@@ -97,16 +147,12 @@ async function getFoodDetails(foodId) {
 // Create our Express app
 const app = express();
 
-/* Set up security and data parsing (FUTURE CODE MAYBE)
-app.use(cors({
-    origin: 'https://b-l-u-e.vercel.app',  // Your frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-    credentials: true
-}));
-*/
+// Add our logging middleware
+app.use(requestLogger);
+app.use(responseLogger);
 
-// Replace your existing CORS configuration with this:
+// Set up CORS (Cross-Origin Resource Sharing)
+// This allows our frontend to communicate with our backend
 app.use(cors({
     origin: ['https://b-l-u-e.vercel.app', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -115,16 +161,17 @@ app.use(cors({
     maxAge: 86400 // 24 hours
 }));
 
-// Add this before your routes to handle preflight requests
+// Handle preflight requests
 app.options('*', cors());
 
+// Allow our app to understand JSON data
+app.use(express.json());
 
-app.use(express.json());  // Let our app understand JSON data
-
-// Set up database connection for Vercel
+// Set up database connection
 let pool;
 if (process.env.DATABASE_URL) {
-    // Production database connection
+    // Production database connection (Vercel)
+    console.log('Setting up production database connection');
     pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: {
@@ -133,7 +180,8 @@ if (process.env.DATABASE_URL) {
         max: 10 // Connection pool limit for Vercel
     });
 } else {
-    // Local development connection
+    // Local development database connection
+    console.log('Setting up local database connection');
     pool = new Pool({
         user: process.env.DB_USER,
         host: process.env.DB_HOST,
@@ -141,10 +189,10 @@ if (process.env.DATABASE_URL) {
         password: process.env.DB_PASSWORD,
         port: process.env.DB_PORT
     });
-};
+}
 
-// Print our environment settings (keeping your existing logging)
-console.log('Environment variables:');
+// Log our environment settings
+console.log('\n=== Environment Configuration ===');
 console.log('DB_USER:', process.env.DB_USER);
 console.log('DB_HOST:', process.env.DB_HOST);
 console.log('DB_NAME:', process.env.DB_NAME);
@@ -152,85 +200,142 @@ console.log('DB_PORT:', process.env.DB_PORT);
 console.log('SERVER_PORT:', process.env.SERVER_PORT);
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
 console.log('REFRESH_TOKEN_SECRET:', process.env.REFRESH_TOKEN_SECRET ? 'Set' : 'Not set');
+console.log('========================\n');
 
-// [ALL YOUR EXISTING ROUTES STAY EXACTLY THE SAME]
 // Test database connection route
 app.get('/test-db', async (req, res) => {
+    console.log('\n=== Testing Database Connection ===');
     try {
         const result = await pool.query('SELECT NOW()');
-        res.json({ message: 'Database connection successful', timestamp: result.rows[0].now });
+        console.log('Database connection successful');
+        console.log('Database timestamp:', result.rows[0].now);
+        res.json({ 
+            success: true,
+            message: 'Database connection successful', 
+            timestamp: result.rows[0].now 
+        });
     } catch (error) {
         console.error('Database connection error:', error);
-        res.status(500).json({ error: 'Database connection failed', details: error.message });
+        res.status(500).json({ 
+            success: false,
+            error: 'Database connection failed', 
+            details: error.message 
+        });
     }
 });
 
 // Signup route
 app.post('/signup', async (req, res) => {
-    console.log('Received signup request:', req.body);
+    console.log('\n=== Processing Signup Request ===');
+    console.log('Signup data:', req.body);
+    
     const { username, email, age, weight_kg, height_cm, sex, password } = req.body;
 
+    // Validate required fields
     if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Username, email, and password are required' });
+        console.log('Signup failed: Missing required fields');
+        return res.status(400).json({ 
+            success: false,
+            error: 'Username, email, and password are required' 
+        });
     }
 
     try {
-        const existingUser = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+        // Check if user already exists
+        console.log('Checking for existing user');
+        const existingUser = await pool.query(
+            'SELECT * FROM users WHERE username = $1 OR email = $2', 
+            [username, email]
+        );
+        
         if (existingUser.rows.length > 0) {
-            return res.status(400).json({ error: 'Username or email already exists' });
+            console.log('Signup failed: User already exists');
+            return res.status(400).json({ 
+                success: false,
+                error: 'Username or email already exists' 
+            });
         }
 
+        // Hash the password
+        console.log('Hashing password');
         const saltRounds = 10;
         const password_hash = await bcrypt.hash(password, saltRounds);
 
+        // Insert new user
+        console.log('Creating new user');
         const result = await pool.query(
-            'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, username, email, created_at',
+            `INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7) 
+             RETURNING id, username, email, created_at`,
             [username, email, age, weight_kg, height_cm, sex, password_hash]
         );
 
+        console.log('User created successfully');
         res.status(201).json({
+            success: true,
             message: 'User successfully created',
             user: result.rows[0]
         });
     } catch (error) {
         console.error('Error during signup:', error);
-        res.status(500).json({ error: 'Error during signup', details: error.message });
+        res.status(500).json({ 
+            success: false,
+            error: 'Error during signup', 
+            details: error.message 
+        });
     }
 });
 
 // Login route
 app.post('/login', async (req, res) => {
-    console.log('Login attempt received:', req.body);
+    console.log('\n=== Processing Login Request ===');
+    console.log('Login attempt for email:', req.body.email);
+    
     const { email, password } = req.body;
 
     if (!email || !password) {
-        console.log('Login failed: Email or password missing');
-        return res.status(400).json({ error: 'Email and password are required' });
+        console.log('Login failed: Missing credentials');
+        return res.status(400).json({ 
+            success: false,
+            error: 'Email and password are required' 
+        });
     }
 
     try {
-        console.log('Querying database for user');
+        // Find user
+        console.log('Searching for user');
         const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
         if (result.rows.length === 0) {
             console.log('Login failed: User not found');
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ 
+                success: false,
+                error: 'Invalid email or password' 
+            });
         }
 
         const user = result.rows[0];
 
-        console.log('User found, comparing passwords');
+        // Check password
+        console.log('Verifying password');
         const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!passwordMatch) {
-            console.log('Login failed: Password mismatch');
-            return res.status(400).json({ error: 'Invalid email or password' });
+            console.log('Login failed: Invalid password');
+            return res.status(400).json({ 
+                success: false,
+                error: 'Invalid email or password' 
+            });
         }
 
-        console.log('Password match, generating JWT');
-        if (!process.env.JWT_SECRET) {
-            console.error('JWT_SECRET is not defined in the environment variables');
-            return res.status(500).json({ error: 'Internal server error - JWT configuration issue' });
+        // Generate tokens
+        console.log('Generating authentication tokens');
+        if (!process.env.JWT_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
+            console.error('Missing JWT configuration');
+            return res.status(500).json({ 
+                success: false,
+                error: 'Internal server error - Authentication configuration issue' 
+            });
         }
 
         const token = jwt.sign(
@@ -239,20 +344,15 @@ app.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        console.log('JWT generated, creating refresh token');
-        if (!process.env.REFRESH_TOKEN_SECRET) {
-            console.error('REFRESH_TOKEN_SECRET is not defined in the environment variables');
-            return res.status(500).json({ error: 'Internal server error - Refresh token configuration issue' });
-        }
-
         const refreshToken = jwt.sign(
             { userId: user.id, email: user.email },
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '7d' }
         );
 
-        console.log('Login successful, sending response');
+        console.log('Login successful');
         res.json({
+            success: true,
             message: 'Login successful',
             user: {
                 id: user.id,
@@ -265,24 +365,60 @@ app.post('/login', async (req, res) => {
         });
     } catch (error) {
         console.error('Error during login:', error);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
+        res.status(500).json({ 
+            success: false,
+            error: 'Internal server error', 
+            details: error.message 
+        });
     }
 });
 
-// Food search routes
+// Search food route
 app.get('/food-search/:foodName', async (req, res) => {
-    const foodName = req.params.foodName;
+    console.log('\n=== Processing Food Search Request ===');
+    console.log('Search term:', req.params.foodName);
     
-    const searchResults = await searchFoods(foodName);
-    
-    const foodDetailsPromises = searchResults.foods.food.map(item => {
-        return getFoodDetails(item.food_id);
-    });
+    try {
+        const searchResults = await searchFoods(req.params.foodName);
+        
+        if (!searchResults?.foods?.food) {
+            console.log('No results found');
+            return res.status(404).json({
+                success: false,
+                error: 'No results found',
+                searchTerm: req.params.foodName
+            });
+        }
 
-    const foodDetails = await Promise.all(foodDetailsPromises);
+        console.log('Getting detailed information for each food item');
+        const foodDetailsPromises = searchResults.foods.food.map(item => {
+            console.log('Processing food ID:', item.food_id);
+            return getFoodDetails(item.food_id);
+        });
 
-    res.json({ foodDetails });
+        const foodDetails = await Promise.all(foodDetailsPromises);
+        console.log('Found', foodDetails.length, 'food items');
+
+        res.json({
+            success: true,
+            searchTerm: req.params.foodName,
+            resultsCount: foodDetails.length,
+            foodDetails
+        });
+    } catch (error) {
+        console.error('Food search error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Food search failed',
+            details: error.message
+        });
+    }
 });
+
+// --------------------------------------------------------------------------------
+// No more json logs
+// --------------------------------------------------------------------------------
+
 
 app.post('/api/logFood', async (req, res) => {
     try {
