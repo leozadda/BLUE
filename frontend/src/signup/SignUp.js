@@ -43,35 +43,46 @@ const SignUp = () => {
 
   // Update user info when an input changes
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+  
+    setUser(prevUser => ({
+      ...prevUser,
+      [name]: name === 'age' || name === 'weight_kg' ? Number(value) : value
+    }));
   };
+  
 
   // Handle form submission for each question
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentField = questions[currentQuestion].id;
-    
-    // Check if the current answer is valid
+  
     if (!validators[currentField](user[currentField])) {
-      // If not valid, clear the input and ask to try again
       document.getElementById(currentField).value = '';
       document.getElementById(currentField).placeholder = 'try again';
       return;
     }
-
-    // If not the last question, move to the next one
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      // If it's the last question, try to sign up the user
+  
+    // If it's the last question, convert units and submit the data
+    if (currentQuestion === questions.length - 1) {
+      // Convert height from feet to centimeters
+      if (user.height_cm.includes("'")) {
+        const [feet, inches] = user.height_cm.split("'").map(Number);
+        user.height_cm = Math.round(feet * 30.48 + inches * 2.54); // Convert to cm
+      }
+  
+      // Convert weight from lbs to kg
+      user.weight_kg = Math.round(user.weight_kg / 2.205);
+  
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
-        console.log("TESTING:", user);
-        
+
+        console.log(user);
+  
         if (response.ok) {
           const data = await response.json();
           await login(data.user, data.token, data.refreshToken);
@@ -82,8 +93,11 @@ const SignUp = () => {
       } catch (error) {
         console.error('Error during signup:', error);
       }
+    } else {
+      setCurrentQuestion(currentQuestion + 1);
     }
   };
+  
 
   // Create the right type of input for each question
   const renderInput = ({ type, id, placeholder, options }) => {
