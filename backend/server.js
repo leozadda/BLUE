@@ -71,108 +71,6 @@ function generateOAuthSignature(method, url, params, consumerSecret) {
     return signature;
 }
 
-// Function to search foods in FatSecret API
-// Function to search foods in FatSecret API
-async function searchFoods(foodName) {
-    console.log('\n=== Searching Foods in FatSecret ===');
-    console.log('Search Term:', foodName);
-    
-    const method = 'GET';
-    const baseUrl = 'https://platform.fatsecret.com/rest/server/api'; // Hardcoded URL for reliability
-    const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
-    const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
-
-    // Add max_results parameter and page_number for better results
-    const params = {
-        method: 'foods.search',
-        search_expression: foodName,
-        format: 'json',
-        max_results: 50,  // Get more results
-        page_number: 0,   // First page
-        oauth_consumer_key: consumerKey,
-        oauth_nonce: Math.random().toString(36).substring(2),
-        oauth_signature_method: 'HMAC-SHA1',
-        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-        oauth_version: '1.0'
-    };
-
-    params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
-
-    try {
-        console.log('Making API Request to FatSecret');
-        // Use URLSearchParams to properly encode the parameters
-        const queryString = new URLSearchParams(params).toString();
-        const url = `${baseUrl}?${queryString}`;
-        
-        console.log('Request URL:', url);
-        const response = await axios.get(url);
-        
-        // Add better error handling for FatSecret response
-        if (response.data.error) {
-            throw new Error(`FatSecret API Error: ${response.data.error.message}`);
-        }
-
-        // Check if foods exist in response
-        if (!response.data.foods) {
-            return { foods: { food: [] } };
-        }
-
-        console.log('API Response:', JSON.stringify(response.data, null, 2));
-        return response.data;
-    } catch (error) {
-        console.error('FatSecret API Error:', error.message);
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
-        }
-        throw error;
-    }
-}
-
-// Function to get detailed info about a specific food
-async function getFoodDetails(foodId) {
-    console.log('\n=== Getting Food Details ===');
-    console.log('Food ID:', foodId);
-    
-    const method = 'GET';
-    const baseUrl = 'https://platform.fatsecret.com/rest/server/api';
-    const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
-    const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
-
-    const params = {
-        method: 'food.get',
-        food_id: foodId,
-        format: 'json',
-        oauth_consumer_key: consumerKey,
-        oauth_nonce: Math.random().toString(36).substring(2),
-        oauth_signature_method: 'HMAC-SHA1',
-        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-        oauth_version: '1.0'
-    };
-
-    params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
-
-    try {
-        console.log('Making API Request for Food Details');
-        const queryString = new URLSearchParams(params).toString();
-        const url = `${baseUrl}?${queryString}`;
-        
-        console.log('Request URL:', url);
-        const response = await axios.get(url);
-        
-        if (response.data.error) {
-            throw new Error(`FatSecret API Error: ${response.data.error.message}`);
-        }
-
-        console.log('API Response:', JSON.stringify(response.data, null, 2));
-        return response.data;
-    } catch (error) {
-        console.error('Error getting food details:', error);
-        throw error;
-    }
-}
-
 // Create our Express app
 const app = express();
 
@@ -402,7 +300,140 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Search food route
+// Add rate limiting with a simple delay
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Keep track of last request time
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL = 1000; // Minimum 1 second between requests
+
+async function waitForRateLimit() {
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastRequestTime;
+    
+    if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
+        const waitTime = MIN_REQUEST_INTERVAL - timeSinceLastRequest;
+        console.log(`Rate limiting: waiting ${waitTime}ms before next request`);
+        await delay(waitTime);
+    }
+    
+    lastRequestTime = Date.now();
+}
+
+// Modified searchFoods function with rate limiting
+async function searchFoods(foodName) {
+    console.log('\n=== Searching Foods in FatSecret ===');
+    console.log('Search Term:', foodName);
+    
+    await waitForRateLimit();
+    
+    const method = 'GET';
+    const baseUrl = 'https://platform.fatsecret.com/rest/server/api';
+    const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
+    const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
+
+    const params = {
+        method: 'foods.search',
+        search_expression: foodName,
+        format: 'json',
+        max_results: 10,  // Reduced from 50 to avoid rate limits
+        page_number: 0,
+        oauth_consumer_key: consumerKey,
+        oauth_nonce: Math.random().toString(36).substring(2),
+        oauth_signature_method: 'HMAC-SHA1',
+        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+        oauth_version: '1.0'
+    };
+
+    params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
+
+    try {
+        console.log('Making API Request to FatSecret');
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${baseUrl}?${queryString}`;
+        
+        const response = await axios.get(url);
+        
+        if (response.data.error) {
+            if (response.data.error.includes('too many actions')) {
+                console.log('Rate limit hit, retrying after delay...');
+                await delay(2000); // Wait 2 seconds before retry
+                return searchFoods(foodName); // Retry the request
+            }
+            throw new Error(`FatSecret API Error: ${response.data.error}`);
+        }
+
+        // Handle empty results
+        if (!response.data.foods) {
+            return { foods: { food: [] } };
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error('FatSecret API Error:', error.message);
+        if (error.response?.data?.error?.includes('too many actions')) {
+            console.log('Rate limit hit in catch block, retrying after delay...');
+            await delay(2000);
+            return searchFoods(foodName);
+        }
+        throw error;
+    }
+}
+
+// Modified getFoodDetails function with rate limiting
+async function getFoodDetails(foodId) {
+    console.log('\n=== Getting Food Details ===');
+    console.log('Food ID:', foodId);
+    
+    await waitForRateLimit();
+    
+    const method = 'GET';
+    const baseUrl = 'https://platform.fatsecret.com/rest/server/api';
+    const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
+    const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
+
+    const params = {
+        method: 'food.get',
+        food_id: foodId,
+        format: 'json',
+        oauth_consumer_key: consumerKey,
+        oauth_nonce: Math.random().toString(36).substring(2),
+        oauth_signature_method: 'HMAC-SHA1',
+        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+        oauth_version: '1.0'
+    };
+
+    params.oauth_signature = generateOAuthSignature(method, baseUrl, params, consumerSecret);
+
+    try {
+        console.log('Making API Request for Food Details');
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${baseUrl}?${queryString}`;
+        
+        const response = await axios.get(url);
+        
+        if (response.data.error) {
+            if (response.data.error.includes('too many actions')) {
+                console.log('Rate limit hit, retrying after delay...');
+                await delay(2000);
+                return getFoodDetails(foodId);
+            }
+            throw new Error(`FatSecret API Error: ${response.data.error}`);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting food details:', error);
+        if (error.response?.data?.error?.includes('too many actions')) {
+            console.log('Rate limit hit in catch block, retrying after delay...');
+            await delay(2000);
+            return getFoodDetails(foodId);
+        }
+        throw error;
+    }
+}
+
+// Also modify your food search route to handle batches
 app.get('/food-search/:foodName', async (req, res) => {
     console.log('\n=== Processing Food Search Request ===');
     console.log('Search term:', req.params.foodName);
@@ -419,13 +450,26 @@ app.get('/food-search/:foodName', async (req, res) => {
             });
         }
 
-        console.log('Getting detailed information for each food item');
-        const foodDetailsPromises = searchResults.foods.food.map(item => {
-            console.log('Processing food ID:', item.food_id);
-            return getFoodDetails(item.food_id);
-        });
+        // Convert to array if single result
+        const foodArray = Array.isArray(searchResults.foods.food) 
+            ? searchResults.foods.food 
+            : [searchResults.foods.food];
 
-        const foodDetails = await Promise.all(foodDetailsPromises);
+        // Process foods in smaller batches to avoid rate limits
+        const batchSize = 3;
+        const foodDetails = [];
+        
+        for (let i = 0; i < foodArray.length; i += batchSize) {
+            const batch = foodArray.slice(i, i + batchSize);
+            const batchPromises = batch.map(item => getFoodDetails(item.food_id));
+            const batchResults = await Promise.all(batchPromises);
+            foodDetails.push(...batchResults);
+            
+            if (i + batchSize < foodArray.length) {
+                await delay(2000); // Wait between batches
+            }
+        }
+
         console.log('Found', foodDetails.length, 'food items');
 
         res.json({
