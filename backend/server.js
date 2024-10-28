@@ -595,16 +595,45 @@ app.post('/log-food', async (req, res) => {
     console.log('Received daily log data:', req.body);
 
     try {
+        // Instead of making an HTTP request, directly call the database operations
         // Step 1: Search or create the food item
-        console.log('Calling /search-or-create-food with:', food_item);
-        // Update the URL to use environment variable for production
-        const apiUrl = process.env.VERCEL 
-            ? process.env.VERCEL_URL 
-            : 'http://localhost:3001';
-        const foodItemResponse = await axios.post(`${apiUrl}/search-or-create-food`, food_item);
-        const food_item_id = foodItemResponse.data.id;
+        console.log('Searching/creating food item:', food_item);
+        
+        let food_item_id;
+        
+        // First try to find existing food item
+        const searchResult = await pool.query(
+            `SELECT id FROM food_items WHERE name = $1 LIMIT 1`,
+            [food_item.name]
+        );
 
-        console.log('Food item ID returned from /search-or-create-food:', food_item_id);
+        if (searchResult.rows.length > 0) {
+            food_item_id = searchResult.rows[0].id;
+            console.log('Found existing food item with ID:', food_item_id);
+        } else {
+            // If not found, insert new food item
+            const insertResult = await pool.query(
+                `INSERT INTO food_items (
+                    name, calories, protein, fat, carbs,
+                    serving_size, serving_unit, is_manual
+                )
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                RETURNING id`,
+                [
+                    food_item.name,
+                    food_item.calories,
+                    food_item.protein,
+                    food_item.fat,
+                    food_item.carbs,
+                    food_item.serving_size,
+                    food_item.serving_unit,
+                    true
+                ]
+            );
+            
+            food_item_id = insertResult.rows[0].id;
+            console.log('Created new food item with ID:', food_item_id);
+        }
 
         // Step 2: Insert the daily log
         console.log('Inserting daily log for user:', user_id);
@@ -619,18 +648,16 @@ app.post('/log-food', async (req, res) => {
 
         const result = await pool.query(query, values);
 
-        console.log('Query result:', result);
         console.log('Daily log inserted with ID:', result.rows[0].id);
         
         res.status(201).json(result.rows[0]);
         
     } catch (error) {
         console.error('Error adding daily food log:', error);
-        if (error.response && error.response.data) {
-            res.status(500).json({ error: 'Internal server error', details: error.response.data });
-        } else {
-            res.status(500).json({ error: 'Internal server error', details: error.message });
-        }
+        res.status(500).json({ 
+            error: 'Internal server error', 
+            details: error.message 
+        });
     }
 });
 
