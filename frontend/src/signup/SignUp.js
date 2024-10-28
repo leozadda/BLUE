@@ -12,9 +12,9 @@ const SignUp = () => {
   
   // Store all user information
   const [user, setUser] = useState({
-    name: '', sex: 'NULL', age: '', weight: '', height: 'NULL', email: '', password: ''
+    username: '', height_cm: 'NULL', weight_kg: '', age: '', sex: 'NULL', email: '', password: ''
   });
-
+  
   // If user is already logged in, go to dashboard
   if (auth.isAuthenticated) return <Navigate to="/dashboard" />;
 
@@ -39,6 +39,7 @@ const SignUp = () => {
     email: (value) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value),
     password: (value) => value.length >= 6,
   };
+  
 
   // Update user info when an input changes
   const handleChange = (e) => {
