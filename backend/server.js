@@ -72,19 +72,23 @@ function generateOAuthSignature(method, url, params, consumerSecret) {
 }
 
 // Function to search foods in FatSecret API
+// Function to search foods in FatSecret API
 async function searchFoods(foodName) {
     console.log('\n=== Searching Foods in FatSecret ===');
     console.log('Search Term:', foodName);
     
     const method = 'GET';
-    const baseUrl = process.env.BASE_FAT_SECRET_URL;
+    const baseUrl = 'https://platform.fatsecret.com/rest/server/api'; // Hardcoded URL for reliability
     const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
     const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
 
+    // Add max_results parameter and page_number for better results
     const params = {
         method: 'foods.search',
         search_expression: foodName,
         format: 'json',
+        max_results: 50,  // Get more results
+        page_number: 0,   // First page
         oauth_consumer_key: consumerKey,
         oauth_nonce: Math.random().toString(36).substring(2),
         oauth_signature_method: 'HMAC-SHA1',
@@ -96,15 +100,32 @@ async function searchFoods(foodName) {
 
     try {
         console.log('Making API Request to FatSecret');
-        const response = await axios.get(baseUrl, { params });
+        // Use URLSearchParams to properly encode the parameters
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${baseUrl}?${queryString}`;
+        
+        console.log('Request URL:', url);
+        const response = await axios.get(url);
+        
+        // Add better error handling for FatSecret response
+        if (response.data.error) {
+            throw new Error(`FatSecret API Error: ${response.data.error.message}`);
+        }
+
+        // Check if foods exist in response
+        if (!response.data.foods) {
+            return { foods: { food: [] } };
+        }
+
         console.log('API Response:', JSON.stringify(response.data, null, 2));
-        console.log('========================\n');
         return response.data;
     } catch (error) {
         console.error('FatSecret API Error:', error.message);
-        console.error('Response data:', error.response?.data);
-        console.error('Response status:', error.response?.status);
-        console.error('Response headers:', error.response?.headers);
+        if (error.response) {
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            console.error('Response headers:', error.response.headers);
+        }
         throw error;
     }
 }
@@ -115,7 +136,7 @@ async function getFoodDetails(foodId) {
     console.log('Food ID:', foodId);
     
     const method = 'GET';
-    const baseUrl = process.env.BASE_FAT_SECRET_URL;
+    const baseUrl = 'https://platform.fatsecret.com/rest/server/api';
     const consumerKey = process.env.FATSECRET_CONSUMER_KEY;
     const consumerSecret = process.env.FATSECRET_CONSUMER_SECRET;
 
@@ -134,9 +155,17 @@ async function getFoodDetails(foodId) {
 
     try {
         console.log('Making API Request for Food Details');
-        const response = await axios.get(baseUrl, { params });
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${baseUrl}?${queryString}`;
+        
+        console.log('Request URL:', url);
+        const response = await axios.get(url);
+        
+        if (response.data.error) {
+            throw new Error(`FatSecret API Error: ${response.data.error.message}`);
+        }
+
         console.log('API Response:', JSON.stringify(response.data, null, 2));
-        console.log('========================\n');
         return response.data;
     } catch (error) {
         console.error('Error getting food details:', error);
