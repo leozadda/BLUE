@@ -20,13 +20,13 @@ const SignUp = () => {
 
   // List of all questions and their properties
   const questions = [
-    { question: 'What is your username?', id: 'name', type: 'text', placeholder: "'Shrek'" },
-    { question: 'What is your height?', id: 'height', type: 'select', options: ['5\'0', '5\'1', '5\'2', '5\'3', '5\'4', '5\'5', '5\'6', '5\'7', '5\'8', '5\'9', '5\'10', '5\'11', '6\'0', '6\'1', '6\'2', '6\'3', '6\'4', '6\'5', '6\'6', '6\'7', '6\'8', '6\'9', '6\'10', '6\'11'] },
-    { question: 'What is your weight?', id: 'weightID', type: 'number', placeholder: "(lbs)" },
-    { question: 'What is your age?', id: 'ageID', type: 'number', placeholder: "(years)" },
+    { question: 'What is your username?', id: 'username', type: 'text', placeholder: "'Shrek'" },
+    { question: 'What is your height?', id: 'height_cm', type: 'select', options: ['5\'0', '5\'1', '5\'2', '5\'3', '5\'4', '5\'5', '5\'6', '5\'7', '5\'8', '5\'9', '5\'10', '5\'11', '6\'0', '6\'1', '6\'2', '6\'3', '6\'4', '6\'5', '6\'6', '6\'7', '6\'8', '6\'9', '6\'10', '6\'11'] },
+    { question: 'What is your weight?', id: 'weight_kg', type: 'number', placeholder: "(lbs)" },
+    { question: 'What is your age?', id: 'age', type: 'number', placeholder: "(years)" },
     { question: 'What is your sex?', id: 'sex', type: 'select', options: ['Male', 'Female'] },
-    { question: 'What is your email?', id: 'emailID', type: 'email', placeholder: "we don't spam" },
-    { question: 'Choose Password.', id: 'passwordID', type: 'password', placeholder: "(6 characters)" },
+    { question: 'What is your email?', id: 'email', type: 'email', placeholder: "we don't spam" },
+    { question: 'Choose Password.', id: 'password', type: 'password', placeholder: "(6 characters)" },
   ];
 
   // Rules for checking if each answer is valid
