@@ -20,7 +20,7 @@ const SignUp = () => {
 
   // List of all questions and their properties
   const questions = [
-    { question: 'What is your name?', id: 'name', type: 'text', placeholder: "'Shrek'" },
+    { question: 'What is your username?', id: 'name', type: 'text', placeholder: "'Shrek'" },
     { question: 'What is your height?', id: 'height', type: 'select', options: ['5\'0', '5\'1', '5\'2', '5\'3', '5\'4', '5\'5', '5\'6', '5\'7', '5\'8', '5\'9', '5\'10', '5\'11', '6\'0', '6\'1', '6\'2', '6\'3', '6\'4', '6\'5', '6\'6', '6\'7', '6\'8', '6\'9', '6\'10', '6\'11'] },
     { question: 'What is your weight?', id: 'weightID', type: 'number', placeholder: "(lbs)" },
     { question: 'What is your age?', id: 'ageID', type: 'number', placeholder: "(years)" },
@@ -31,13 +31,13 @@ const SignUp = () => {
 
   // Rules for checking if each answer is valid
   const validators = {
-    name: (value) => /^[A-Za-z]+$/.test(value),
-    height: (value) => value !== 'NULL',
-    weightID: (value) => value >= 10 && value <= 1000,
-    ageID: (value) => value >= 1 && value <= 120,
+    username: (value) => /^[A-Za-z]+$/.test(value),
+    height_cm: (value) => value !== 'NULL',
+    weight_kg: (value) => value >= 10 && value <= 1000,
+    age: (value) => value >= 1 && value <= 120,
     sex: (value) => value !== 'NULL',
-    emailID: (value) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value),
-    passwordID: (value) => value.length >= 6,
+    email: (value) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value),
+    password: (value) => value.length >= 6,
   };
 
   // Update user info when an input changes
@@ -69,6 +69,7 @@ const SignUp = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
+        console.log("TESTING:", user);
         
         if (response.ok) {
           const data = await response.json();
