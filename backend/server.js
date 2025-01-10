@@ -81,7 +81,7 @@ app.use(responseLogger);
 // Set up CORS (Cross-Origin Resource Sharing)
 // This allows our frontend to communicate with our backend
 app.use(cors({
-    origin: ['https://b-l-u-e.vercel.app', 'http://localhost:3000'],
+    origin: ['https://www.b-lu-e.com/', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true,
