@@ -12,7 +12,7 @@ const SignUp = () => {
   
   // Store all user information
   const [user, setUser] = useState({
-    username: '', height_cm: 'NULL', weight_kg: '', age: '', sex: 'NULL', email: '', password: ''
+    username: '', cm: 'NULL', kg: '', age: '', sex: 'NULL', email: '', password: ''
   });
   
   // If user is already logged in, go to dashboard
@@ -20,11 +20,11 @@ const SignUp = () => {
 
   // List of all questions and their properties
   const questions = [
-    { question: 'What is your username?', id: 'username', type: 'text', placeholder: "'Shrek'" },
-    { question: 'What is your height?', id: 'height_cm', type: 'select', options: ['5\'0', '5\'1', '5\'2', '5\'3', '5\'4', '5\'5', '5\'6', '5\'7', '5\'8', '5\'9', '5\'10', '5\'11', '6\'0', '6\'1', '6\'2', '6\'3', '6\'4', '6\'5', '6\'6', '6\'7', '6\'8', '6\'9', '6\'10', '6\'11'] },
-    { question: 'What is your weight?', id: 'weight_kg', type: 'number', placeholder: "(lbs)" },
+    { question: 'What is your First Name?', id: 'username', type: 'text', placeholder: "'shrek'" },
+    { question: 'What is your height?', id: 'cm', type: 'number', placeholder: "(cm)" },
+    { question: 'What is your weight?', id: 'kg', type: 'number', placeholder: "(kg)" },
     { question: 'What is your age?', id: 'age', type: 'number', placeholder: "(years)" },
-    { question: 'What is your sex?', id: 'sex', type: 'select', options: ['Male', 'Female'] },
+    { question: 'What is your sex?', id: 'sex', type: 'select', options: ['male', 'female'] },
     { question: 'What is your email?', id: 'email', type: 'email', placeholder: "we don't spam" },
     { question: 'Choose Password.', id: 'password', type: 'password', placeholder: "(6 characters)" },
   ];
@@ -32,27 +32,25 @@ const SignUp = () => {
   // Rules for checking if each answer is valid
   const validators = {
     username: (value) => /^[A-Za-z]+$/.test(value),
-    height_cm: (value) => value !== 'NULL',
-    weight_kg: (value) => value >= 10 && value <= 1000,
+    cm: (value) => value >= 50 && value <= 250,
+    kg: (value) => value >= 20 && value <= 450,
     age: (value) => value >= 1 && value <= 120,
     sex: (value) => value !== 'NULL',
     email: (value) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(value),
     password: (value) => value.length >= 6,
   };
   
+  // Update user info when an input changes
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+    
+      setUser(prevUser => ({
+        ...prevUser,
+        [name]: name === 'age' || name === 'kg' ? Number(value) : value
+      }));
+    };
 
   // Update user info when an input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-  
-    setUser(prevUser => ({
-      ...prevUser,
-      [name]: name === 'age' || name === 'weight_kg' ? Number(value) : value
-    }));
-  };
-  
-
-  // Handle form submission for each question
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentField = questions[currentQuestion].id;
@@ -65,28 +63,43 @@ const SignUp = () => {
   
     // If it's the last question, convert units and submit the data
     if (currentQuestion === questions.length - 1) {
-      // Convert height from feet to centimeters
-      if (user.height_cm.includes("'")) {
-        const [feet, inches] = user.height_cm.split("'").map(Number);
-        user.height_cm = Math.round(feet * 30.48 + inches * 2.54); // Convert to cm
-      }
-  
-      // Convert weight from lbs to kg
-      user.weight_kg = Math.round(user.weight_kg / 2.205);
-  
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
+        // 1. First create the user account
+        const response = await fetch(`https://www.b-lu-e.com/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
         });
 
-        console.log(user);
-  
         if (response.ok) {
           const data = await response.json();
+          // Store auth data
           await login(data.user, data.token, data.refreshToken);
-          navigate("/dashboard");
+          
+          // 2. Then create Stripe checkout session
+          try {
+            const checkoutResponse = await fetch(`https://www.b-lu-e.com/create-checkout-session`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${data.token}` // Include auth token if needed
+              },
+              body: JSON.stringify({
+                lookup_key: 'prod_RZWrP07xc8c8mh'
+              }),
+            });
+            
+            if (checkoutResponse.ok) {
+              const session = await checkoutResponse.json();
+              // 3. Redirect to Stripe Checkout
+              window.location.href = session.url;
+              // Note: Don't navigate to dashboard here - Stripe will handle the redirect after payment
+            } else {
+              console.error('Failed to create checkout session');
+            }
+          } catch (error) {
+            console.error('Error creating checkout session:', error);
+          }
         } else {
           console.error('Signup failed');
         }
@@ -97,7 +110,6 @@ const SignUp = () => {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
-  
 
   // Create the right type of input for each question
   const renderInput = ({ type, id, placeholder, options }) => {
