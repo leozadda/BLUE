@@ -26,7 +26,7 @@ const LogIn = () => {
 
     try {
       // Send login request to the server
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
+      const response = await fetch(`https://api.b-lu-e.com/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
