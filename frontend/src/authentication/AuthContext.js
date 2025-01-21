@@ -7,18 +7,18 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   // Set up the state to store authentication info
   const [auth, setAuth] = useState({
-    isAuthenticated: false, // Is the user logged in?
-    user: null,             // User's basic info
-    token: null,            // The "key" that proves the user is logged in
-    refreshToken: null,     // A special key to get a new "key" when the old one expires
-    isLoading: true,        // Are we still checking if the user is logged in?
+    isAuthenticated: false,    // Is the user logged in?
+    user: null,               // User's basic info
+    token: null,              // The "key" that proves the user is logged in
+    refreshToken: null,       // A special key to get a new "key" when the old one expires
+    isLoading: true,          // Are we still checking if the user is logged in?
+    hasCompletedPayment: false // New field to track payment status
   });
 
   // This function gets a new "key" (token) when the old one is about to expire
   const refreshAccessToken = useCallback(async () => {
     console.log('Attempting to refresh access token');
     try {
-      // Ask the server for a new key
       const response = await fetch('/api/refresh-token', {
         method: 'POST',
         headers: {
@@ -28,13 +28,11 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        // If we got a new key, update our auth info
         const data = await response.json();
         setAuth(prev => ({ ...prev, token: data.token }));
         console.log('Access token refreshed successfully');
         return data.token;
       } else {
-        // If we couldn't get a new key, log out the user
         console.log('Failed to refresh token. Logging out user.');
         logOff();
         throw new Error('Unable to refresh token');
@@ -63,8 +61,8 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // This function runs when a user logs in
-  const login = (userData, token, refreshToken) => {
+  // Updated login function to include payment status
+  const login = (userData, token, refreshToken, hasCompletedPayment = false) => {
     console.log('Login called with user data:', userData);
     const authData = { 
       isAuthenticated: true, 
@@ -72,25 +70,47 @@ export const AuthProvider = ({ children }) => {
       token,
       refreshToken,
       isLoading: false,
+      hasCompletedPayment // Include payment status in auth data
     };
     setAuth(authData);
-    // Save login info so the user stays logged in even if they close the browser
     localStorage.setItem('auth', JSON.stringify(authData));
     console.log('User logged in and auth data saved to local storage');
   };
 
-  // This function runs when a user logs out
+  // New function to update payment status
+  const updatePaymentStatus = (status) => {
+    setAuth(prev => {
+      const newAuth = { ...prev, hasCompletedPayment: status };
+      localStorage.setItem('auth', JSON.stringify(newAuth));
+      return newAuth;
+    });
+    console.log('Payment status updated:', status);
+  };
+
+  // Updated logOff to include payment status reset
   const logOff = () => {
     console.log('LogOff called. Clearing auth data.');
-    setAuth({ isAuthenticated: false, user: null, token: null, refreshToken: null, isLoading: false });
-    // Remove saved login info
+    setAuth({ 
+      isAuthenticated: false, 
+      user: null, 
+      token: null, 
+      refreshToken: null, 
+      isLoading: false,
+      hasCompletedPayment: false 
+    });
     localStorage.removeItem('auth');
     console.log('User logged out and auth data removed from local storage');
   };
 
   // Provide the authentication info and functions to all child components
   return (
-    <AuthContext.Provider value={{ auth, login, logOff, refreshAccessToken }}>
+    <AuthContext.Provider value={{ 
+      auth, 
+      login, 
+      logOff, 
+      refreshAccessToken,
+      updatePaymentStatus // Make the new function available
+    }}>
       {children}
     </AuthContext.Provider>
   );

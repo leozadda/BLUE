@@ -82,10 +82,12 @@ const SignUp = () => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${data.token}` // Include auth token if needed
+                'Authorization': `Bearer ${data.token}`
               },
               body: JSON.stringify({
-                lookup_key: 'prod_RZWrP07xc8c8mh'
+                lookup_key: 'prod_RZWrP07xc8c8mh',
+                success_url: 'https://your-domain.com/payment-success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url: 'https://your-domain.com/payment-failed'
               }),
             });
             

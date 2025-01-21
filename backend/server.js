@@ -443,77 +443,11 @@ app.get('/user-daily-log', async (req, res) => {
 
 // ------------------------ STRIPE BOILERPLATE ----------------------------
 
-// Create Checkout Session
-app.post('/create-checkout-session', async (req, res) => {
-    console.log("Received request to create checkout session");
-  
-    // Hardcoded price ID for product "B-L-U-E"
-    const hardCodedPriceId = "price_1QgNnfFQmWdO1D5cVOO5rQJ2";
-  
-    try {
-      console.log("Creating checkout session with price ID:", hardCodedPriceId);
-  
-      // Create the Stripe Checkout session
-      const session = await stripe.checkout.sessions.create({
-        billing_address_collection: 'auto',
-        line_items: [
-          {
-            price: hardCodedPriceId, // Use the hardcoded price ID
-            quantity: 1,            // Always 1 item for this example
-          },
-        ],
-        mode: 'subscription',        // Subscription mode
-        subscription_data: {
-          trial_period_days: 7,      // Add a 7-day trial
-        },
-        success_url: `${YOUR_DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`, // Success URL
-        cancel_url: `${YOUR_DOMAIN}?canceled=true`, // Cancel URL
-      });
-  
-      console.log("Checkout session created successfully:", session.url);
-  
-      // Redirect the user to the Stripe Checkout session
-      res.redirect(303, session.url);
-    } catch (error) {
-      console.error("Error creating checkout session:", error.message);
-      res.status(500).send("Internal Server Error");
-    }
-  });
-  
-  // Create Billing Portal Session
-  app.post('/create-portal-session', async (req, res) => {
-    console.log("Received request to create billing portal session");
-  
-    const { session_id } = req.body; // Expecting session_id in the request body
-    console.log("Session ID from request:", session_id);
-  
-    try {
-      console.log("Retrieving checkout session from Stripe");
-      const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
-  
-      console.log("Retrieved checkout session:", checkoutSession);
-  
-      // Create the billing portal session
-      const portalSession = await stripe.billingPortal.sessions.create({
-        customer: checkoutSession.customer, // Retrieve customer from session
-        return_url: YOUR_DOMAIN,            // Return to your domain after portal actions
-      });
-  
-      console.log("Billing portal session created successfully:", portalSession.url);
-  
-      // Redirect the user to the billing portal
-      res.redirect(303, portalSession.url);
-    } catch (error) {
-      console.error("Error creating portal session:", error.message);
-      res.status(500).send("Internal Server Error");
-    }
-  });
-  
-  // Webhook for Stripe Events
-  app.post(
+// Webhook for Stripe Events
+app.post(
     '/webhook',
     express.raw({ type: 'application/json' }), // Use raw body for webhook signature verification
-    (request, response) => {
+    async (request, response) => {
       console.log("Received Stripe webhook");
   
       const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA'; 
@@ -528,34 +462,151 @@ app.post('/create-checkout-session', async (req, res) => {
           console.log("Webhook signature verified");
         } catch (err) {
           console.error("⚠️ Webhook signature verification failed:", err.message);
-          return response.sendStatus(400); // Return 400 Bad Request if verification fails
+          return response.sendStatus(400);
         }
       }
   
       console.log("Processing Stripe event:", event.type);
   
       // Handle specific event types
-      switch (event.type) {
-        case 'customer.subscription.trial_will_end':
-          console.log("Subscription trial will end event received:", event.data.object);
-          break;
-        case 'customer.subscription.deleted':
-          console.log("Subscription deleted event received:", event.data.object);
-          break;
-        case 'customer.subscription.created':
-          console.log("Subscription created event received:", event.data.object);
-          break;
-        case 'customer.subscription.updated':
-          console.log("Subscription updated event received:", event.data.object);
-          break;
-        default:
-          console.warn("Unhandled event type:", event.type);
+      try {
+        switch (event.type) {
+          case 'checkout.session.completed':
+            const session = event.data.object;
+            console.log("Payment completed for session:", session.id);
+            
+            // Get customer email from the session
+            const customerEmail = session.customer_details.email;
+            
+            // Update user's payment status in database
+            try {
+              const updateResult = await pool.query(
+                'UPDATE users SET has_completed_payment = TRUE WHERE email = $1 RETURNING *',
+                [customerEmail]
+              );
+              
+              if (updateResult.rows.length > 0) {
+                console.log('Payment status updated for user:', customerEmail);
+              } else {
+                console.error('No user found with email:', customerEmail);
+              }
+            } catch (dbError) {
+              console.error('Database error updating payment status:', dbError);
+            }
+            break;
+  
+          case 'customer.subscription.trial_will_end':
+            console.log("Subscription trial will end event received:", event.data.object);
+            break;
+  
+          case 'customer.subscription.deleted':
+            // When subscription is cancelled or ends, update payment status to false
+            const deletedSubscription = event.data.object;
+            try {
+              await pool.query(
+                'UPDATE users SET has_completed_payment = FALSE WHERE email = $1',
+                [deletedSubscription.customer_email]
+              );
+              console.log('Payment status updated to FALSE for cancelled subscription');
+            } catch (dbError) {
+              console.error('Database error updating cancelled subscription:', dbError);
+            }
+            break;
+  
+          case 'customer.subscription.created':
+            console.log("Subscription created event received:", event.data.object);
+            break;
+  
+          case 'customer.subscription.updated':
+            const updatedSubscription = event.data.object;
+            // Update payment status based on subscription status
+            if (updatedSubscription.status === 'active') {
+              try {
+                await pool.query(
+                  'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
+                  [updatedSubscription.customer_email]
+                );
+                console.log('Payment status updated for updated subscription');
+              } catch (dbError) {
+                console.error('Database error updating subscription status:', dbError);
+              }
+            }
+            break;
+  
+          default:
+            console.log('Unhandled event type:', event.type);
+        }
+      } catch (error) {
+        console.error('Error processing webhook:', error);
       }
   
-      response.status(200).send(); // Acknowledge receipt of the event
+      response.status(200).send();
     }
   );
+
+  // Add this new endpoint to verify payment status
+app.get('/verify-payment-status', async (req, res) => {
+    const { email } = req.query;
   
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+  
+    try {
+      const result = await pool.query(
+        'SELECT has_completed_payment FROM users WHERE email = $1',
+        [email]
+      );
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      res.json({
+        email,
+        hasCompletedPayment: result.rows[0].has_completed_payment
+      });
+    } catch (error) {
+      console.error('Error verifying payment status:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Update your existing create-checkout-session endpoint
+app.post('/create-checkout-session', async (req, res) => {
+    console.log("Received request to create checkout session");
+  
+    const hardCodedPriceId = "price_1QgNnfFQmWdO1D5cVOO5rQJ2";
+  
+    try {
+      console.log("Creating checkout session with price ID:", hardCodedPriceId);
+  
+      const session = await stripe.checkout.sessions.create({
+        billing_address_collection: 'auto',
+        line_items: [
+          {
+            price: hardCodedPriceId,
+            quantity: 1,
+          },
+        ],
+        mode: 'subscription',
+        subscription_data: {
+          trial_period_days: 7,
+        },
+        // Updated success and cancel URLs
+        success_url: `${YOUR_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${YOUR_DOMAIN}/payment-failed`,
+        // Collect customer email
+        customer_email: req.body.email // Make sure to pass the user's email from your signup form
+      });
+  
+      console.log("Checkout session created successfully:", session.url);
+      res.json({ url: session.url });
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
   // ------------------------- END STRIPE BOILERPLATE ----------------------
 
 // Basic error handling middleware
