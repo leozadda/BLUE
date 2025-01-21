@@ -15,8 +15,10 @@ const SignUp = () => {
     username: '', cm: 'NULL', kg: '', age: '', sex: 'NULL', email: '', password: ''
   });
   
-  // If user is already logged in, go to dashboard
-  if (auth.isAuthenticated) return <Navigate to="/dashboard" />;
+  // If user is already logged in AND has completed payment, go to dashboard
+  if (auth.isAuthenticated && auth.hasCompletedPayment) {
+    return <Navigate to="/dashboard" />;
+  }
 
   // List of all questions and their properties
   const questions = [
@@ -61,10 +63,9 @@ const SignUp = () => {
       return;
     }
   
-    // If it's the last question, convert units and submit the data
     if (currentQuestion === questions.length - 1) {
       try {
-        // 1. First create the user account
+        // 1. Create user account
         const response = await fetch(`https://api.b-lu-e.com/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -73,10 +74,10 @@ const SignUp = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // Store auth data
-          await login(data.user, data.token, data.refreshToken);
+          // Store auth data with hasCompletedPayment as false initially
+          await login(data.user, data.token, data.refreshToken, false);
           
-          // 2. Then create Stripe checkout session
+          // 2. Create Stripe checkout session
           try {
             const checkoutResponse = await fetch(`https://api.b-lu-e.com/create-checkout-session`, {
               method: 'POST',
@@ -86,16 +87,15 @@ const SignUp = () => {
               },
               body: JSON.stringify({
                 lookup_key: 'prod_RZWrP07xc8c8mh',
-                success_url: 'https://your-domain.com/payment-success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url: 'https://your-domain.com/payment-failed'
+                email: user.email, // Add user's email to the request
+                success_url: `${window.location.origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${window.location.origin}/payment-failed`
               }),
             });
             
             if (checkoutResponse.ok) {
               const session = await checkoutResponse.json();
-              // 3. Redirect to Stripe Checkout
               window.location.href = session.url;
-              // Note: Don't navigate to dashboard here - Stripe will handle the redirect after payment
             } else {
               console.error('Failed to create checkout session');
             }

@@ -23,7 +23,6 @@ const sslOptions = {
 
 const app = express();
 app.use(cors());
-app.use(express.json());
 
 // HTTP server (redirect to HTTPS)
 http.createServer((req, res) => {
@@ -444,105 +443,49 @@ app.get('/user-daily-log', async (req, res) => {
 // ------------------------ STRIPE BOILERPLATE ----------------------------
 
 // Webhook for Stripe Events
+// Move this BEFORE any other middleware that parses the body
 app.post(
     '/webhook',
-    express.raw({ type: 'application/json' }), // Use raw body for webhook signature verification
+    express.raw({ type: 'application/json' }),
     async (request, response) => {
-      console.log("Received Stripe webhook");
+      const sig = request.headers['stripe-signature'];
+      const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA';
   
-      const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA'; 
-      let event = request.body;
+      let event;
   
-      if (endpointSecret) {
-        const signature = request.headers['stripe-signature'];
-        console.log("Verifying webhook signature");
-  
-        try {
-          event = stripe.webhooks.constructEvent(request.body, signature, endpointSecret);
-          console.log("Webhook signature verified");
-        } catch (err) {
-          console.error("⚠️ Webhook signature verification failed:", err.message);
-          return response.sendStatus(400);
-        }
-      }
-  
-      console.log("Processing Stripe event:", event.type);
-  
-      // Handle specific event types
       try {
-        switch (event.type) {
-          case 'checkout.session.completed':
-            const session = event.data.object;
-            console.log("Payment completed for session:", session.id);
-            
-            // Get customer email from the session
-            const customerEmail = session.customer_details.email;
-            
-            // Update user's payment status in database
-            try {
-              const updateResult = await pool.query(
-                'UPDATE users SET has_completed_payment = TRUE WHERE email = $1 RETURNING *',
-                [customerEmail]
-              );
-              
-              if (updateResult.rows.length > 0) {
-                console.log('Payment status updated for user:', customerEmail);
-              } else {
-                console.error('No user found with email:', customerEmail);
-              }
-            } catch (dbError) {
-              console.error('Database error updating payment status:', dbError);
-            }
-            break;
-  
-          case 'customer.subscription.trial_will_end':
-            console.log("Subscription trial will end event received:", event.data.object);
-            break;
-  
-          case 'customer.subscription.deleted':
-            // When subscription is cancelled or ends, update payment status to false
-            const deletedSubscription = event.data.object;
-            try {
-              await pool.query(
-                'UPDATE users SET has_completed_payment = FALSE WHERE email = $1',
-                [deletedSubscription.customer_email]
-              );
-              console.log('Payment status updated to FALSE for cancelled subscription');
-            } catch (dbError) {
-              console.error('Database error updating cancelled subscription:', dbError);
-            }
-            break;
-  
-          case 'customer.subscription.created':
-            console.log("Subscription created event received:", event.data.object);
-            break;
-  
-          case 'customer.subscription.updated':
-            const updatedSubscription = event.data.object;
-            // Update payment status based on subscription status
-            if (updatedSubscription.status === 'active') {
-              try {
-                await pool.query(
-                  'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
-                  [updatedSubscription.customer_email]
-                );
-                console.log('Payment status updated for updated subscription');
-              } catch (dbError) {
-                console.error('Database error updating subscription status:', dbError);
-              }
-            }
-            break;
-  
-          default:
-            console.log('Unhandled event type:', event.type);
-        }
-      } catch (error) {
-        console.error('Error processing webhook:', error);
+        event = stripe.webhooks.constructEvent(
+          request.body,
+          sig,
+          endpointSecret
+        );
+      } catch (err) {
+        console.error(`⚠️ Webhook Error: ${err.message}`);
+        return response.status(400).send(`Webhook Error: ${err.message}`);
       }
   
-      response.status(200).send();
+      // Handle successful payment
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        
+        try {
+          // Update user's payment status
+          await pool.query(
+            'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
+            [session.customer_details.email]
+          );
+          
+          console.log(`Payment status updated for user: ${session.customer_details.email}`);
+        } catch (error) {
+          console.error('Error updating payment status:', error);
+        }
+      }
+  
+      response.json({ received: true });
     }
   );
+
+  app.use(express.json());
 
   // Add this new endpoint to verify payment status
 app.get('/verify-payment-status', async (req, res) => {
