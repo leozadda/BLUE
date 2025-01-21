@@ -148,11 +148,18 @@ async function getFoodDetails(foodId) {
 
 // Add some basic security and data parsing features
 app.use(cors({
-    origin: '*',  // Allow access from any website
+    origin: (origin, callback) => {
+        if (!origin || origin.endsWith('.b-lu-e.com') || origin === 'https://www.b-lu-e.com') {
+            callback(null, true); // Accept the origin
+        } else {
+            callback(new Error('Not allowed by CORS')); // Reject the origin
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true
 }));
+
 
 // Log when any request comes to our server
 app.use((req, res, next) => {

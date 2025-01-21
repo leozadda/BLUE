@@ -65,7 +65,7 @@ const SignUp = () => {
     if (currentQuestion === questions.length - 1) {
       try {
         // 1. First create the user account
-        const response = await fetch(`https://www.b-lu-e.com/signup`, {
+        const response = await fetch(`https://api.b-lu-e.com/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(user),
@@ -78,7 +78,7 @@ const SignUp = () => {
           
           // 2. Then create Stripe checkout session
           try {
-            const checkoutResponse = await fetch(`https://www.b-lu-e.com/create-checkout-session`, {
+            const checkoutResponse = await fetch(`https://api.b-lu-e.com/create-checkout-session`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
