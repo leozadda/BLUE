@@ -44,22 +44,20 @@ function Dashboard() {
             
             console.log('Payment verification response:', data);
             
-            // Check for explicit 'T' or true value for payment completion
-            if (data.hasCompletedPayment !== 'T' && data.hasCompletedPayment !== true) {
-              console.log('Dashboard: User has not completed payment, redirecting...');
-              navigate('/payment-required');
+            if (!data.hasCompletedPayment) {
+              console.log('User has not completed payment or trial');
+              navigate('/payment');
               return;
             }
             
             setPaymentVerified(true);
           } catch (error) {
             console.error('Dashboard: Error verifying payment status:', error);
-            navigate('/payment-required');
+            navigate('/error');
           }
         }
       };
-  
-      // Original data fetching effect
+    
       const fetchUserDailyLog = async () => {
         if (auth.isAuthenticated && auth.user && auth.user.id) {
           try {
@@ -68,21 +66,19 @@ function Dashboard() {
             const dayIndex = today.getDay();
             const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const dayName = daysOfWeek[dayIndex];
-            console.log('Dashboard: Fetching data for user ID:', auth.user.id, 'on date:', date);
-  
+    
             const response = await fetch(`https://api.b-lu-e.com/user-daily-log?user_id=${auth.user.id}&date=${date}`);
             const data = await response.json();
-  
-            console.log('Dashboard: Fetched user daily log:', data);
-            setUserDailyLog(data || []); // Ensure array even if null
-            setDateString(dayName); //Set date for user
+    
+            setUserDailyLog(data || []); 
+            setDateString(dayName);
           } catch (error) {
             console.error('Dashboard: Error fetching user daily log:', error);
-            setUserDailyLog([]); // Set to empty array on error
+            setUserDailyLog([]); 
           }
         }
       };
-  
+    
       // Verify payment first
       verifyPayment();
       
@@ -92,7 +88,7 @@ function Dashboard() {
       } else {
         console.log('Dashboard: Auth is still loading or not authenticated');
       }
-    }, [auth, navigate]);  
+    }, [auth, navigate]);
 
   // Calculate total nutrition values from the daily log
   const totalNutrition = userDailyLog && userDailyLog.length > 0 
@@ -290,7 +286,7 @@ function Dashboard() {
                   );
                 })
               ) : (
-                <p>No food items logged today</p>
+                <p>Nothing.</p>
               )}
             </div>
           </div>

@@ -440,60 +440,75 @@ app.get('/user-daily-log', async (req, res) => {
 
 // ------------------------ STRIPE BOILERPLATE ----------------------------
 
-// Webhook for Stripe Events
 // Move this BEFORE any other middleware that parses the body
-// First, add this before express.json() middleware
-const stripeWebhookMiddleware = express.raw({type: 'application/json'});
+app.use((req, res, next) => {
+    if (req.originalUrl === '/webhook') {
+      // For webhook route, use raw body
+      let data = '';
+      req.setEncoding('utf8');
+      req.on('data', chunk => { 
+        data += chunk;
+      });
+      req.on('end', () => {
+        req.rawBody = data;
+        next();
+      });
+    } else {
+      next();
+    }
+  });
+  
 
-// Then update the webhook route to use the specific middleware
-app.post('/webhook', stripeWebhookMiddleware, async (request, response) => {
+
+
+// Webhook endpoint for handling Stripe payment events
+app.post('/webhook', async (request, response) => {
     const sig = request.headers['stripe-signature'];
-    const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA';
-
-    let event;
+    const endpointSecret = 'whsec_hi44dqSeF3DUm7IozN7ZUnBHFGbFjFz3';
 
     try {
-        event = stripe.webhooks.constructEvent(
-            request.body,
+        const event = stripe.webhooks.constructEvent(
+            request.rawBody,
             sig,
             endpointSecret
         );
-    } catch (err) {
-        console.error(`⚠️ Webhook Error: ${err.message}`);
-        return response.status(400).send(`Webhook Error: ${err.message}`);
-    }
 
-    // Handle successful payment
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object;
-        
-        try {
-            // Update user's payment status with better error handling and logging
-            const updateResult = await pool.query(
-                'UPDATE users SET has_completed_payment = TRUE WHERE email = $1 RETURNING email',
-                [session.customer_details.email]
-            );
+        if (event.type === 'customer.subscription.created') {
+            const subscription = event.data.object;
+            const customer = await stripe.customers.retrieve(subscription.customer);
             
-            if (updateResult.rowCount === 0) {
-                console.error(`No user found with email: ${session.customer_details.email}`);
-            } else {
-                console.log(`Payment status updated for user: ${session.customer_details.email}`);
-            }
-        } catch (error) {
-            console.error('Error updating payment status:', error);
+            await pool.query(
+                'UPDATE users SET trial_period_ends_at = $1, has_completed_payment = TRUE WHERE email = $2',
+                [new Date(subscription.trial_end * 1000), customer.email]
+            );
         }
-    }
+        
+        if (event.type === 'customer.subscription.updated' || 
+            event.type === 'invoice.payment_succeeded') {
+            const subscription = event.data.object;
+            const customer = await stripe.customers.retrieve(subscription.customer);
+            
+            await pool.query(
+                'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
+                [customer.email]
+            );
+        }
 
-    response.json({ received: true });
+        response.json({received: true});
+
+    } catch (err) {
+        console.error('Webhook Error:', err.message);
+        response.status(400).send(`Webhook Error: ${err.message}`);
+    }
 });
 
-// Then add the general body parser for all other routes
-app.use(express.json());
+  // AFTER webhook route, add body parsers
+  app.use(express.json());
 
 
 ///THIS IS NOT THE PROBLEM, IT WORKS 
   // Add this new endpoint to verify payment status
-app.get('/verify-payment-status', async (req, res) => {
+  app.get('/verify-payment-status', async (req, res) => {
     const { email } = req.query;
   
     if (!email) {
@@ -502,7 +517,7 @@ app.get('/verify-payment-status', async (req, res) => {
   
     try {
       const result = await pool.query(
-        'SELECT has_completed_payment FROM users WHERE email = $1',
+        'SELECT has_completed_payment, trial_period_ends_at FROM users WHERE email = $1',
         [email]
       );
   
@@ -510,15 +525,18 @@ app.get('/verify-payment-status', async (req, res) => {
         return res.status(404).json({ error: 'User not found' });
       }
   
+      const { has_completed_payment, trial_period_ends_at } = result.rows[0];
+      const now = new Date();
+      
       res.json({
         email,
-        hasCompletedPayment: result.rows[0].has_completed_payment
+        hasCompletedPayment: has_completed_payment || (trial_period_ends_at && trial_period_ends_at > now)
       });
     } catch (error) {
       console.error('Error verifying payment status:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-  });
+});
 
   // Update your existing create-checkout-session endpoint
 app.post('/create-checkout-session', async (req, res) => {
