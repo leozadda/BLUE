@@ -82,16 +82,17 @@ const SignUp = () => {
             const checkoutResponse = await fetch(`https://api.b-lu-e.com/create-checkout-session`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${data.token}`
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${data.token}`
               },
               body: JSON.stringify({
-                lookup_key: 'prod_RZWrP07xc8c8mh',
-                email: user.email, // Add user's email to the request
-                success_url: `${window.location.origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${window.location.origin}/payment-failed`
+                  lookup_key: 'prod_RZWrP07xc8c8mh',
+                  email: user.email,
+                  // Update success_url to use the correct domain
+                  success_url: 'https://www.b-lu-e.com/dashboard',
+                  cancel_url: 'https://www.b-lu-e.com/error'
               }),
-            });
+          });
             
             if (checkoutResponse.ok) {
               const session = await checkoutResponse.json();
@@ -99,6 +100,8 @@ const SignUp = () => {
             } else {
               console.error('Failed to create checkout session');
             }
+
+
           } catch (error) {
             console.error('Error creating checkout session:', error);
           }

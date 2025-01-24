@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
 import { ImSwitch, ImHome3 } from "react-icons/im";
 import { useAuth } from '../authentication/AuthContext.js';
-
+import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Result from '../search/AddedResult';
 import './Dashboard.css';
@@ -29,13 +29,35 @@ function Dashboard() {
     // These state variables hold important data for the component
     const [dateString, setDateString] = useState('');
     const [userDailyLog, setUserDailyLog] = useState(null);
+    const [paymentVerified, setPaymentVerified] = useState(false);
     
-  // Get authentication state and logOff function
-  const { auth, logOff } = useAuth();
+    // Get authentication state, logOff function, and navigation
+    const { auth, logOff } = useAuth();
+    const navigate = useNavigate();
   
+    // Payment verification effect
     useEffect(() => {
-      console.log('Dashboard: useEffect triggered. Auth:', auth);
+      const verifyPayment = async () => {
+        if (auth.isAuthenticated && auth.user && auth.user.email) {
+          try {
+            const response = await fetch(`https://api.b-lu-e.com/verify-payment-status?email=${auth.user.email}`);
+            const data = await response.json();
+            
+            if (!data.hasCompletedPayment) {
+              console.log('Dashboard: User has not completed payment, redirecting...');
+              navigate('/payment-required');
+              return;
+            }
+            
+            setPaymentVerified(true);
+          } catch (error) {
+            console.error('Dashboard: Error verifying payment status:', error);
+            navigate('/payment-required');
+          }
+        }
+      };
   
+      // Original data fetching effect
       const fetchUserDailyLog = async () => {
         if (auth.isAuthenticated && auth.user && auth.user.id) {
           try {
@@ -51,37 +73,23 @@ function Dashboard() {
   
             console.log('Dashboard: Fetched user daily log:', data);
             setUserDailyLog(data); // Store the fetched data
-            setDateString(dayName); //Set date forr user
+            setDateString(dayName); //Set date for user
           } catch (error) {
             console.error('Dashboard: Error fetching user daily log:', error);
           }
         }
       };
   
-      if (!auth.isLoading) {
-        fetchUserDailyLog(); // Fetch the daily log if user is authenticated
+      // Verify payment first
+      verifyPayment();
+      
+      // Only fetch daily log if not loading and authenticated
+      if (!auth.isLoading && auth.isAuthenticated) {
+        fetchUserDailyLog();
       } else {
-        console.log('Dashboard: Auth is still loading, waiting to fetch data');
+        console.log('Dashboard: Auth is still loading or not authenticated');
       }
-    }, [auth]);  // This useEffect runs when the `auth` state changes
-  
-    // Loading state when waiting for authentication
-    if (auth.isLoading) {
-      console.log('Dashboard: Auth is still loading');
-      return <div>Loading user data...</div>;
-    }
-  
-    // Redirect to login if not authenticated
-    if (!auth.isAuthenticated || !auth.user) {
-      console.log('Dashboard: User not authenticated, redirecting to login');
-      return;
-    }
-  
-    // Loading state while fetching daily log
-    if (!userDailyLog) {
-      console.log('Dashboard: Fetching user daily log');
-      return <div>Fetching your daily log...</div>;
-    }
+    }, [auth, navigate]);  
 
   // Calculate total nutrition values from the daily log
   const totalNutrition = userDailyLog.reduce((acc, item) => {

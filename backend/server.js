@@ -23,6 +23,7 @@ const sslOptions = {
 
 const app = express();
 app.use(cors());
+app.use(express.json()); // Move this line here, after app initialization but before routes
 
 // HTTP server (redirect to HTTPS)
 http.createServer((req, res) => {
@@ -240,28 +241,25 @@ app.get('/test-db', async (req, res) => {
 // Route for creating a new user account
 app.post('/signup', async (req, res) => {
     console.log('New signup request received:', req.body);
-    const { username, email, age, weight_kg, height_cm, sex, password } = req.body;
+    const { username, email, age, kg, cm, sex, password } = req.body;
 
-    // Make sure we have the required information
     if (!username || !email || !password) {
         return res.status(400).json({ error: 'Missing required information' });
     }
 
     try {
-        // Check if the username or email is already taken
         const existingUser = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
         if (existingUser.rows.length > 0) {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
 
-        // Encrypt the password
         const saltRounds = 10;
         const password_hash = await bcrypt.hash(password, saltRounds);
 
-        // Create the new user in our database
+        // Updated query to include weight_kg and height_cm
         const result = await pool.query(
-            'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, username, email, created_at',
-            [username, email, age, weight_kg, height_cm, sex, password_hash]
+            'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash, has_completed_payment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, username, email, created_at',
+            [username, email, age, kg, cm, sex, password_hash, false]
         );
 
         res.status(201).json({
@@ -444,48 +442,53 @@ app.get('/user-daily-log', async (req, res) => {
 
 // Webhook for Stripe Events
 // Move this BEFORE any other middleware that parses the body
-app.post(
-    '/webhook',
-    express.raw({ type: 'application/json' }),
-    async (request, response) => {
-      const sig = request.headers['stripe-signature'];
-      const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA';
-  
-      let event;
-  
-      try {
+// First, add this before express.json() middleware
+const stripeWebhookMiddleware = express.raw({type: 'application/json'});
+
+// Then update the webhook route to use the specific middleware
+app.post('/webhook', stripeWebhookMiddleware, async (request, response) => {
+    const sig = request.headers['stripe-signature'];
+    const endpointSecret = 'we_1QiBMnFQmWdO1D5cCY5oK4VA';
+
+    let event;
+
+    try {
         event = stripe.webhooks.constructEvent(
-          request.body,
-          sig,
-          endpointSecret
+            request.body,
+            sig,
+            endpointSecret
         );
-      } catch (err) {
+    } catch (err) {
         console.error(`⚠️ Webhook Error: ${err.message}`);
         return response.status(400).send(`Webhook Error: ${err.message}`);
-      }
-  
-      // Handle successful payment
-      if (event.type === 'checkout.session.completed') {
+    }
+
+    // Handle successful payment
+    if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         
         try {
-          // Update user's payment status
-          await pool.query(
-            'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
-            [session.customer_details.email]
-          );
-          
-          console.log(`Payment status updated for user: ${session.customer_details.email}`);
+            // Update user's payment status with better error handling and logging
+            const updateResult = await pool.query(
+                'UPDATE users SET has_completed_payment = TRUE WHERE email = $1 RETURNING email',
+                [session.customer_details.email]
+            );
+            
+            if (updateResult.rowCount === 0) {
+                console.error(`No user found with email: ${session.customer_details.email}`);
+            } else {
+                console.log(`Payment status updated for user: ${session.customer_details.email}`);
+            }
         } catch (error) {
-          console.error('Error updating payment status:', error);
+            console.error('Error updating payment status:', error);
         }
-      }
-  
-      response.json({ received: true });
     }
-  );
 
-  app.use(express.json());
+    response.json({ received: true });
+});
+
+// Then add the general body parser for all other routes
+app.use(express.json());
 
   // Add this new endpoint to verify payment status
 app.get('/verify-payment-status', async (req, res) => {
