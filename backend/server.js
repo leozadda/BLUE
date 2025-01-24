@@ -490,6 +490,8 @@ app.post('/webhook', stripeWebhookMiddleware, async (request, response) => {
 // Then add the general body parser for all other routes
 app.use(express.json());
 
+
+///THIS IS NOT THE PROBLEM, IT WORKS 
   // Add this new endpoint to verify payment status
 app.get('/verify-payment-status', async (req, res) => {
     const { email } = req.query;
@@ -539,9 +541,10 @@ app.post('/create-checkout-session', async (req, res) => {
         subscription_data: {
           trial_period_days: 7,
         },
-        // Updated success and cancel URLs
-        success_url: `${YOUR_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${YOUR_DOMAIN}/payment-failed`,
+
+        // Update success_url to use the correct domain
+        success_url: 'https://www.b-lu-e.com/dashboard',
+        cancel_url: 'https://www.b-lu-e.com/error',
         // Collect customer email
         customer_email: req.body.email // Make sure to pass the user's email from your signup form
       });

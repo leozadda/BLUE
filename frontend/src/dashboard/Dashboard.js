@@ -8,7 +8,6 @@ import SearchBar from './SearchBar';
 import Result from '../search/AddedResult';
 import './Dashboard.css';
 
-
 // This function rounds numbers to 0 decimal places
 const formatNumber = (num) => {
   if (!isNaN(num)) return Number(num).toFixed(0);
@@ -28,7 +27,7 @@ const NutritionBox = ({ id, title, mainValue, subValue, onClick, unit = 'g' }) =
 function Dashboard() {
     // These state variables hold important data for the component
     const [dateString, setDateString] = useState('');
-    const [userDailyLog, setUserDailyLog] = useState(null);
+    const [userDailyLog, setUserDailyLog] = useState([]);
     const [paymentVerified, setPaymentVerified] = useState(false);
     
     // Get authentication state, logOff function, and navigation
@@ -43,7 +42,10 @@ function Dashboard() {
             const response = await fetch(`https://api.b-lu-e.com/verify-payment-status?email=${auth.user.email}`);
             const data = await response.json();
             
-            if (!data.hasCompletedPayment) {
+            console.log('Payment verification response:', data);
+            
+            // Check for explicit 'T' or true value for payment completion
+            if (data.hasCompletedPayment !== 'T' && data.hasCompletedPayment !== true) {
               console.log('Dashboard: User has not completed payment, redirecting...');
               navigate('/payment-required');
               return;
@@ -72,10 +74,11 @@ function Dashboard() {
             const data = await response.json();
   
             console.log('Dashboard: Fetched user daily log:', data);
-            setUserDailyLog(data); // Store the fetched data
+            setUserDailyLog(data || []); // Ensure array even if null
             setDateString(dayName); //Set date for user
           } catch (error) {
             console.error('Dashboard: Error fetching user daily log:', error);
+            setUserDailyLog([]); // Set to empty array on error
           }
         }
       };
@@ -92,47 +95,54 @@ function Dashboard() {
     }, [auth, navigate]);  
 
   // Calculate total nutrition values from the daily log
-  const totalNutrition = userDailyLog.reduce((acc, item) => {
-    acc.calories += item.calories || 0;
-    acc.protein += item.protein || 0;
-    acc.fat += item.fat || 0;
-    acc.carbs += item.carbs || 0;
-    acc.saturatedFat += item.saturated_fat || 0;
-    acc.monoUnsaturatedFat += item.monounsaturated_fat || 0;
-    acc.polyUnsaturatedFat += item.polyunsaturated_fat || 0;
-    acc.transFat += item.trans_fat || 0;
-    acc.cholesterol += item.cholesterol || 0;
-    acc.sugar += item.sugar || 0;
-    acc.calcium += item.calcium || 0;
-    acc.vitaminA += item.vitamina || 0;
-    acc.vitaminC += item.vitaminc || 0;
-    acc.vitaminD += item.vitamind || 0;
-    acc.vitaminE += item.vitamine || 0;
-    acc.vitaminK += item.vitamink || 0;
-    acc.iron += item.iron || 0;
-    acc.magnesium += item.magnesium || 0;
-    acc.zinc += item.zinc || 0;
-    acc.potassium += item.potassium || 0;
-    return acc;
-  }, {
-    calories: 0, protein: 0, fat: 0, carbs: 0, saturatedFat: 0,
-    monoUnsaturatedFat: 0, polyUnsaturatedFat: 0, transFat: 0,
-    cholesterol: 0, sugar: 0, calcium: 0, vitaminA: 0, vitaminC: 0,
-    vitaminD: 0, vitaminE: 0, vitaminK: 0, iron: 0, magnesium: 0,
-    zinc: 0, potassium: 0
-  });
+  const totalNutrition = userDailyLog && userDailyLog.length > 0 
+    ? userDailyLog.reduce((acc, item) => {
+        acc.calories += item.calories || 0;
+        acc.protein += item.protein || 0;
+        acc.fat += item.fat || 0;
+        acc.carbs += item.carbs || 0;
+        acc.saturatedFat += item.saturated_fat || 0;
+        acc.monoUnsaturatedFat += item.monounsaturated_fat || 0;
+        acc.polyUnsaturatedFat += item.polyunsaturated_fat || 0;
+        acc.transFat += item.trans_fat || 0;
+        acc.cholesterol += item.cholesterol || 0;
+        acc.sugar += item.sugar || 0;
+        acc.calcium += item.calcium || 0;
+        acc.vitaminA += item.vitamina || 0;
+        acc.vitaminC += item.vitaminc || 0;
+        acc.vitaminD += item.vitamind || 0;
+        acc.vitaminE += item.vitamine || 0;
+        acc.vitaminK += item.vitamink || 0;
+        acc.iron += item.iron || 0;
+        acc.magnesium += item.magnesium || 0;
+        acc.zinc += item.zinc || 0;
+        acc.potassium += item.potassium || 0;
+        return acc;
+      }, {
+        calories: 0, protein: 0, fat: 0, carbs: 0, saturatedFat: 0,
+        monoUnsaturatedFat: 0, polyUnsaturatedFat: 0, transFat: 0,
+        cholesterol: 0, sugar: 0, calcium: 0, vitaminA: 0, vitaminC: 0,
+        vitaminD: 0, vitaminE: 0, vitaminK: 0, iron: 0, magnesium: 0,
+        zinc: 0, potassium: 0
+      })
+    : {
+        calories: 0, protein: 0, fat: 0, carbs: 0, saturatedFat: 0,
+        monoUnsaturatedFat: 0, polyUnsaturatedFat: 0, transFat: 0,
+        cholesterol: 0, sugar: 0, calcium: 0, vitaminA: 0, vitaminC: 0,
+        vitaminD: 0, vitaminE: 0, vitaminK: 0, iron: 0, magnesium: 0,
+        zinc: 0, potassium: 0
+      };
 
   console.log('Calculated total nutrition:', totalNutrition); // Debug log
 
-  // This function switches between simple and detailed views of nutrition info
+  // These functions handle showing detailed information for different nutrients
   const toggleDetailView = (id, originalContent, detailedContent) => {
     const element = document.getElementById(id);
     const isOriginal = element.innerHTML.replace(/\s/g, '') === originalContent.replace(/\s/g, '');
     element.innerHTML = isOriginal ? detailedContent : originalContent;
-    console.log(`Toggled ${id} to ${isOriginal ? 'detailed' : 'original'} view`); // Debug log
+    console.log(`Toggled ${id} to ${isOriginal ? 'detailed' : 'original'} view`);
   };
 
-  // These functions handle showing detailed information for different nutrients
   const toggleCalorieDetail = () => {
     const total = totalNutrition.carbs + totalNutrition.fat + totalNutrition.protein;
     toggleDetailView('calorie', 
@@ -193,7 +203,7 @@ function Dashboard() {
         <div className='sidebar'>
           <div className='getHome'>
             <div className='home'><Link to="/" style={{ color: 'white' }}><ImHome3 /></Link></div>
-            <button  onClick={logOff} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
+            <button onClick={logOff} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
           </div>
           <div className='getSettings'>
             <div className='c'><VscSettings className='VscSettings' style={{ color: 'blue' }}/></div>
@@ -263,21 +273,25 @@ function Dashboard() {
           <div className='add'>
             <p6>History</p6>
             <div id='history' className='itemss'>
-              {userDailyLog.map((food, index) => {
-                console.log('Rendering food item:', food); // Debug log
-                return (
-                  <Result 
-                    key={index}
-                    food={{
-                      name: food.food_name,
-                      calories: food.calories,
-                      carbs: food.carbs,
-                      protein: food.protein,
-                      fats: food.fat
-                    }}
-                  />
-                );
-              })}
+              {userDailyLog && userDailyLog.length > 0 ? (
+                userDailyLog.map((food, index) => {
+                  console.log('Rendering food item:', food);
+                  return (
+                    <Result 
+                      key={index}
+                      food={{
+                        name: food.food_name,
+                        calories: food.calories,
+                        carbs: food.carbs,
+                        protein: food.protein,
+                        fats: food.fat
+                      }}
+                    />
+                  );
+                })
+              ) : (
+                <p>No food items logged today</p>
+              )}
             </div>
           </div>
         </div>
