@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
       refreshToken,
       isLoading: false,
       hasCompletedPayment, // Include payment status in auth data
-      trialEndsAt,  // Include trial end date
+      //trialEndsAt,  // Include trial end date
     };
     setAuth(authData);
     localStorage.setItem('auth', JSON.stringify(authData));
