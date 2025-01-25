@@ -25,74 +25,94 @@ const NutritionBox = ({ id, title, mainValue, subValue, onClick, unit = 'g' }) =
 );
 
 function Dashboard() {
-    // These state variables hold important data for the component
-    const [dateString, setDateString] = useState('');
-    const [userDailyLog, setUserDailyLog] = useState([]);
-    const [paymentVerified, setPaymentVerified] = useState(false);
-    
-    // Get authentication state, logOff function, and navigation
-    const { auth, logOff } = useAuth();
-    const navigate = useNavigate();
+  // State variables to manage dashboard data
+  const [dateString, setDateString] = useState('');     // Current day of the week
+  const [userDailyLog, setUserDailyLog] = useState([]); // User's food log for the day
+  const [paymentVerified, setPaymentVerified] = useState(false); // Payment status
   
-    // Payment verification effect
-    useEffect(() => {
+  // Authentication and navigation hooks
+  const { auth, logOff } = useAuth();     // Access user authentication state
+  const navigate = useNavigate();         // Navigate between routes
+
+  // Main effect to handle payment verification and data fetching
+  useEffect(() => {
+      // Check if user has paid or is in trial period
       const verifyPayment = async () => {
-        if (auth.isAuthenticated && auth.user && auth.user.email) {
-          try {
-            const response = await fetch(`https://api.b-lu-e.com/verify-payment-status?email=${auth.user.email}`);
-            const data = await response.json();
-            
-            console.log('Payment verification response:', data);
-            
-            if (!data.hasCompletedPayment) {
-              console.log('User has not completed payment or trial');
-              navigate('/payment');
-              return;
-            }
-            
-            setPaymentVerified(true);
-          } catch (error) {
-            console.error('Dashboard: Error verifying payment status:', error);
-            navigate('/error');
+          // Only proceed if user is authenticated
+          if (auth.isAuthenticated && auth.user && auth.user.email) {
+              try {
+                  // Call backend to verify payment status
+                  const response = await fetch(`https://api.b-lu-e.com/verify-payment-status?email=${auth.user.email}`);
+                  const data = await response.json();
+                  
+                  console.log('Payment verification response:', data);
+                  
+                  // Redirect to payment page if not paid/in trial
+                  if (!data.hasCompletedPayment) {
+                      console.log('User needs to complete payment or is out of trial');
+                      navigate('/payment');
+                      return;
+                  }
+                  
+                  // Optional: Add trial expiration warning
+                  if (data.trialEndsAt) {
+                      const trialEnd = new Date(data.trialEndsAt);
+                      const daysLeft = Math.ceil((trialEnd - new Date()) / (1000 * 60 * 60 * 24));
+                      
+                      if (daysLeft <= 3) {
+                          alert(`Your free trial expires in ${daysLeft} days. Please upgrade.`);
+                      }
+                  }
+                  
+                  setPaymentVerified(true);
+              } catch (error) {
+                  console.error('Dashboard: Error verifying payment status:', error);
+                  navigate('/error');
+              }
           }
-        }
       };
-    
+  
+      // Fetch user's daily food log
       const fetchUserDailyLog = async () => {
-        if (auth.isAuthenticated && auth.user && auth.user.id) {
-          try {
-            const today = new Date();
-            const date = today.toISOString().split('T')[0];
-            const dayIndex = today.getDay();
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const dayName = daysOfWeek[dayIndex];
-    
-            const response = await fetch(`https://api.b-lu-e.com/user-daily-log?user_id=${auth.user.id}&date=${date}`);
-            const data = await response.json();
-    
-            setUserDailyLog(data || []); 
-            setDateString(dayName);
-          } catch (error) {
-            console.error('Dashboard: Error fetching user daily log:', error);
-            setUserDailyLog([]); 
+          // Ensure user is authenticated before fetching
+          if (auth.isAuthenticated && auth.user && auth.user.id) {
+              try {
+                  // Get today's date and day name
+                  const today = new Date();
+                  const date = today.toISOString().split('T')[0];
+                  const dayIndex = today.getDay();
+                  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                  const dayName = daysOfWeek[dayIndex];
+      
+                  // Fetch food log from backend
+                  const response = await fetch(`https://api.b-lu-e.com/user-daily-log?user_id=${auth.user.id}&date=${date}`);
+                  const data = await response.json();
+      
+                  // Update state with fetched data
+                  setUserDailyLog(data || []); 
+                  setDateString(dayName);
+              } catch (error) {
+                  console.error('Dashboard: Error fetching user daily log:', error);
+                  setUserDailyLog([]); 
+              }
           }
-        }
       };
-    
-      // Verify payment first
+  
+      // First verify payment, then fetch daily log
       verifyPayment();
       
-      // Only fetch daily log if not loading and authenticated
+      // Only fetch log if authentication is complete
       if (!auth.isLoading && auth.isAuthenticated) {
-        fetchUserDailyLog();
+          fetchUserDailyLog();
       } else {
-        console.log('Dashboard: Auth is still loading or not authenticated');
+          console.log('Dashboard: Auth is still loading or not authenticated');
       }
-    }, [auth, navigate]);
+  }, [auth, navigate]);
 
-  // Calculate total nutrition values from the daily log
-  const totalNutrition = userDailyLog && userDailyLog.length > 0 
-    ? userDailyLog.reduce((acc, item) => {
+// Calculate total nutritional intake for the day
+const totalNutrition = userDailyLog && userDailyLog.length > 0 
+  ? userDailyLog.reduce((acc, item) => {
+      // Sum up nutritional values from all logged food items
         acc.calories += item.calories || 0;
         acc.protein += item.protein || 0;
         acc.fat += item.fat || 0;

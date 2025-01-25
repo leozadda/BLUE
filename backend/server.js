@@ -239,27 +239,21 @@ app.get('/test-db', async (req, res) => {
 });
 
 // Route for creating a new user account
+// Updated signup route to include trial period tracking
 app.post('/signup', async (req, res) => {
-    console.log('New signup request received:', req.body);
     const { username, email, age, kg, cm, sex, password } = req.body;
 
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Missing required information' });
-    }
-
     try {
-        const existingUser = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
-        if (existingUser.rows.length > 0) {
-            return res.status(400).json({ error: 'Username or email already exists' });
-        }
+        // Set trial period to 7 days from signup
+        const trialPeriodEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
         const saltRounds = 10;
         const password_hash = await bcrypt.hash(password, saltRounds);
 
-        // Updated query to include weight_kg and height_cm
+        // Insert user with trial period information
         const result = await pool.query(
-            'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash, has_completed_payment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, username, email, created_at',
-            [username, email, age, kg, cm, sex, password_hash, false]
+            'INSERT INTO users (username, email, age, weight_kg, height_cm, sex, password_hash, has_completed_payment, trial_period_ends_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, username, email',
+            [username, email, age, kg, cm, sex, password_hash, false, trialPeriodEndsAt]
         );
 
         res.status(201).json({
@@ -477,6 +471,7 @@ app.post('/webhook', async (request, response) => {
             const subscription = event.data.object;
             const customer = await stripe.customers.retrieve(subscription.customer);
             
+            //not sure if this is working
             await pool.query(
                 'UPDATE users SET trial_period_ends_at = $1, has_completed_payment = TRUE WHERE email = $2',
                 [new Date(subscription.trial_end * 1000), customer.email]
@@ -487,7 +482,8 @@ app.post('/webhook', async (request, response) => {
             event.type === 'invoice.payment_succeeded') {
             const subscription = event.data.object;
             const customer = await stripe.customers.retrieve(subscription.customer);
-            
+
+            //not sure if this is working
             await pool.query(
                 'UPDATE users SET has_completed_payment = TRUE WHERE email = $1',
                 [customer.email]
@@ -505,36 +501,35 @@ app.post('/webhook', async (request, response) => {
   // AFTER webhook route, add body parsers
   app.use(express.json());
 
-
-///THIS IS NOT THE PROBLEM, IT WORKS 
-  // Add this new endpoint to verify payment status
-  app.get('/verify-payment-status', async (req, res) => {
+// Improved payment status verification endpoint
+app.get('/verify-payment-status', async (req, res) => {
     const { email } = req.query;
-  
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
-    }
-  
+   
     try {
-      const result = await pool.query(
-        'SELECT has_completed_payment, trial_period_ends_at FROM users WHERE email = $1',
-        [email]
-      );
-  
-      if (result.rows.length === 0) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      const { has_completed_payment, trial_period_ends_at } = result.rows[0];
-      const now = new Date();
-      
-      res.json({
-        email,
-        hasCompletedPayment: has_completed_payment || (trial_period_ends_at && trial_period_ends_at > now)
-      });
+        const result = await pool.query(
+            'SELECT has_completed_payment, trial_period_ends_at FROM users WHERE email = $1',
+            [email]
+        );
+    
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+    
+        const { has_completed_payment, trial_period_ends_at } = result.rows[0];
+        const now = new Date();
+        
+        // Check if user has paid or is still within trial period
+        const hasActiveAccess = has_completed_payment || 
+            (trial_period_ends_at && new Date(trial_period_ends_at) > now);
+        
+        res.json({
+            email,
+            hasCompletedPayment: hasActiveAccess,
+            trialEndsAt: trial_period_ends_at
+        });
     } catch (error) {
-      console.error('Error verifying payment status:', error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error('Error verifying payment status:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

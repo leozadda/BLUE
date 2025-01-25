@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
     token: null,              // The "key" that proves the user is logged in
     refreshToken: null,       // A special key to get a new "key" when the old one expires
     isLoading: true,          // Are we still checking if the user is logged in?
-    hasCompletedPayment: false // New field to track payment status
+    hasCompletedPayment: false, // New field to track payment status
+    trialEndsAt: null  // Added trial end date tracking
   });
 
   // This function gets a new "key" (token) when the old one is about to expire
@@ -70,7 +71,8 @@ export const AuthProvider = ({ children }) => {
       token,
       refreshToken,
       isLoading: false,
-      hasCompletedPayment // Include payment status in auth data
+      hasCompletedPayment, // Include payment status in auth data
+      trialEndsAt,  // Include trial end date
     };
     setAuth(authData);
     localStorage.setItem('auth', JSON.stringify(authData));
@@ -89,18 +91,17 @@ export const AuthProvider = ({ children }) => {
 
   // Updated logOff to include payment status reset
   const logOff = () => {
-    console.log('LogOff called. Clearing auth data.');
     setAuth({ 
-      isAuthenticated: false, 
-      user: null, 
-      token: null, 
-      refreshToken: null, 
-      isLoading: false,
-      hasCompletedPayment: false 
+        isAuthenticated: false, 
+        user: null, 
+        token: null, 
+        refreshToken: null, 
+        isLoading: false,
+        hasCompletedPayment: false,
+        trialEndsAt: null 
     });
     localStorage.removeItem('auth');
-    console.log('User logged out and auth data removed from local storage');
-  };
+};
 
   // Provide the authentication info and functions to all child components
   return (
