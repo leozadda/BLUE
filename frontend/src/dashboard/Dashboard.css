@@ -69,7 +69,7 @@ body{
 
 }
 
-.getHome{
+.miniBar{
     color: white;
     font-size: 30px;
     flex: 100%;
@@ -106,6 +106,60 @@ body{
     font-size: 40px;
 
 }
+
+
+.miniBar {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+  }
+  
+  
+  
+  .nutrition-tab {
+    background-color: blue; /* Example background color */
+    flex: 100%;
+    font-size: 1.5em;
+    padding-top: 0.5em;
+    transition: opacity 0.3s ease; /* Smooth transition */
+  }
+  
+  .nutrition-tab:hover {
+    opacity: 0.5; /* Slightly dim the entire tab */
+    cursor: pointer;
+  }
+  
+  .exercise-tab {
+    background-color: blue; /* Example background color */
+    flex: 100%;
+    font-size: 1.5em;
+    transition: opacity 0.3s ease; /* Smooth transition */
+  }
+  
+  .exercise-tab:hover {
+    opacity: 0.5; /* Slightly dim the entire tab */
+    cursor: pointer;
+  }
+  
+  .biometrics-tab {
+    background-color: blue; /* Example background color */
+    flex: 100%;
+    font-size: 1.5em;
+    padding-bottom: 0.5em;
+    transition: opacity 0.3s ease; /* Smooth transition */
+  }
+  
+  .biometrics-tab:hover {
+    opacity: 0.5; /* Slightly dim the entire tab */
+    cursor: pointer;
+  }
+  
+  
+
+
+    
+
 .HiHome:hover{
     opacity: .9;
 
@@ -675,13 +729,27 @@ body{
 }
 
 
-.itemss{
-    max-width: 20vw;
+.itemss {
+    width: 100%; /* Replace max-width with full width */
     max-height: 60vh;
     min-height: 60vh;
     overflow-y: scroll;
-    justify-self: start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center content horizontally */
 }
+
+.empty-log {
+    color: white;
+    text-align: center;
+    font-size: .8em;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 1s;
+    font-family: "Andale Mono", AndaleMono, monospace;
+}
+
 
 
 
@@ -718,6 +786,20 @@ body{
     color: white;
     background-color: blue;
 } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media screen and (max-width: 800px)
 {
@@ -807,29 +889,6 @@ zoom: 1;
         text-decoration: none;
         min-width: 100vw;
         line-height: .8em;
-    }
-
-    .getHome{
-        color: white;
-        font-size: 0px;
-        flex: 100%;
-        text-align: center;
-        margin-top: 0em;
-        padding-top: 0em;
-        border: solid white 0px;
-        border-radius: 1em;
-        max-height: 10vh;
-        max-width: 100vw;
-        background-color: blue;
-        border-radius: .5em;
-        border-top: solid white 0px;
-        border-bottom: solid white 0px;
-        margin-left: 0em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-    
     }
 
 
@@ -1206,6 +1265,18 @@ zoom: 1;
         overflow-y: scroll;
         min-height: 60vh;
     }
+    .empty-log {
+        color: white;
+        text-align: center;
+        font-size: .8em;
+        flex: 100% 1;
+        padding: 0;
+        margin: 0;
+        animation: fadeIn 1s;
+        font-family: "Andale Mono", AndaleMono, monospace;
+        flex: 100%; /* This ensures it takes full width and wraps */
+    text-align: center;
+    }
     
 }
 .foods{
@@ -1275,3 +1346,5 @@ zoom: 1;
 .add li:hover{
     color: blue;
 } */
+
+

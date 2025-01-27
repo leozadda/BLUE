@@ -7,6 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Result from '../search/AddedResult';
 import './Dashboard.css';
+import { IoFastFood } from "react-icons/io5";
+import { GiWeight } from "react-icons/gi";
+import { FaWeightScale } from "react-icons/fa6";
+import { GiHamShank } from "react-icons/gi";
+import { GiChemicalDrop } from "react-icons/gi";
+import { GiBed } from "react-icons/gi";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { BiPulse } from "react-icons/bi";
+import { BiRun } from "react-icons/bi";
+import { BiRestaurant } from "react-icons/bi";
+import { TbMeat } from "react-icons/tb";
+import { IoPulse } from "react-icons/io5";
+import { IoScaleSharp } from "react-icons/io5";
+import { IoCog } from "react-icons/io5";
 
 // This function rounds numbers to 0 decimal places
 const formatNumber = (num) => {
@@ -67,7 +81,7 @@ function Dashboard() {
                   setPaymentVerified(true);
               } catch (error) {
                   console.error('Dashboard: Error verifying payment status:', error);
-                  navigate('/error');
+                  //navigate('/error');
               }
           }
       };
@@ -217,12 +231,13 @@ const totalNutrition = userDailyLog && userDailyLog.length > 0
       <div id="dash" className='grid'>
         {/* This is the sidebar */}
         <div className='sidebar'>
-          <div className='getHome'>
-            <div className='home'><Link to="/" style={{ color: 'white' }}><ImHome3 /></Link></div>
-            <button onClick={logOff} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontSize: '1em'}}><ImSwitch /></button>
+          <div className='miniBar'>
+            <div className='nutrition-tab'><GiHamShank /></div>
+            <div className='exercise-tab'><GiWeight /></div>
+            <div className='biometrics-tab'><IoScaleSharp /></div>
           </div>
           <div className='getSettings'>
-            <div className='c'><VscSettings className='VscSettings' style={{ color: 'blue' }}/></div>
+            <div className='c'><IoCog className='VscSettings' style={{ color: 'blue' }}/></div>
           </div>
         </div>
 
@@ -306,7 +321,9 @@ const totalNutrition = userDailyLog && userDailyLog.length > 0
                   );
                 })
               ) : (
-                <p>Nothing.</p>
+                <div style={{ flex: '100%', textAlign: 'center' }}>
+                <p id="empty-log" className="empty-log">Nothing</p>
+              </div>
               )}
             </div>
           </div>
