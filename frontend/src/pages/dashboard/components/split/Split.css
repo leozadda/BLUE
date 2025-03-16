@@ -1,0 +1,127 @@
+/* 
+ * Split.css - Consolidated version
+ * This file contains styles for the Split component and its child elements
+ */
+
+/* 
+ * Desktop styles (apply only to screens wider than 768px)
+ */
+ @media (min-width: 769px) {
+  /* Base styles for Split component */
+  .Split {
+    /* Positioning and size */
+    position: fixed !important; /* Fixed positioning to viewport */
+    top: 0 !important;
+    left: 16% !important; /* Accounts for sidebar width */
+    width: 84% !important; /* Matches Main-Container width */
+    height: 100vh !important; /* Full viewport height */
+    
+    /* Box model properties */
+    padding: 1.5em !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    
+    /* Appearance */
+    background-color: rgb(0, 0, 200);
+    overflow-y: auto;
+    
+    /* Flexbox layout */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    
+    /* Typography */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+  }
+
+  /* Styles for the grid inside Split component */
+  .Split-Grid {
+    /* Size and layout */
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 auto !important;
+    
+    /* Box model */
+    padding: 2em;
+    border-radius: .6em;
+    
+    /* Positioning */
+    position: relative;
+    
+    /* Appearance */
+    background-color: blue;
+    overflow-y: scroll;
+    
+    /* Flexbox layout */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0em;
+    justify-content: center;
+    align-items: top;
+  }
+
+  /* Styles for the calendar section */
+  .Calendar-Grid {
+    width: 30%;  /* Percentage of parent width */
+    height: 60%;  /* Percentage of parent height */
+  }
+
+  /* Styles for the day view section */
+  .Day-Grid {
+    width: 50%;
+  }
+}
+
+/* 
+ * Mobile styles - applied when viewport width is 768px or less
+ * Completely separate from desktop styles to avoid inheritance issues
+ */
+@media (max-width: 768px) {
+  /* Mobile styles for Split container */
+  .Split {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    position: relative; /* Different from desktop fixed positioning */
+    overflow-y: scroll;
+    border-radius: 0;
+    background-color: blue;
+    padding: 1em;
+    
+    /* Typography */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    
+    /* Ensure display properties are set for mobile */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  /* Mobile styles for the grid layout */
+  .Split-Grid {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically on mobile */
+    gap: 0em;
+    margin: 0;
+    padding: 2em 0 0 0;
+    height: 100%;
+    justify-content: start;
+    align-items: center;
+    overflow-y: scroll;
+    width: 100%;
+    background-color: blue;
+    border-radius: .6em;
+    position: relative;
+  }
+
+  /* Mobile styles for calendar and day sections */
+  .Calendar-Grid,
+  .Day-Grid {
+    width: 100%; /* Full width on mobile */
+    height: auto; /* Automatic height based on content */
+  }
+}

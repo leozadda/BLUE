@@ -1,0 +1,47 @@
+.stripe-form-buttons{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    margin-top: 1em;
+
+}
+
+.action-button{
+    padding: .7em 1em .7em 1em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1em;
+    font-weight: light;
+    width: 30%;
+}
+/* Add these rules to your StripePaymentForm.css */
+.stripe-form {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .stripe-form > * {
+    width: 100% !important;
+  }
+  
+  .StripeElement {
+    width: 100% !important;
+  }
+  
+  .__PrivateStripeElement {
+    width: 100% !important;
+  }
+  
+  /* Target the iframe directly */
+  .__PrivateStripeElement iframe {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Example: Hide one‑click checkout link */
+.AnimatePresence {
+    display: none !important;
+  }
+  

@@ -1,0 +1,86 @@
+/* Main container styling */
+.chart-container {
+    border: 0px solid white;
+    border-radius: .6em;
+    padding: 1.5em;
+    background-color: blue;
+    position: relative;
+}
+  
+/* Header section styling */
+.Chart-Header {
+    margin: .5em;
+}
+  
+/* Chart title styling */
+.chart-title {
+    padding-left: .5em;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal; 
+    font-variant: normal; 
+    text-align: left;
+    color: white;
+}
+  
+/* Current period display styling */
+.Current-Month {
+    padding-left: 0.5em;
+    color: white;
+    font-size: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal; 
+    font-variant: normal; 
+    text-align: left;
+    margin-left: 1em;
+}
+  
+/* Centered percentage display container */
+.percentage-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+  
+/* Large percentage number styling */
+.percentage-number {
+    font-size: 32px;
+    font-weight: bold;
+}
+  
+/* Percentage label styling */
+.percentage-label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Time range buttons container */
+.time-range-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5em;
+}
+
+/* Individual time button styling */
+.time-button {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Active state for time buttons */
+.time-button.active {
+    background: white;
+    color: blue;
+}

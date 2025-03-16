@@ -1,0 +1,209 @@
+/* Base reset for html and body */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Main sign-up container styling */
+.Sign-Up {
+  background-color: blue;
+  min-width: 100vw;        /* Full viewport width */
+  min-height: 100vh;       /* Full viewport height */
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Center children horizontally */
+  align-items: center;     /* Center children vertically */
+  margin: 0;
+  padding: 0;
+}
+
+/* White card container styling */
+.Sign-Up-Container {
+  justify-content: center;
+  align-items: center;     /* Center children vertically (changed from 'start') */
+  border-radius: 2em;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;         /* Allow items to wrap on smaller screens */
+  max-width: 25vw;         /* Responsive width */
+  border: solid .1em white;
+  padding: 1em;
+  background-color: blue;
+  animation: fadeIn 3s;    /* Fade-in animation */
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for Google button */
+.google-container {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.Sign-Up-Container h1 {
+  color: rgb(255, 255, 255);
+  font-family: "Hoefler Text", serif;
+  font-size: 2em;
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
+  padding-top: 1em;
+}
+
+.Sign-Up-Container p {
+  color: rgb(255, 255, 255);
+  font-family: "Andale Mono", AndaleMono, monospace;
+  font-size: .8em;
+  text-align: center;
+  max-width: 80%;
+}
+
+.Sign-Up-Container h1:hover {
+  opacity: .8;
+}
+
+.Sign-Up-Container input {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-bottom: solid white 2px;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  font-size: 16px;
+  font-weight: light;
+  max-width: 70%;
+  margin-bottom: .5em;
+  padding: 1em;
+  text-align: left;
+  flex: 100%;
+}
+
+.Sign-Up-Container input:focus {
+  outline: none;
+}
+
+.Sign-Up-Container input::placeholder {
+  text-align: left;
+  font-style: italic;
+  opacity: .8;
+  color: white;
+  text-transform: capitalize;
+}
+/* Center the Google button container */
+.google-sign-up {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Ensure it takes full width */
+    margin: 1em; /* Add some space between the title and the button */
+}
+
+/* THIS ACTUALLY CHANGES THE CUSTOM GOOGLE BUTTON OVERALL */
+.google-sign-up .custom-google-button {
+  color: #0000FF;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  font-size: 1em;
+  text-align: center;
+  padding: .5em;
+  background-color: white;
+  border-radius: .8em;
+  display: flex; /* Ensure the button is a flex container */
+  align-items: center; /* Center the logo and text vertically */
+  justify-content: center; /* Center the logo and text horizontally */
+  border: 2px solid white;
+  width: 60%;
+}
+
+.google-sign-up .custom-google-button:hover {
+  font-family: "Andale Mono", AndaleMono, monospace;
+  font-size: 1em;
+  text-align: center;
+  padding: .5em;
+  background-color: blue;
+  border: 2px solid white;
+  color: white;
+  border-radius: .8em;
+}
+
+/* Target the SVG icon inside the button on hover */
+.google-sign-up .custom-google-button:hover .custom-google-logo .google-logo path {
+  fill: white; /* Change the SVG icon color to blue on button hover */
+}
+/* Specific styles for the email submit button */
+.Sign-Up-Container .submit-button {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 3em;
+  border: solid white 1.5px;
+  padding: .5em;
+  border-radius: .5em;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  background-color: blue;
+  color: white;
+  flex: 100%;
+  max-width: 10vw;
+}
+
+.Sign-Up-Container .submit-button:hover {
+  color: blue;
+  background-color: aliceblue;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@media screen and (max-width: 600px) {
+  .Sign-Up-Container {
+    max-width: 80vw;
+    border: none;
+  }
+  .Sign-Up-Container h1 {
+    font-size: 2.5em;
+    padding-bottom: 0em;
+  }
+  .Sign-Up-Container button {
+    max-width: 25vw;
+  }
+  .Sign-Up-Container input {
+    max-width: 80%;
+  }
+
+  .Sign-Up-Container button:active {
+    color: blue;
+    background-color: aliceblue;
+  }
+
+  /* Center the Google button container */
+  .google-sign-up {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Ensure it takes full width */
+    margin: 1em; /* Add some space between the title and the button */
+  }
+
+  /* THIS ACTUALLY CHANGES THE CUSTOM GOOGLE BUTTON OVERALL */
+  .google-sign-up .custom-google-button {
+  font-size: 1em;
+  text-align: center;
+  background-color: white;
+  display: flex; /* Ensure the button is a flex container */
+  align-items: center; /* Center the logo and text vertically */
+  justify-content: center; /* Center the logo and text horizontally */
+  min-width: 75%;
+  max-height: 30px;
+  padding: 1.5em;
+  margin: .5em;
+  }
+  /* Specific styles for the email submit button */
+  .Sign-Up-Container .submit-button {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 2em;
+  padding: .5em;
+  border-radius: .5em;
+  flex: 100%;
+  min-width: 30%;
+  }
+}

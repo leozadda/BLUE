@@ -1,0 +1,122 @@
+/* Container styles */
+.chart-container {
+    border: 0px solid white;
+    border-radius: .6em;
+    padding: 1.5em;
+    background-color: blue;
+}
+  
+  /* Header styles */
+  .Chart-Header {
+    margin: .5em;
+  }
+  
+  .chart-title {
+    padding-left: .5em;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal; 
+    font-variant: normal; 
+    text-align: left;
+    color: white;
+  }
+  
+  .Current-Month {
+    padding-left: 0.5em;
+    color: white;
+    font-size: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal; 
+    font-variant: normal; 
+    text-align: left;
+    margin-left: 1em;
+  }
+  
+  /* Control buttons styles */
+  .time-range-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5em;
+  }
+  
+  .time-range-button {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  .time-range-button.active {
+    background: white;
+    color: blue;
+  }
+  
+  /* Muscle group controls */
+  .muscle-group-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5em;
+  }
+  
+  .muscle-group-button {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    transition: all 0.2s ease;
+  }
+  
+  /* Active states for muscle group buttons */
+  .muscle-group-button.chest.active {
+    background: #FF6B6B;
+    border-color: #FF6B6B;
+    color: white;
+  }
+  
+  .muscle-group-button.back.active {
+    background: #4ECDC4;
+    border-color: #4ECDC4;
+    color: white;
+  }
+  
+  .muscle-group-button.legs.active {
+    background: #45B7D1;
+    border-color: #45B7D1;
+    color: white;
+  }
+  
+  .muscle-group-button.shoulders.active {
+    background: #96CEB4;
+    border-color: #96CEB4;
+    color: white;
+  }
+  
+  .muscle-group-button.arms.active {
+    background: #FFBE0B;
+    border-color: #FFBE0B;
+    color: white;
+  }
+  
+  /* Legend styles */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5em;
+    color: white;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }

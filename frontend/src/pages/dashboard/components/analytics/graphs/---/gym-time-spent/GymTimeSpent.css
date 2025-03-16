@@ -1,0 +1,45 @@
+.time-container {
+  border: 0px solid white;
+  border-radius: .6em;
+  padding: 1.5em;
+  background-color: blue;
+  min-height: 400px;
+  height: 100%;
+}
+
+.time-header {
+  margin: .5em;
+}
+
+.time-title {
+  padding-left: .5em;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  text-align: left;
+  color: white;
+}
+
+.time-subtitle {
+  padding-left: 0.5em;
+  color: white;
+  font-size: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  text-align: left;
+  margin-left: 1em;
+}
+  
+  .time-subtitle {
+    padding-left: 0.5em;
+    color: white;
+    font-size: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    text-align: left;
+    margin-left: 1em;
+  }

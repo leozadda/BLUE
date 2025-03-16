@@ -1,0 +1,614 @@
+/* LogWorkout.css - Styles for the LogWorkout component */
+
+/* Main container styles - updated to match Lift.css */
+
+.LogWorkout-Main-Container{
+  position: fixed !important; /* Override any relative positioning */
+  top: 0 !important;
+  left: 16% !important; /* This accounts for your sidebar width */
+  width: 84% !important; /* Match the Main-Container width */
+  height: 100vh !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  padding: 1.5em !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.LogWorkout-container {
+  margin: 1em;
+  /* Changed from overflow-y: auto + overflow: scroll to just overflow: auto */
+  overflow: auto;
+  background-color: rgb(0, 0, 255);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: white;
+  border-radius: .5em;
+  /* Changed fixed width to responsive width */
+  width: auto;
+  /* Added max-height to ensure scrolling works on all devices */
+  height: 90%;
+  padding: 1em;
+  /* Added position: relative to establish stacking context */
+  position: relative;
+  width: 100% !important; /* Make it narrower than parent */
+  background-color: blue;
+  border-radius: .6em;
+  padding: 2em;
+  position: relative;
+  overflow-y: scroll;
+  height: 100% !important;
+  margin: 0 auto !important;
+}
+/* Header section styles */
+.LogWorkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0em;
+  font-size: 1.5em;
+  border-radius: .2em;
+  margin: 0em;
+  padding: 1em;
+}
+
+.LogWorkout-header h1 {
+  font-size: 4em;
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+.Set-Type{
+  text-align: center;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 3em;
+  font-weight: 900;
+}
+.Exercise-Info-Container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  padding: .5em;
+  border-radius: .3em;
+  gap: 1em;
+}
+
+
+.Exercise-Info{
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+}
+
+/* Date navigator styles - updated to match Lift header */
+.Date-navigator {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 1em;
+  margin-bottom: 0em;
+  background-color: blue;
+  padding: 1em;
+  font-size: 2em;
+  font-weight: 900;
+  font-style: normal;
+  border-bottom: solid 1px white;
+  /* Added flex-wrap for better mobile display */
+  flex-wrap: wrap;
+  animation: slideIn .60s ease-in;
+}
+
+.Date-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  border: 1px solid white;
+  border-radius: 0.3em;
+  padding: 0.5em;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.Date-nav-button:hover {
+  background-color: rgb(0, 0, 220);
+}
+
+.Current-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex: 1;
+  color: rgb(255, 255, 255);
+  font-weight: 900;
+  /* Added word-break for smaller screens */
+  word-break: break-word;
+  /* Added min-width for better layout on small screens */
+  min-width: 200px;
+  font-family: "Hoefler Text";
+  font-size: 1em;
+  font-weight: 500;
+  
+}
+
+/* Save button styles - updated to match Lift button styling */
+.Save-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.75em 1.5em;
+  background-color: blue;
+  color: white;
+  border: 1px solid white;
+  border-radius: 0.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  text-transform:uppercase;
+}
+
+.Save-button:hover {
+  background-color: rgb(0, 0, 220);
+  box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.Save-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Days grid layout */
+.LogWorkout-days {
+  display: flex;
+  flex-direction: column;
+  gap: 0em;
+  /* Added to ensure content is contained */
+  width: 100%;
+  /* Changed from overflow: scroll to auto */
+  overflow: auto;
+}
+
+/* Individual day card styles - updated to match Lift exercise-card */
+.Day-card {
+  background-color: blue;
+  border-radius: 0.75em;
+  padding: 0em 1em 0 1em;
+  color: white;
+  margin-bottom: 1.5em;
+  transition: all 0.3s ease;
+  /* Added to ensure content doesn't overflow */
+  overflow: hidden;
+}
+
+.Day-card:hover {
+  box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.Day-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
+  color: white;
+}
+
+.Day-header h2 {
+  font-size: 1.2em;
+  margin: 0;
+  /* Added word-break for mobile */
+  word-break: break-word;
+}
+
+/* Exercise list styles */
+.Exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  margin-bottom: 1em;
+  /* Added to prevent content overflow */
+  width: 100%;
+}
+
+.Exercise-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.75em;
+  border-radius: 0.5em;
+  border: 1px solid rgba(255, 255, 255, 0.516);
+  transition: all 0.3s ease;
+  margin-bottom: 0.5em;
+  /* Added to ensure all content is visible */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1em;
+}
+
+.Exercise-item:hover {
+  border-color: white;
+}
+
+.Exercise-item.active {
+  border-color: white;
+}
+
+.Set-number {
+  min-width: 50px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Goal info shows the planned weight and reps */
+.Goal-info {
+  color: #ffffff;
+  margin: 0.5em 0;
+}
+
+/* Counter container for increment/decrement controls - styled like form-control */
+.Counter {
+  display: flex;
+  gap: 1em;
+  margin: 0.5em 0;
+  align-items: center;
+  justify-content: space-between;
+  /* Added flex-wrap for better mobile display */
+  flex-wrap: wrap;
+  /* Added to ensure all content is visible */
+  width: 100%;
+}
+
+/* Each counter item (for weight or reps) */
+.Counter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  /* Added for better mobile responsiveness */
+  min-width: 200px;
+  margin: 0.25em 0;
+}
+
+/* Style the counter buttons to match Lift input styling*/
+.Counter-item button {
+  width: 40px;
+  height: 36px;
+  border: 1px solid white;
+  background-color: blue;
+  cursor: pointer;
+  border-radius: 0.5em;
+  color: white;
+  transition: all 0.3s ease;
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Counter-item button:hover {
+  background-color: rgb(0, 0, 220);
+}
+
+.Counter-item button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.Counter-item span {
+  min-width: 80px;
+  text-align: center;
+}
+
+.minus-one {
+  font-weight: bold;
+}
+
+.plus-one {
+  font-weight: bold;
+}
+
+/* Set actions container */
+.Set-actions {
+  display: flex;
+  gap: 0.5em;
+  justify-content: flex-end;
+  margin-top: 0.5em;
+  color: white;
+  /* Added for better mobile display */
+  flex-wrap: wrap;
+}
+
+/* Complete toggle button */
+.Complete-toggle {
+  margin-left: auto;
+  padding: 0.4em 0.8em;
+  border: 1px solid white;
+  background-color: blue;
+  color: white;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.Complete-toggle:hover {
+  background-color: rgb(0, 0, 220);
+}
+
+.Complete-toggle.completed {
+  background-color: #ffffff;
+  color: blue;
+}
+
+/* Complete and Delete buttons */
+.Complete-button, .Delete-button {
+  background-color: blue;
+  color: white;
+  border: 1px solid white;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Complete-button:hover {
+  background-color: #ffffff;
+  color: blue;
+}
+
+.Delete-button:hover {
+  background-color: rgb(255, 255, 255);
+  color: blue;
+}
+
+/* No workout message */
+.No-workout {
+  grid-column: 1 / -1;
+  padding: 2em;
+  background-color: blue;
+  border: 1px solid white;
+  border-radius: 0.75em;
+  text-align: center;
+  color: white;
+}
+
+/* Loading and error states */
+.LogWorkout-loading,
+.LogWorkout-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+
+.LogWorkout-error {
+  color: #ffffff;
+}
+
+/* Feedback message styling */
+.Feedback-message-container {
+  background-color: blue;
+  color: white;
+  padding: 1em;
+  border-radius: 0.5em;
+  margin-bottom: 0em;
+  border: 0px solid white;
+  text-align: center;
+  /* Added z-index to ensure visibility */
+  position: relative;
+  z-index: 10;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  text-transform: uppercase;
+  font-size: .8em;
+  font-weight: light;
+  animation: slideIn .20s ease-in;
+}
+
+.Feedback-message {
+  color: #ffffff;
+  margin-bottom: 0.5em;
+  font-size: 0.9em;
+}
+
+.LogWorkout-Message{
+  font-family: "Hoefler Text";
+  font-size: 10em;
+  font-weight: 500;
+  font-style: normal;
+  text-align: center;
+  text-transform: uppercase;
+  margin: .1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.LogWorkout-Message-Button{
+  padding: 0.75rem 1.5rem;
+  border: 1px solid white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  text-transform: uppercase;
+  font-weight: light;
+  border-radius: .2em;
+  text-align: center;
+  background-color: blue;
+
+}
+.LogWorkout-Message-Button:hover{
+  background-color: white;
+  color: blue;
+}
+
+
+/* Responsive design - improved mobile support */
+@media (max-width: 768px) {
+
+  .LogWorkout-Main-Container{
+    width: 100vw !important;
+    left: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .LogWorkout-container {
+    width: 100vw !important;
+    height: 100% !important;
+    margin: 0;
+    padding-top: 2em;
+    max-height: none;
+  }
+  
+  .LogWorkout-header {
+    flex-direction: row;
+    gap: 0em;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+
+  }
+  
+  .Date-navigator {
+    width: 100%;
+    font-size: 1.5em;
+    padding: 1em 0 0 0;
+    /* Improved layout for mobile */
+    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: .5em;
+    margin-bottom: 0;
+  }
+  
+  .Current-date {
+    font-size: 0.8em;
+    flex: 0;
+    text-align: center;
+    margin: 0;
+    justify-content: center;
+    padding: 1em;
+  }
+  
+  .LogWorkout-days {
+    grid-template-columns: 1fr;
+    gap: 1em;
+  }
+  
+  .Day-card {
+    padding: 1em;
+    margin-bottom: 1em;
+    margin: 0em;
+  }
+  
+  .Exercise-item {
+    padding: 1em;
+    margin-bottom: 1em;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+  }
+
+  .Exercise-Info-Container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    padding: .5em;
+    border-radius: .3em;
+    gap: .5em;
+  }
+  
+  
+  .Exercise-Name{
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    font-weight: 500;
+    width: 100%;
+    text-align: right;
+  
+  }
+  .Exercise-Equipment{
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .Set-number {
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+  
+  .Counter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .Counter-item {
+    width: 100%;
+    justify-content: center;
+
+  }
+  .Counter-item button {
+    width: 100px;
+    height: 45px;
+    font-size: 1em;
+    border-radius: .3em;
+    border: solid white 1px;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    text-transform: uppercase;
+    font-weight: light;
+  }
+  
+  .Set-actions {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1em;
+    display: flex;
+    gap: 2em;
+  }
+  .Set-actions button{
+    background-color: blue;
+    color: white;
+  }
+  
+  /* Added for very small screens */
+  @media (max-width: 360px) {
+    .Date-navigator {
+      font-size: 1.2em;
+    }
+    
+    .Counter-item {
+      min-width: 100%;
+    }
+    
+    .Counter-item span {
+      min-width: 60px;
+    }
+  }
+}

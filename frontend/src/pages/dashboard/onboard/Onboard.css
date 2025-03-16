@@ -1,0 +1,201 @@
+.onboarding-tooltip {
+    position: fixed;
+    z-index: 2000;
+    background-color: blue;
+    border-radius: .5em;
+    width: auto;
+    animation: fadeIn 0.3s ease-out;
+    color: white;
+    padding: 4em;
+    max-width: 90vw; /* Prevent tooltip from overflowing viewport width */
+    box-sizing: border-box;
+    margin: 3em;
+    border: solid 1px white;
+  }
+  
+  .onboarding-tooltip h3 {
+    margin: 0;
+    font-family: "Hoefler Text";
+    font-size: 4em;
+    font-weight: 500;
+    font-style: normal;
+    text-align: center;
+  }
+  
+  .onboarding-tooltip p {
+    margin: 0;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1.3em;
+    font-weight: light;
+    font-style: normal;
+    text-align: center;
+  }
+  
+  .onboarding-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+    padding: 4em 0em 1em 0em;
+    gap: 1em;
+  }
+  
+  .skip-button {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+    border: 0;
+    border-radius: .3em;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    padding: .5em 1em .5em 1em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1em;
+    font-weight: light;
+    font-style: normal;
+  }
+  
+  .skip-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .next-button {
+    background-color: blue;
+    color: white;
+    border: solid white 1px;
+    border-radius: .3em;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    padding: .5em 1em .5em 1em;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1em;
+    font-weight: light;
+    font-style: normal;
+  }
+  
+  .next-button:hover {
+    background-color: #ffffff;
+    color: blue;
+  }
+  
+  .onboarding-progress {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .progress-dot {
+    width: 30px;
+    height: 5px;
+    border-radius: 5%;
+    background-color: #ffffff;
+  }
+  
+  .progress-dot.active {
+    background-color: rgba(255, 255, 255, 0.271);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .onboarding-highlight {
+    animation: pulse 2s infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 0 2px rgb(255, 255, 255);
+    }
+    50% {
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 0 6px rgb(255, 255, 255);
+    }
+    100% {
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 0 2px rgb(255, 255, 255);
+    }
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .onboarding-tooltip {
+    margin: 1em;
+      padding: 2em !important;
+      width: 85vw;
+      max-height: auto;
+      overflow-y: auto;
+    }
+  
+    .onboarding-tooltip h3 {
+      font-size: 3em !important;
+      margin-bottom: 0.5em;
+    }
+  
+    .onboarding-tooltip p {
+      font-size: 1.3em !important;
+    }
+  
+    .onboarding-buttons {
+      padding: 3em 0em 1em 0em !important;
+    }
+  
+    .progress-dot {
+      width: 20px;
+      height: 4px;
+    }
+  }
+  
+  /* Small phone screens */
+  @media (max-width: 480px) {
+    .onboarding-tooltip {
+      padding: 1.5em;
+      width: 90vw;
+    }
+  
+    .onboarding-tooltip h3 {
+      font-size: 2em;
+    }
+  
+    .onboarding-tooltip p {
+      font-size: 0.9em;
+    }
+  
+    .onboarding-buttons {
+      padding: 1.5em 0em 1em 0em;
+    }
+  
+    .skip-button, .next-button {
+      padding: .4em 0.8em;
+      font-size: 0.9em;
+    }
+    .skip-button {
+        background-color: rgb(255, 255, 255);
+        color: blue;
+        border: 0;
+      }
+      
+      .skip-button:hover {
+        background-color: #f0f0f0;
+      }
+
+      .next-button {
+        background-color: blue !important;
+        color: white !important;
+        border: solid white 1px !important;
+      }
+      
+      .next-button:hover {
+        background-color: #ffffff;
+        color: blue;
+      }
+  
+    .progress-dot {
+      width: 15px;
+      height: 3px;
+    }
+  }

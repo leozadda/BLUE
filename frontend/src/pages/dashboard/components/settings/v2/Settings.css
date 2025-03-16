@@ -1,0 +1,123 @@
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Layout */
+.settings-container {
+  display: flex;
+  height: 95vh;
+  width: 95vw;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  color: #ffffff;
+  margin: 1em;
+}
+
+.settings-content {
+  width: 100%;
+  background-color: blue;
+  border-radius: .6em;
+  padding: 2em;
+  position: relative;
+}
+
+/* Navigation */
+.settings-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid white;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.657);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: rgb(111, 111, 255);
+}
+
+.tab-button.active {
+  color: rgb(255, 255, 255);
+  border-bottom: 2px solid white;
+}
+
+/* Settings Content */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.settings-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.action-button,
+.danger-button,
+.cancel-button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: solid 1px white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button,
+.danger-button {
+  background-color: blue;
+  color: white;
+}
+
+.action-button:hover,
+.danger-button:hover {
+  background-color: white;
+  color: blue;
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 640px) {
+  .settings-container {
+    padding: 0.5rem;
+    height: auto;
+    width: 100%;
+    margin: 0;
+  }
+
+  .settings-content {
+    padding: 0.5rem;
+  }
+
+  .settings-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    padding: 0.5rem 1rem;
+  }
+}

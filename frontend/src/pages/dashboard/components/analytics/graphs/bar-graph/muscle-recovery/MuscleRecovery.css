@@ -1,0 +1,93 @@
+.recovery-container {
+    border: 0px solid white;
+    border-radius: .6em;
+    padding: 1.5em;
+    background-color: blue;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: left;
+    flex-direction: column;
+  }
+  
+  .recovery-header {
+    margin: .5em;
+  }
+  
+  .recovery-title {
+    padding-left: .5em;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    text-align: left;
+    color: white;
+  }
+  
+  .recovery-subtitle {
+    padding-left: 0.5em;
+    color: white;
+    font-size: 10px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    text-align: left;
+    margin-left: 1em;
+  }
+  
+  .muscle-group-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: 0.5em;
+  }
+  
+  .muscle-group-button {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    transition: all 0.2s ease;
+  }
+  
+  .muscle-group-button.chest.active {
+    background: #FF6B6B;
+    border-color: #FF6B6B;
+    color: white;
+  }
+  
+  .muscle-group-button.back.active {
+    background: #4ECDC4;
+    border-color: #4ECDC4;
+    color: white;
+  }
+  
+  .muscle-group-button.legs.active {
+    background: #45B7D1;
+    border-color: #45B7D1;
+    color: white;
+  }
+  
+  .muscle-group-button.shoulders.active {
+    background: #96CEB4;
+    border-color: #96CEB4;
+    color: white;
+  }
+  
+  .muscle-group-button.arms.active {
+    background: #FFBE0B;
+    border-color: #FFBE0B;
+    color: white;
+  }
+  
+  .muscle-group-button.core.active {
+    background: #FF9F1C;
+    border-color: #FF9F1C;
+    color: white;
+  }

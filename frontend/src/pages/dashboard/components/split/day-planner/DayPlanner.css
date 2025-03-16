@@ -1,0 +1,774 @@
+/* Main container styles matching app theme */
+.workout-day {
+    height: auto !important;
+    width: 100% !important;
+    margin: 1em;
+    padding: 1em;
+    background-color: blue;
+    border-radius: .3em;
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-y: scroll;
+  }
+  .workout-date{
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Exercise search section */
+  .exercise-search {
+    margin: 1em 0;
+  }
+  
+  .exercise-search input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: blue;
+    border: 2px solid white;
+    border-radius: .3em;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .exercise-search input::placeholder {
+    color: rgba(255, 255, 255, 0.657);
+  }
+  
+  /* Exercise list styling */
+  .exercise-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 2px solid white;
+    border-radius: .3em;
+    margin-top: 0.5em;
+  }
+  
+  .exercise-item {
+    padding: 0.75rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+  }
+  
+  .exercise-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .exercise-name{
+    font-weight: 900;
+    font-size: 1.3em;
+  }
+  
+  /* Muscle ratios display */
+  .muscle-ratios {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.8);
+    padding: .5em 0 .5em 0;
+  }
+  
+  /* Set type selector */
+  .set-type-selector {
+    display: flex;
+    justify-content: flex-start; /* Change from center to flex-start */
+    align-items: center;
+    gap: 1em;
+    margin: 1em 0;
+    overflow-x: auto; /* Change from scroll to auto */
+    padding-bottom: 0.5em; /* Add padding to make scrollbar visible */
+    white-space: nowrap; /* Prevent wrapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+  }
+  
+  .set-type-btn {
+    padding: .65rem .65rem;
+    background-color: blue;
+    border: 2px solid white;
+    border-radius: .3em;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    gap: .3em;
+  }
+  
+  .set-type-btn:hover {
+    background-color: white;
+    color: blue;
+  }
+  
+  .set-type-btn.active {
+    background-color: white;
+    color: blue;
+  }
+  .set-icon{
+    padding-bottom: .3em;
+  }
+  .sett-name{
+    padding-top: .3em;
+  }
+  
+  /* Weight plates section */
+  .weight-plates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    margin: 1em 0;
+    width: 100%;
+  }
+  
+  .weight-plate {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .weight-plate:hover {
+    transform: scale(1.05);
+  }
+  
+  .weight-45 { width: 60px; height: 60px; background-color: rgba(255, 255, 255, 0.2); }
+  .weight-35 { width: 55px; height: 55px; background-color: rgba(255, 255, 255, 0.15); }
+  .weight-25 { width: 50px; height: 50px; background-color: rgba(255, 255, 255, 0.1); }
+  .weight-10 { width: 45px; height: 45px; background-color: rgba(255, 255, 255, 0.05); }
+  .weight-5 { width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.025); }
+  
+  .weight-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: white;
+    color: blue;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  
+.timer-total{
+  display: flex;
+  flex-direction: row;
+  padding: 1em 0 0 0;
+}
+.timer-total-label{
+  display: flex;
+  justify-content: center;
+  font-size: 1.3em;
+  gap: 1em;
+}
+.time-label{
+  font-weight: 900;
+}
+.time-number{
+}
+  
+  /* Timer controls */
+  .timer-control {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    margin: 1em 0;
+    width: 100%;
+  }
+  
+  .timer-control button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: white;
+    border-radius: .3em;
+    color: blue;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-top: 1em;
+    background-color: blue;
+    color: white;
+    border: solid white 2px;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1.3em;
+    font-weight: light;
+    border-radius: .3em;
+    text-align: center;
+    padding: .5em;
+  }
+  
+  .timer-control button:hover {
+    background-color: white;
+    color: blue;
+  }
+
+  .subtract-time{
+    width: 30%;
+    font-size: 25px;
+  }
+  .add-time{
+    width: 30%;
+    font-size: 25px;
+  }
+  
+
+  .add-set-grid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+  }
+  .reset-set-btn, .add-set-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: white;
+    border-radius: .3em;
+    color: blue;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-top: 1em;
+    background-color: white;
+    color: blue;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    text-transform: uppercase;
+    font-size: 1.3em;
+    font-weight: light;
+    border-radius: .3em;
+    border: none;
+    width: 100%;
+    text-align: center;
+    padding: .5em;
+    border: solid 2px white;
+  }
+  .reset-set-btn:hover{
+    background-color: blue;
+    color: white;
+    border: solid 2px white;
+  }
+  .add-set-btn:hover{
+    background-color: blue;
+    color: white;
+    border: solid 2px white;
+  }
+  
+  /* Sets list */
+  .sets-list {
+    margin-top: 1em;
+  }
+  
+  .set-item {
+    padding: 0.75rem;
+    border: 2px solid white;
+    border-radius: 4px;
+    margin-bottom: 0.5em;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+.weight-total-label{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: 1em;
+  gap: .3em;
+}
+.weight{
+  font-size: 1.3em;
+  font-weight: 900;
+}
+.weight-number{
+  font-size: 1.3em;
+  margin-left: .5em;
+}
+.reps-label{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 1em;
+    gap: .3em;
+    padding: .5em 0;
+  }
+  .reps{
+    font-size: 1.3em;
+    font-weight: 900;
+
+  }
+  .reps-number{
+    font-size: 1.3em;
+    margin-left: .5em;
+  }
+  
+/* Style for the range input (slider) */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 15px;
+    background: white; /* Change slider track color */
+    border-radius: .3em;
+    outline: none;
+    margin: 1em;
+  }
+  
+  input[type="range"]:hover {
+    opacity: 1;
+  }
+  
+  /* Customizing the slider thumb */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    background: white; /* Change slider thumb color */
+    border-radius: .6em;
+    cursor: pointer;
+    border: 4px solid blue;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: .6em;
+    cursor: pointer;
+    border: 2px solid blue;
+  }
+
+.timer-control{
+  display: flex;
+  justify-content: space-around;
+}
+
+.sets-list {}
+
+.set-item {
+  padding: 1em;
+}
+
+.set-exercise-name {
+  padding: 0;
+  font-size: 1.3em;
+  margin: 0;
+}
+
+.set-type-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  padding-bottom: 1em;
+}
+
+.set-stats-container{
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  font-size: 1.3em;
+}
+
+.set-weight-container {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+.set-weight-label {
+  font-weight: 900;
+}
+.set-weight-value {}
+
+.set-reps-container {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+.set-reps-label {
+  font-weight: 900;
+}
+.set-reps-value {}
+
+.set-rest-container {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+}
+.set-rest-label {
+  font-weight: 900;
+}
+.set-rest-value {}
+
+.set-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.set-delete-button {
+  width: 80%;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: .3em;
+  color: blue;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  margin-top: 1em;
+  background-color: white;
+  color: blue;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  text-transform: uppercase;
+  font-size: 1.3em;
+  font-weight: light;
+  border-radius: .3em;
+  border: none;
+  width: 100%;
+  text-align: center;
+  padding: .5em;
+}
+
+.set-delete-button:hover{
+  background-color: blue;
+  color: white;
+  border: solid 1px white;
+}
+
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+
+
+@media screen and (max-width: 600px)
+{
+
+  .workout-day {
+    height: auto;
+    width: auto;
+    margin: 1em;
+    padding: 1em;
+    background-color: blue;
+    border-radius: .3em;
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-y: scroll;
+  }
+  
+  /* Exercise search section */
+  .exercise-search {
+    margin: 1em 0;
+  }
+  
+  .exercise-search input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: blue;
+    border: 2px solid white;
+    border-radius: .3em;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .exercise-search input::placeholder {
+    color: rgba(255, 255, 255, 0.657);
+  }
+  
+  /* Exercise list styling */
+  .exercise-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 2px solid white;
+    border-radius: .3em;
+    margin-top: 0.5em;
+  }
+  
+  .exercise-item {
+    padding: 0.5rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.516);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+  }
+  
+  .exercise-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .exercise-name{
+    font-weight: 900;
+    font-size: 1.3em;
+  }
+  
+  /* Muscle ratios display */
+  .muscle-ratios {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 0.3em;
+    font-size: .8em;
+    color: rgba(255, 255, 255, 0.8);
+    padding: .5em 0 .5em 0;
+  }
+  
+  /* Set type selector */
+  .set-type-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin: 1em 0;
+    overflow-x: scroll;
+  }
+  .set-icon{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  
+  .set-type-btn {
+    padding: .65rem .65rem;
+    background-color: blue;
+    border: 2px solid white;
+    border-radius: .3em;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    gap: .3em;
+  }
+  
+  .set-type-btn:hover {
+    background-color: white;
+    color: blue;
+  }
+  
+  .set-type-btn.active {
+    background-color: white;
+    color: blue;
+  }
+  .set-icon{
+    padding-bottom: .3em;
+  }
+  .sett-name{
+    padding-top: .3em;
+  }
+  
+  /* Weight plates section */
+  .weight-plates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5em;
+    margin: 1em 0;
+    width: 100%;
+  }
+  
+  .weight-plate {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .weight-plate:hover {
+    transform: scale(1.05);
+  }
+  
+  .weight-45 { width: 60px; height: 60px; background-color: rgba(255, 255, 255, 0.2); }
+  .weight-35 { width: 55px; height: 55px; background-color: rgba(255, 255, 255, 0.15); }
+  .weight-25 { width: 50px; height: 50px; background-color: rgba(255, 255, 255, 0.1); }
+  .weight-10 { width: 45px; height: 45px; background-color: rgba(255, 255, 255, 0.05); }
+  .weight-5 { width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.025); }
+  
+  .weight-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: white;
+    color: blue;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  
+  /* Timer controls */
+  .timer-control {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    margin: 1em 0;
+    width: 100%;
+  }
+  
+  .timer-control button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: white;
+    border-radius: .3em;
+    color: blue;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-top: 1em;
+    background-color: blue;
+    color: white;
+    border: solid white 2px;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    font-size: 1.3em;
+    font-weight: light;
+    border-radius: .3em;
+    text-align: center;
+    padding: .5em;
+  }
+  
+  .timer-control button:hover {
+    background-color: white;
+    color: blue;
+  }
+
+  .subtract-time{
+    width: 30%;
+    font-size: 20px;
+  }
+  .add-time{
+    width: 30%;
+    font-size: 20px;
+  }
+  
+
+  .add-set-grid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .add-set-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: white;
+    border-radius: .3em;
+    color: blue;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-top: 1em;
+    background-color: white;
+    color: blue;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    text-transform: uppercase;
+    font-size: 1.3em;
+    font-weight: light;
+    border-radius: .3em;
+    border: none;
+    width: 100%;
+    text-align: center;
+    padding: .5em;
+
+  }
+  .add-set-btn:hover{
+    background-color: blue;
+    color: white;
+    border: solid 2px white;
+  }
+  
+  
+  /* Sets list */
+  .sets-list {
+    margin-top: 1em;
+  }
+  
+  .set-item {
+    padding: 0.75rem;
+    border: 2px solid white;
+    border-radius: 4px;
+    margin-bottom: 0.5em;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+.weight-total-label{
+  margin-top: .5em;
+}
+.weight{
+  font-size: 1.3em;
+  font-weight: 900;
+}
+.weight-number{
+  font-size: 1.3em;
+  margin-left: .5em;
+}
+  .reps-label{
+    margin: 1em;
+  }
+  .reps{
+    font-size: 1.3em;
+    font-weight: 900;
+
+  }
+  .reps-number{
+    font-size: 1.3em;
+    margin-left: .5em;
+  }
+  
+/* Style for the range input (slider) */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    background: white; /* Change slider track color */
+    border-radius: .3em;
+    outline: none;
+    margin-top: .5em;
+  }
+  
+  input[type="range"]:hover {
+    opacity: 1;
+  }
+  
+  /* Customizing the slider thumb */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    background: white; /* Change slider thumb color */
+    border-radius: .6em;
+    cursor: pointer;
+    border: 4px solid blue;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: .6em;
+    cursor: pointer;
+    border: 2px solid blue;
+  }
+
+.timer-control{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+}
+
+  

@@ -1,0 +1,139 @@
+/* Popup Styles */
+.popup-overlay {
+    position: fixed;  /* Change from absolute to fixed */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 255, 0.536);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: .6em;
+}
+
+.popup-content {
+    background-color: rgb(0, 0, 255);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: .6em;
+    padding: 1em;
+    border: solid 2px white;
+    /* Optional: add margin to ensure it's not flush against viewport edges */
+    margin: 1rem;
+}
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid white;
+  }
+  
+  .popup-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+  
+  .close-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .popup-body {
+    padding: 1rem;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .popup-input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: .5em;
+    border: 1px solid white;
+    background-color: blue;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  
+  .popup-input::placeholder {
+    color: rgba(255, 255, 255, 0.481);
+  }
+  
+  /* Plan cards for subscription */
+  .plan-options {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .plan-card {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 1rem;
+    flex: 1;
+  }
+  
+  .plan-card h3 {
+    margin-top: 0;
+  }
+  
+  .plan-card ul {
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+  }
+  
+  /* Ratio sliders */
+  .ratio-slider {
+    margin-bottom: 1rem;
+  }
+  
+  .ratio-slider label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ratio-slider input {
+    width: 100%;
+  }
+  
+  /* Responsive styles for popup */
+  @media (max-width: 640px) {
+    .popup-content {
+      width: 95%;
+      padding: 0.5rem;
+    }
+    
+    .popup-actions {
+      flex-direction: row;
+    }
+    
+    .popup-actions button {
+      width: 30%;
+    }
+    
+    .plan-options {
+      flex-direction: column;
+    }
+  }

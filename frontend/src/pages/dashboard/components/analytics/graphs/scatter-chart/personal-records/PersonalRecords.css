@@ -1,0 +1,98 @@
+.chart-container {
+  border: 0px solid white;
+  border-radius: .6em;
+  padding: 1.5em;
+  background-color: blue;
+}
+
+.Chart-Header {
+  margin: .5em;
+}
+
+.chart-title {
+  padding-left: .5em;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal; 
+  font-variant: normal; 
+  text-align: left;
+  color: white;
+}
+
+.Current-Month {
+  padding-left: 0.5em;
+  color: white;
+  font-size: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal; 
+  font-variant: normal; 
+  text-align: left;
+  margin-left: 1em;
+}
+
+.rep-selector {
+  margin-top: 1rem;
+  margin-left: 0.5em;
+  display: inline-block;
+}
+
+/* Style the React Select container */
+.react-select-container {
+  display: inline-block;
+}
+
+/* Remove default focus outline */
+.react-select__control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Style for when select is focused */
+.react-select__control--is-focused {
+  border-color: white !important;
+  box-shadow: none !important;
+}
+
+.pr-list {
+  margin-top: 2em;
+  padding: 0 1em;
+}
+
+.pr-item {
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  padding: 0.75em 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pr-item:last-child {
+  border-bottom: none;
+}
+
+.lift-name {
+  font-weight: 600;
+}
+
+.weight-value {
+  font-size: 16px;
+}
+
+.no-pr {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+/* Style for "Nothing to show" message */
+.no-content-message {
+  margin-top: 2em;
+  padding: 2em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

@@ -1,0 +1,280 @@
+{
+    "set_types": [
+      {
+        "name": "Straight Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Drop Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 0.8,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 3,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 0.6,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Super Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Giant Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 3,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 4,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Pyramid Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 12,
+              "max": 15
+            },
+            "weight_modifier": 0.8,
+            "target_rest_period_seconds": 60
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 60
+          },
+          {
+            "phase_number": 3,
+            "rep_range": {
+              "min": 6,
+              "max": 8
+            },
+            "weight_modifier": 1.2,
+            "target_rest_period_seconds": 60
+          }
+        ]
+      },
+      {
+        "name": "Rest-Pause Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 15
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 5,
+              "max": 8
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 60
+          }
+        ]
+      },
+      {
+        "name": "Cluster Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 2,
+              "max": 3
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 15
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 2,
+              "max": 3
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 15
+          },
+          {
+            "phase_number": 3,
+            "rep_range": {
+              "min": 2,
+              "max": 3
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 15
+          },
+          {
+            "phase_number": 4,
+            "rep_range": {
+              "min": 2,
+              "max": 3
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 15
+          }
+        ]
+      },
+      {
+        "name": "Mechanical Drop Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 3,
+            "rep_range": {
+              "min": 10,
+              "max": 15
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Pre-Exhaust Sets",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 12,
+              "max": 15
+            },
+            "weight_modifier": 0.5,
+            "target_rest_period_seconds": 0
+          },
+          {
+            "phase_number": 2,
+            "rep_range": {
+              "min": 8,
+              "max": 12
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      },
+      {
+        "name": "Time Under Tension (TUT)",
+        "phases": [
+          {
+            "phase_number": 1,
+            "rep_range": {
+              "min": 6,
+              "max": 10
+            },
+            "weight_modifier": 1.0,
+            "target_rest_period_seconds": 90
+          }
+        ]
+      }
+    ]
+  }
+  

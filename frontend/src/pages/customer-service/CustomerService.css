@@ -1,0 +1,107 @@
+.customer-service-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    color: #ffffff;
+    margin: 0em;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+  }
+  
+  .customer-service-content {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid white 1px;
+    padding: 4em;
+    border-radius: .8em;
+  }
+  
+  .contact-email {
+    font-size: 4em;
+    font-weight: bold;
+    text-align: center;
+    font-family: "Hoefler Text";
+    font-size: 4em;
+    font-weight: 500;
+  }
+  
+  .contact-message {
+    font-size: 1.2em;
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.5;
+    margin: 1em 0;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 1em;
+    margin-top: 2em;
+  }
+  
+  .send-email-button {
+    background-color: blue;
+    color: white;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: light;
+    border-radius: .3em;
+    border: solid white 1px;
+    padding: .5em;
+    float: right;
+    margin-right: 0;
+  }
+  
+  .send-email-button:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 255);
+  }
+
+  .exit-button {
+    background-color: white;
+    color: blue;
+    font-family: "Andale Mono", AndaleMono, monospace;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: light;
+    border-radius: .3em;
+    border: solid white 1px;
+    padding: .5em;
+    float: right;
+    margin-right: 0;
+  }
+
+  .exit-button:hover {
+    background-color: rgb(0, 0, 255);
+    color: rgb(255, 255, 255);
+    border: solid rgb(255, 255, 255) 1px;
+
+  }
+  
+  @media (max-width: 640px) {
+    .customer-service-content{
+      border: solid white 0px;
+      padding: 0;
+      margin: 0;
+    }
+    .contact-email {
+      font-size: 2.5em;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .contact-message {
+      font-size: 1em;
+      padding: 0 1em;
+    }
+  
+    .button-container {
+      flex-direction: row;
+    }
+
+  }

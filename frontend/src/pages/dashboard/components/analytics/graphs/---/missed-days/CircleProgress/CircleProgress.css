@@ -1,0 +1,43 @@
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0.5em 0;
+}
+
+.background-circle {
+    fill: none;
+    stroke: #0f03a1;
+    stroke-width: 15;
+}
+
+.progress-circle {
+    fill: none;
+    stroke: white;
+    stroke-width: 15;
+    stroke-linecap: round;
+    animation: progressFill 0.5s ease-out forwards;
+}
+
+@keyframes progressFill {
+    from {
+        stroke-dashoffset: 314.159;
+    }
+}
+
+.circle-text {
+    font-size: 25px;
+    fill: white;
+    text-anchor: middle;
+    font-weight: 900;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.circle-subtext {
+    font-size: 10px;
+    fill: rgba(255, 255, 255);
+    text-anchor: middle;
+    font-weight: 400;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

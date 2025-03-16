@@ -1,0 +1,82 @@
+/* Base styles */
+.Dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(0, 0, 200);
+    
+}
+.Sidebar-Container{
+    width: 17%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.Main-Container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: auto;
+}
+
+/* Mobile styles - These will only apply when screen width is 768px or less */
+@media (max-width: 768px) {
+    /* Adding !important to ensure mobile styles take precedence */
+    .Sidebar-Container{
+        width: 0% !important;
+    }
+
+    .Main-Container{
+        width: 100% !important;
+    }
+}/* Base styles */
+.Dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(0, 0, 200);
+    
+}
+.Sidebar-Container{
+    width: 17%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.Main-Container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: auto;
+}
+
+/* Mobile styles - These will only apply when screen width is 768px or less */
+@media (max-width: 768px) {
+    /* Remove the width: 0% for Sidebar-Container */
+    .Sidebar-Container {
+        position: fixed; /* Position it fixed so it can overlay */
+        width: 50% !important; /* Match width from Sidebar.css */
+        z-index: 1000;
+    }
+
+    .Main-Container {
+        width: 100% !important;
+    }
+    
+}

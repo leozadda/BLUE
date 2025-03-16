@@ -1,0 +1,111 @@
+.service-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  color: #ffffff;
+  margin: 0;
+  justify-content: center;
+  background-color: blue;
+  overflow: scroll;
+}
+
+.service-content {
+  width: 70%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4em;
+  border-radius: .8em
+}
+
+.service-title {
+  font-size: 3em;
+  font-weight: light;
+  text-align: center;
+  font-family: "Hoefler Text";
+  margin-bottom: 1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.service-section {
+  width: 100%;
+  margin-bottom: 0em;
+}
+
+.service-section-title {
+  font-size: 1.5em;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.service-text {
+  font-size: 1em;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  line-height: 1.5em;
+  margin-bottom: 2em;
+}
+
+.service-button-container {
+  display: flex;
+  gap: 1em;
+  margin-top: 2em;
+  padding-bottom: 4em;
+}
+
+.service-exit-button {
+  background-color: blue;
+  color: white;
+  font-family: "Andale Mono", AndaleMono, monospace;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: light;
+  border-radius: .3em;
+  border: solid white 1px;
+  padding: .8em 1.5em;
+}
+
+.service-exit-button:hover {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 255);
+}
+
+@media (max-width: 640px) {
+  .service-container {
+    padding: 2em 1em;
+  }
+
+  .service-content {
+    width: 90%;
+  }
+
+  .service-content {
+    padding: 2em;
+  }
+
+  .service-title {
+    font-size: 2em;
+  }
+
+  .service-section-title {
+    font-size: 1.3em;
+  }
+
+  .service-text {
+    font-size: 1em;
+  }
+
+  .service-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .service-exit-button {
+    width: auto;
+    min-width: 100px;
+  }
+}

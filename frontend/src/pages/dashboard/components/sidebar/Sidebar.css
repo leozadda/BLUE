@@ -1,0 +1,212 @@
+body {
+    user-select: none;
+}
+  
+* {
+    box-sizing: border-box;
+}
+
+a {
+    all: unset;
+    cursor: pointer;
+}
+
+/* Main Sidebar styling */
+.Sidebar {
+    background-color: blue;
+    margin: 0;
+    padding: 2em 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    flex-wrap: wrap;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+    position: fixed;
+    z-index: 1000; /* Increased z-index to be above other elements */
+    width: inherit;
+}
+
+.Company-Logo { 
+    height: 10%; 
+    padding: 1em 3em 0 3em; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: nowrap !important; 
+    flex-direction: row; 
+    width: 100%;
+}
+
+.Company-Logo h1 { 
+    font-family: "Hoefler Text"; 
+    font-size: 2.5em; 
+    font-weight: 500; 
+    font-style: normal;
+    margin: 0;
+    color:white;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: nowrap !important; 
+    flex-direction: row; 
+    white-space: nowrap; 
+}
+
+.Navigation-Tabs {
+    height: 70%;
+    color: rgba(255, 255, 255, 0.891);
+    width: 100%;
+    overflow: hidden;
+    /* FIX: Added padding to the left side of the Navigation-Tabs container */
+    padding-left: 1em;
+}
+
+.Navigation-Tabs p {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    padding-left: .5em;
+    font-size: 1.2em;
+    overflow: hidden;
+
+}
+
+.Analytics-Tab,
+.Lifts-Tab,
+.Split-Tab,
+.Measurements-Tab {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: left;
+    align-items: center;
+    padding: 0 2em 0 1em;
+    /* FIX: Adjusted margin to add more space on the left side */
+    margin: 0 1em 0 1em;
+    max-height: 6vh;
+    border-radius: .75em;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.Analytics-Tab:hover,
+.Lifts-Tab:hover,
+.Split-Tab:hover,
+.Measurements-Tab:hover {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+    transition: all 0.3s ease;
+}
+
+/* Active tab styling */
+.Analytics-Tab.active,
+.Lifts-Tab.active,
+.Split-Tab.active,
+.Measurements-Tab.active,
+.Settings-Button.active {
+    background-color: rgb(0, 0, 220);
+    color: white;
+    border-radius: .5em;
+}
+
+.Settings-Button {
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: left;
+    align-items: center;
+    padding: 1em;
+    /* FIX: Added more left margin to match the tabs */
+    margin: 0 1em 0 2em;
+    color: rgb(255, 255, 255);
+    border-radius: .5em;
+    transition: all 0.3s ease;
+}
+
+.Settings-Button:hover {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+}
+
+.Settings-Button p {
+    padding-left: .5em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+}
+
+/* Mobile hamburger button */
+.hamburger-button {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 999; /* Decreased z-index to be below the sidebar */
+    background-color: blue;
+    border-radius: .3em;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Overlay when sidebar is open on mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900; /* Set below sidebar but above other content */
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .Sidebar {
+        width: 60%;  /* or whatever percentage works best for mobile */
+        transform: translateX(-100%);
+    }
+    
+    .Sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .hamburger-button {
+        display: flex;
+    }
+    
+    .sidebar-overlay {
+        display: block;
+    }
+    .Company-Logo h1 {
+        font-size: 2em;
+    }
+
+    .Navigation-Tabs {
+        height: 70%;
+        color: rgba(255, 255, 255, 0.891);
+        width: 100%;
+        padding-top: 1em;
+        overflow: hidden;
+        /* FIX: Maintain the left padding in mobile view */
+        padding-left: 1em;
+    }
+    
+    /* Adjust content area to make room for sidebar */
+    body {
+        padding-left: 0;
+        transition: padding-left 0.3s ease-in-out;
+    }
+    
+    body.sidebar-open {
+        padding-left: 250px;
+    }
+}

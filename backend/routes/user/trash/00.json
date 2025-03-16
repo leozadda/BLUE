@@ -1,0 +1,479 @@
+{
+    "exercises": [
+      {
+        "name": "Barbell Bench Press",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Chest": 55,
+          "Front Delts": 20,
+          "Triceps": 15,
+          "Upper Chest": 10
+        }
+      },
+      {
+        "name": "Incline Barbell Bench Press",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Upper Chest": 55,
+          "Front Delts": 20,
+          "Triceps": 15,
+          "Chest": 10
+        }
+      },
+      {
+        "name": "Decline Barbell Bench Press",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Lower Chest": 60,
+          "Front Delts": 20,
+          "Triceps": 20
+        }
+      },
+      {
+        "name": "Dumbbell Bench Press",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Chest": 55,
+          "Front Delts": 20,
+          "Triceps": 15,
+          "Stabilizers": 10
+        }
+      },
+      {
+        "name": "Chest Dips",
+        "equipment": "Bodyweight",
+        "muscle-activation": {
+          "Chest": 50,
+          "Triceps": 30,
+          "Front Delts": 20
+        }
+      },
+      {
+        "name": "Overhead Press",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Front Delts": 40,
+          "Side Delts": 25,
+          "Triceps": 20,
+          "Traps": 10,
+          "Serratus": 5
+        }
+      },
+      {
+        "name": "Dumbbell Shoulder Press",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Front Delts": 35,
+          "Side Delts": 30,
+          "Triceps": 25,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Arnold Press",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Front Delts": 30,
+          "Side Delts": 35,
+          "Rear Delts": 10,
+          "Triceps": 15,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Pull-up",
+        "equipment": "Bodyweight",
+        "muscle-activation": {
+          "Back": 45,
+          "Upper Back": 25,
+          "Biceps": 20,
+          "Rear Delts": 10
+        }
+      },
+      {
+        "name": "Chin-up",
+        "equipment": "Bodyweight",
+        "muscle-activation": {
+          "Back": 40,
+          "Biceps": 30,
+          "Upper Back": 20,
+          "Rear Delts": 10
+        }
+      },
+      {
+        "name": "Barbell Row",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Back": 35,
+          "Middle Back": 25,
+          "Traps": 20,
+          "Rear Delts": 10,
+          "Biceps": 10
+        }
+      },
+      {
+        "name": "Dumbbell Row",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Back": 35,
+          "Middle Back": 25,
+          "Traps": 20,
+          "Rear Delts": 10,
+          "Biceps": 10
+        }
+      },
+      {
+        "name": "T-Bar Row",
+        "equipment": "Barbell/T-Bar Machine",
+        "muscle-activation": {
+          "Back": 40,
+          "Middle Back": 30,
+          "Traps": 15,
+          "Rear Delts": 10,
+          "Biceps": 5
+        }
+      },
+      {
+        "name": "Seated Cable Row",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Back": 40,
+          "Middle Back": 30,
+          "Biceps": 20,
+          "Rear Delts": 10
+        }
+      },
+      {
+        "name": "Lat Pulldown",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Back": 45,
+          "Upper Back": 25,
+          "Biceps": 20,
+          "Rear Delts": 10
+        }
+      },
+      {
+        "name": "Face Pull",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Rear Delts": 35,
+          "Rotator Cuff": 25,
+          "Middle Back": 25,
+          "Traps": 15
+        }
+      },
+      {
+        "name": "Back Squat",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Quads": 45,
+          "Glutes": 25,
+          "Inner Thighs": 15,
+          "Hamstrings": 10,
+          "Lower Back": 5
+        }
+      },
+      {
+        "name": "Front Squat",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Quads": 50,
+          "Glutes": 20,
+          "Lower Back": 15,
+          "Core": 10,
+          "Upper Back": 5
+        }
+      },
+      {
+        "name": "Bulgarian Split Squat",
+        "equipment": "Dumbbells or Barbell",
+        "muscle-activation": {
+          "Quads": 50,
+          "Glutes": 30,
+          "Hamstrings": 15,
+          "Stabilizers": 5
+        }
+      },
+      {
+        "name": "Hack Squat",
+        "equipment": "Hack Squat Machine",
+        "muscle-activation": {
+          "Quads": 60,
+          "Glutes": 20,
+          "Hamstrings": 10,
+          "Lower Back": 10
+        }
+      },
+      {
+        "name": "Conventional Deadlift",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Lower Back": 35,
+          "Glutes": 25,
+          "Hamstrings": 20,
+          "Quads": 10,
+          "Traps": 5,
+          "Lats": 5
+        }
+      },
+      {
+        "name": "Romanian Deadlift",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Hamstrings": 40,
+          "Glutes": 30,
+          "Lower Back": 20,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Sumo Deadlift",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Glutes": 30,
+          "Hamstrings": 25,
+          "Quads": 20,
+          "Lower Back": 15,
+          "Adductors": 10
+        }
+      },
+      {
+        "name": "Hip Thrust",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Glutes": 60,
+          "Hamstrings": 25,
+          "Lower Back": 10,
+          "Inner Thighs": 5
+        }
+      },
+      {
+        "name": "Leg Press",
+        "equipment": "Leg Press Machine",
+        "muscle-activation": {
+          "Quads": 50,
+          "Glutes": 30,
+          "Hamstrings": 15,
+          "Inner Thighs": 5
+        }
+      },
+      {
+        "name": "Dumbbell Flyes",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Chest": 70,
+          "Front Delts": 15,
+          "Stabilizers": 15
+        }
+      },
+      {
+        "name": "Cable Flyes",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Chest": 70,
+          "Front Delts": 15,
+          "Stabilizers": 15
+        }
+      },
+      {
+        "name": "Pec Deck Machine",
+        "equipment": "Machine",
+        "muscle-activation": {
+          "Chest": 75,
+          "Front Delts": 15,
+          "Minor": 10
+        }
+      },
+      {
+        "name": "Cable Lateral Raise",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Side Delts": 75,
+          "Front Delts": 15,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Rear Delt Fly",
+        "equipment": "Dumbbells or Cable Machine",
+        "muscle-activation": {
+          "Rear Delts": 70,
+          "Upper Back": 20,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Skull Crusher",
+        "equipment": "Barbell",
+        "muscle-activation": {
+          "Triceps (Long)": 45,
+          "Triceps (Lateral)": 35,
+          "Triceps (Medial)": 20
+        }
+      },
+      {
+        "name": "Dumbbell Triceps Extension",
+        "equipment": "Dumbbell",
+        "muscle-activation": {
+          "Triceps (Long)": 50,
+          "Triceps (Lateral)": 30,
+          "Triceps (Medial)": 20
+        }
+      },
+      {
+        "name": "Cable Triceps Pushdown",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Triceps (Lateral)": 50,
+          "Triceps (Medial)": 30,
+          "Triceps (Long)": 20
+        }
+      },
+      {
+        "name": "Dumbbell Curl",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Biceps": 70,
+          "Brachialis": 20,
+          "Forearms": 10
+        }
+      },
+      {
+        "name": "Hammer Curl",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Biceps": 50,
+          "Brachialis": 30,
+          "Forearms": 20
+        }
+      },
+      {
+        "name": "Preacher Curl",
+        "equipment": "Barbell or Dumbbell",
+        "muscle-activation": {
+          "Biceps": 80,
+          "Brachialis": 15,
+          "Forearms": 5
+        }
+      },
+      {
+        "name": "Concentration Curl",
+        "equipment": "Dumbbell",
+        "muscle-activation": {
+          "Biceps": 75,
+          "Brachialis": 20,
+          "Forearms": 5
+        }
+      },
+      {
+        "name": "Leg Extensions",
+        "equipment": "Leg Extension Machine",
+        "muscle-activation": {
+          "Quads": 85,
+          "Stabilizers": 15
+        }
+      },
+      {
+        "name": "Leg Curls",
+        "equipment": "Leg Curl Machine",
+        "muscle-activation": {
+          "Hamstrings": 85,
+          "Glutes": 15
+        }
+      },
+      {
+        "name": "Standing Calf Raise",
+        "equipment": "Calf Raise Machine or Smith Machine",
+        "muscle-activation": {
+          "Calves": 90,
+          "Stabilizers": 10
+        }
+      },
+      {
+        "name": "Seated Calf Raise",
+        "equipment": "Seated Calf Machine",
+        "muscle-activation": {
+          "Calves": 90,
+          "Stabilizers": 10
+        }
+      },
+      {
+        "name": "Plank",
+        "equipment": "Bodyweight",
+        "muscle-activation": {
+          "Core": 100
+        }
+      },
+      {
+        "name": "Hanging Leg Raise",
+        "equipment": "Pull-up Bar",
+        "muscle-activation": {
+          "Abs": 70,
+          "Hip Flexors": 30
+        }
+      },
+      {
+        "name": "Cable Crunch",
+        "equipment": "Cable Machine",
+        "muscle-activation": {
+          "Abs": 80,
+          "Obliques": 20
+        }
+      },
+      {
+        "name": "Russian Twist",
+        "equipment": "Medicine Ball or Bodyweight",
+        "muscle-activation": {
+          "Obliques": 70,
+          "Abs": 30
+        }
+      },
+      {
+        "name": "Glute Ham Raise",
+        "equipment": "Glute Ham Developer",
+        "muscle-activation": {
+          "Glutes": 40,
+          "Hamstrings": 40,
+          "Lower Back": 20
+        }
+      },
+      {
+        "name": "Dumbbell Shrug",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Traps": 90,
+          "Upper Back": 10
+        }
+      },
+      {
+        "name": "Upright Row",
+        "equipment": "Barbell or Dumbbells",
+        "muscle-activation": {
+          "Side Delts": 50,
+          "Traps": 30,
+          "Front Delts": 20
+        }
+      },
+      {
+        "name": "Seated Dumbbell Shoulder Press",
+        "equipment": "Dumbbells",
+        "muscle-activation": {
+          "Front Delts": 35,
+          "Side Delts": 30,
+          "Triceps": 25,
+          "Traps": 10
+        }
+      },
+      {
+        "name": "Machine Chest Press",
+        "equipment": "Machine",
+        "muscle-activation": {
+          "Chest": 60,
+          "Front Delts": 25,
+          "Triceps": 15
+        }
+      }
+    ]
+  }
+  
