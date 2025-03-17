@@ -8,7 +8,7 @@ import './AccountTab.css';
 interface ExtendedUser {
   email: string;
   premiumStatus: boolean;
-  trialStarted: string;
+  trialStarted: boolean;
   metric_system: boolean;
   newsletter: boolean;
   google_auth: boolean;

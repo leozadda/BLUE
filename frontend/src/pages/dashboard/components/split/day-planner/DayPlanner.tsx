@@ -497,7 +497,7 @@ const handleAddSet = async () => {
     }
     
     // For each set in the response, add it to our local state
-    const newSets = data.sets.map(setData => ({
+    const newSets = (data.sets ?? []).map((setData: { setId: string; restPeriod?: number }) => ({
       id: setData.setId,
       exercise: {
         id: selectedExercise.id,
@@ -506,9 +506,11 @@ const handleAddSet = async () => {
       },
       weights: { ...weights },
       reps,
-      timer: setData.restPeriod || timer, // Use the rest period from the API if available
+      timer: setData.restPeriod ?? timer,
       setType
     }));
+    
+    
     
     // Add the new sets to our local state
     setSets(prevSets => [...prevSets, ...newSets]);

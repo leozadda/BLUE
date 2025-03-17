@@ -100,8 +100,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
         color: 'blue'
       }}>
         <p style={{ margin: 0, fontWeight: 'bold' }}>{formatTooltipDate(label)}</p>
-        <p style={{ margin: 0 }}>{`Weight: ${Math.floor(payload[0].value)}`}</p>
-
+        <p style={{ margin: 0 }}>{`Weight: ${Math.floor(payload[0].value ?? 0)}`}</p>
       </div>
     );
   }
@@ -344,7 +343,7 @@ const BodyWeightGraph: React.FC<BodyWeightGraphProps> = ({ isMetricSystem }) => 
             <YAxis 
               stroke="#FFFFFF"
               domain={['auto', 'auto']}
-              tickFormatter={(value) => Math.round(value)}
+              tickFormatter={(value: any) => value.toString()}
               style={axisStyle}
               tick={{ fill: '#FFFFFF' }}
             />

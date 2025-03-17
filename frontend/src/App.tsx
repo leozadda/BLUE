@@ -43,42 +43,32 @@ function PrivateRoute({ children }: { children: JSX.Element }) {
 // PaymentRoute: Special protected route that checks both authentication and trial status
 // Only allows access if user is authenticated AND their trial has expired
 function PaymentRoute({ children }: { children: JSX.Element }) {
-  // Get auth state and user data from context
-  const { isAuthenticated, isLoading, authChecked, user } = useAuth();
+  const { isAuthenticated, isLoading, authChecked, userInfo } = useAuth();
 
-  // Wait until authentication check is complete before making any decision
   if (isLoading || !authChecked) {
-    // Return a loading indicator instead of redirecting
     return (
       <div className="Loading-Screen">
-        <div style={{ backgroundColor: 'blue' }}>
-        </div>
+        <div style={{ backgroundColor: 'blue' }}></div>
       </div>
     );
   }
-  
-  // First check: User must be authenticated
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
-  // Second check: Trial must be expired
-  // This assumes user object contains trial_period_ends_at from your database
-  const now = new Date();
-  const trialEndDate = user?.trial_period_ends_at ? new Date(user.trial_period_ends_at) : null;
-  const trialExpired = trialEndDate && now > trialEndDate;
-  
-  // Additional check for premium status - don't show payment page if already premium
-  const needsPayment = user?.premium_status !== 'active';
 
-  // If trial expired and payment needed, show payment page
+  const now = new Date();
+  const trialEndDate = userInfo?.trial_period_ends_at ? new Date(userInfo.trial_period_ends_at) : null;
+  const trialExpired = trialEndDate && now > trialEndDate;
+  const needsPayment = userInfo?.premiumStatus !== true; // Assuming `premiumStatus` is a boolean
+
   if (trialExpired && needsPayment) {
     return children;
   }
-  
-  // Otherwise redirect to dashboard
+
   return <Navigate to="/dashboard/settings" />;
 }
+
 
 // AuthRedirect: Used on login/signup pages to redirect already-authenticated users to dashboard.
 function AuthRedirect({ children }: { children: JSX.Element }) {

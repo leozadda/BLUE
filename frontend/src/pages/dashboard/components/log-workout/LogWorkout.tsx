@@ -114,7 +114,7 @@ interface AddSetToSplitResponse {
 
 const LogWorkout = () => {
   // State variables used in the component
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>("");
   const [workoutData, setWorkoutData] = useState<GroupedExercise[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -131,22 +131,19 @@ const LogWorkout = () => {
   // Function to get the weight increment based on user system:
   // 2.5 for metric, 5 for imperial (lbs)
   // FIXED: Changed useMetric to metric
-  const getWeightIncrement = () => {
-   
+  const getWeightIncrement = (): number => {
     return metric ? 2.5 : 5;
   };
 
   // Get display string for the increment button (e.g., "+2.5 kg" or "+5 lbs")
-  const getIncrementDisplay = () => {
+  const getIncrementDisplay = (): string => {
     const value = getWeightIncrement();
-   
     return `+${value}`;
   };
 
   // Get display string for the decrement button (e.g., "-2.5 kg" or "-5 lbs")
-  const getDecrementDisplay = () => {
+  const getDecrementDisplay = (): string => {
     const value = getWeightIncrement();
-   
     return `-${value}`;
   };
 
@@ -338,37 +335,32 @@ const LogWorkout = () => {
       return [];
     }
     
-    const groupedExercises: GroupedExercise[] = organizedWorkout.exercises.map(exercise => {
-     
-      
-      // Map the sets from the new format
-      const mappedSets = exercise.sets.map(set => ({
-        setNumber: set.phaseNumber || 0, // Use phaseNumber as set number
-        weight: set.calculatedWeight || 0, // Use calculated weight
-        repRangeMin: set.repRangeMin || 0,
-        repRangeMax: set.repRangeMax || 0,
-        averageReps: Math.round(((set.repRangeMin || 0) + (set.repRangeMax || 0)) / 2),
-        targetRestPeriod: set.targetRestPeriodSeconds || 0,
-        setType: set.setTypeName || "",
-        setTypeId: set.setTypeId || 1,
+    const groupedExercises: GroupedExercise[] = organizedWorkout.exercises.map((exercise: any) => {
+      const mappedSets = exercise.sets.map((set: any) => ({
+        setNumber: set.phase_number ?? 0,
+        weight: parseFloat(set.planned_base_weight ?? "0"),
+        repRangeMin: set.rep_range_min ?? 0,
+        repRangeMax: set.rep_range_max ?? 0,
+        averageReps: Math.round(((set.rep_range_min ?? 0) + (set.rep_range_max ?? 0)) / 2),
+        targetRestPeriod: set.target_rest_period_seconds ?? 0,
+        setType: set.set_type_name ?? "",
+        setTypeId: set.set_type_id ?? 1,
         planId: organizedWorkout.planId,
-        phaseNumber: set.phaseNumber || 1
+        phaseNumber: set.phase_number ?? 1
       }));
-      
+    
       // Sort the sets by phase number
-      mappedSets.sort((a, b) => a.phaseNumber - b.phaseNumber);
-      
-      // Create the GroupedExercise object
+      mappedSets.sort((a: any, b: any) => a.phaseNumber - b.phaseNumber);
+    
       return {
         exerciseId: exercise.exerciseId,
         name: exercise.exerciseName,
-        equipment: exercise.equipment || 'None',
-        category: '', // Not provided in the new format, so use empty string
-        targetedMuscles: exercise.targetedMuscles || [],
+        category: exercise.exercise_category ?? "",
+        equipment: exercise.equipment,
+        targetedMuscles: exercise.targetedMuscles,
         sets: mappedSets
       };
     });
-    
    
     return groupedExercises;
   };

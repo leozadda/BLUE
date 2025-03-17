@@ -118,9 +118,10 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
         <p style={{ margin: 0, fontWeight: 'bold' }}>{formatTooltipDate(label)}</p>
         {payload.map((entry, index) => (
           <p key={`tooltip-${index}`} style={{ margin: 0 }}>
-            {`${entry.name}: ${entry.value.toFixed(1)}`}
-          </p>
-        ))}
+        {`${entry.name}: ${entry.value !== undefined ? entry.value.toFixed(1) : 'N/A'}`}
+      </p>
+))}
+
       </div>
     );
   }
@@ -393,7 +394,7 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
             <YAxis 
               stroke="#FFFFFF"
               domain={['auto', 'auto']}
-              tickFormatter={(value) => value.toFixed(1)}
+              tickFormatter={(value) => Math.round(value).toString()}
               style={axisStyle}
               tick={{ fill: '#FFFFFF' }}
             />

@@ -1,31 +1,32 @@
-// CustomButton.tsx
 import { useGoogleLogin } from '@react-oauth/google';
-import './GoogleLoginButton.css'; // Importing the CSS for styling the button
 
-const GoogleLoginButton = ({ onSuccess, onError, clientId }) => {
+interface GoogleLoginButtonProps {
+  onSuccess: (response: any) => void;
+  onError: (error: any) => void;
+  clientId: string;
+}
+
+const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onSuccess, onError, clientId }) => {
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-       
-        
         // Get user info
         const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
-        
+
         if (!userInfoResponse.ok) {
           throw new Error('Failed to fetch user info');
         }
 
         const userInfo = await userInfoResponse.json();
-       
 
         // Create credential response with access token
         const credentialResponse = {
           credential: tokenResponse.access_token,
-          clientId: clientId,
+          clientId,
           select_by: "user",
-          ...userInfo
+          ...userInfo,
         };
 
         onSuccess(credentialResponse);
@@ -39,16 +40,13 @@ const GoogleLoginButton = ({ onSuccess, onError, clientId }) => {
       onError(error);
     },
     scope: 'email profile openid',
-    flow: 'implicit'
+    flow: 'implicit',
   });
 
   return (
     <button 
-      onClick={() => {
-       
-        login();
-      }} 
-        className="custom-google-button"
+      onClick={() => login()} 
+      className="custom-google-button"
     >
       <div className="custom-google-logo">
         <svg 

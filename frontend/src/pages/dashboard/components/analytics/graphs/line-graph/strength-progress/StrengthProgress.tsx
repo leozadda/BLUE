@@ -65,9 +65,13 @@ const axisStyle = {
 };
 
 // Custom tooltip component for the chart
-const CustomTooltip = ({ active, payload, label, weightUnit }: TooltipProps & { weightUnit: string }) => {
+const CustomTooltip: React.FC<TooltipProps<number, string> & { weightUnit: string }> = ({
+  active,
+  payload,
+  label,
+  weightUnit,
+}) => {
   if (active && payload && payload.length) {
-   
     return (
       <div style={{ 
         backgroundColor: 'rgb(255, 255, 255)', 
@@ -91,6 +95,7 @@ const CustomTooltip = ({ active, payload, label, weightUnit }: TooltipProps & { 
   }
   return null;
 };
+
 
 const StrengthProgress: React.FC<StrengthProgressProps> = ({ isMetricSystem }) => {
   // State to store the currently selected time range
@@ -413,7 +418,7 @@ const StrengthProgress: React.FC<StrengthProgressProps> = ({ isMetricSystem }) =
             <YAxis 
               stroke="#FFFFFF"
               domain={['auto', 'auto']}
-              tickFormatter={(value) => Math.round(value)}
+              tickFormatter={(value) => Math.round(value).toString()}
               style={axisStyle}
               tick={{ fill: '#FFFFFF' }}
             />

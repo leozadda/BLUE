@@ -13,9 +13,6 @@ interface ExtendedUser {
 interface WorkoutTabProps {
   user: ExtendedUser;
   onUnitsChange: () => void;     // Handler for when the user wants to change the unit system.
-  onEditRatios: () => void;       // Handler for editing body part ratios
-  onCreateSet: () => void;        // Handler for creating a new workout set
-  onCreateExercise: () => void;   // Handler for adding a new exercise
 }
 
 /**

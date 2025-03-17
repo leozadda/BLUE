@@ -4,75 +4,56 @@
 
 import React, { useState, useEffect } from 'react';
 import { authFetch } from '../../../../../../auth/token/authFetch';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 import './MuscleRecovery.css';
 import { useAuth } from '../../../../../../auth/auth-context/AuthContext';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+interface TooltipProps {
+  active?: boolean;
+  payload?: { payload: any }[];
+  label?: string;
+}
+
+interface MuscleRecoveryData {
+  muscle_group: string;
+  recovery_percentage: number | null;
+  last_trained_date?: string;
+  days_since_trained?: number | null;
+  recovery_rate?: number;
+}
+
+
+
 // Custom tooltip component that matches your MuscleSize.tsx tooltip style exactly
-const CustomTooltip = ({ active, payload, label }) => {
-  // Only show tooltip when hovering over a bar
-  if (active && payload && payload.length) {
-   
-    
-    // Get data from the payload
-    const data = payload[0].payload;
-    
-    // Safely format the days_since_trained value
-    const formatDaysSince = (value) => {
-      // Check if value exists and is a number before calling toFixed
-      return value !== null && value !== undefined && !isNaN(value) 
-        ? Number(value).toFixed(1) 
-        : 'N/A';
-    };
-    
-    // Format date in a human-readable way like in MuscleSize.tsx
-    const formatTooltipDate = (muscleGroup) => {
-      try {
-        // For muscle recovery, we'll just use the muscle group name as the title
-        return muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1);
-      } catch (err) {
-        console.error("Error formatting tooltip title:", err);
-        return muscleGroup; // Return original string if formatting fails
-      }
-    };
-    
-    return (
-      <div style={{ 
-        backgroundColor: 'white', 
-        padding: '10px', 
-        border: '0px solid white',
-        borderRadius: '.3em',
-        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-        fontSize: '12px',
-        color: 'blue'
-      }}>
-        <p style={{ margin: 0, fontWeight: 'bold' }}>{formatTooltipDate(data.muscle_group)}</p>
-        <p style={{ margin: 0 }}>Recovery: {data.recovery_percentage?.toFixed(1) || 0}%</p>
-        {data.last_trained_date && (
-          <p style={{ margin: 0 }}>Last Trained: {new Date(data.last_trained_date).toLocaleDateString()}</p>
-        )}
-        {data.days_since_trained !== undefined && (
-          <p style={{ margin: 0 }}>Days Since: {formatDaysSince(data.days_since_trained)}</p>
-        )}
-        {data.recovery_rate !== undefined && (
-          <p style={{ margin: 0 }}>Recovery Rate: {data.recovery_rate?.toFixed(2) || 'N/A'}</p>
-        )}
-      </div>
-    );
-  }
-  
-  return null;
+const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
+  if (!active || !payload || payload.length === 0) return null;
+
+  const data = payload[0].payload;
+
+  const formatDaysSince = (value: number | null | undefined): string => {
+    return value !== null && value !== undefined && !isNaN(value)
+      ? Number(value).toFixed(1)
+      : 'N/A';
+  };
+
+  const formatTooltipDate = (muscleGroup: string | undefined): string => {
+    if (!muscleGroup) return 'Unknown Muscle';
+    return muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1);
+  };
+
+  return (
+    <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '.3em', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontSize: '12px', color: 'blue' }}>
+      <p style={{ margin: 0, fontWeight: 'bold' }}>{formatTooltipDate(data.muscle_group)}</p>
+      <p style={{ margin: 0 }}>Recovery: {data.recovery_percentage?.toFixed(1) || 0}%</p>
+      {data.last_trained_date && <p style={{ margin: 0 }}>Last Trained: {new Date(data.last_trained_date).toLocaleDateString()}</p>}
+      {data.days_since_trained !== undefined && <p style={{ margin: 0 }}>Days Since: {formatDaysSince(data.days_since_trained)}</p>}
+      {data.recovery_rate !== undefined && <p style={{ margin: 0 }}>Recovery Rate: {data.recovery_rate?.toFixed(2) || 'N/A'}</p>}
+    </div>
+  );
 };
+
 
 // Custom styles for the axis to match your existing styling
 const axisStyle = {
@@ -87,16 +68,13 @@ const MuscleRecoveryGraph = () => {
   // State to track loading status
   const [loading, setLoading] = useState(true);
   // State to track any errors
-  const [error, setError] = useState(null);
-
-  const { userInfo, userInfoLoading, refreshUserInfo } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Function to fetch muscle recovery data
     const fetchRecoveryData = async () => {
       
       try {
-       
         
         // Make fetch request with authorization header
         const response = await authFetch(`${API_BASE_URL}/muscle-recovery-status`, {
@@ -104,33 +82,29 @@ const MuscleRecoveryGraph = () => {
           credentials: "include", // This ensures cookies are sent with the request.
         });
         
-       
-        
         if (!response.ok) {
           throw new Error(`HTTP error ${response.status}`);
         }
         
         const data = await response.json();
        
-        
         if (data && data.success) {
           // Filter out entries with null recovery percentage AND entries that are 100% recovered
           // This is the main change - we're now filtering out any muscle groups that are fully recovered
-          const filteredData = data.data.filter(item => 
+          const filteredData = data.data.filter((item: MuscleRecoveryData) => 
             item.recovery_percentage !== null && 
-            item.recovery_percentage < 100 // Only include muscles that aren't fully recovered
+            item.recovery_percentage < 100
           );
           
           // Ensure all numeric values are actual numbers to prevent errors
-          const safeData = filteredData.map(item => ({
+          const safeData = filteredData.map((item: MuscleRecoveryData) => ({
             ...item,
             recovery_percentage: Number(item.recovery_percentage),
             days_since_trained: item.days_since_trained !== null ? Number(item.days_since_trained) : null,
             recovery_rate: Number(item.recovery_rate)
           }));
           
-         
-         
+          
           
           setRecoveryData(safeData);
         } else {
@@ -139,24 +113,25 @@ const MuscleRecoveryGraph = () => {
         }
       } catch (err) {
         console.error('Error fetching recovery data:', err);
-        setError(err.message || 'Error fetching recovery data');
-      } finally {
+      
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Error fetching recovery data');
+        }
+      }
+       finally {
         // Set loading to false regardless of success or failure
         setLoading(false);
        
       }
     };
-
     // Call the fetch function when component mounts
     fetchRecoveryData();
   }, []); // Empty array means this effect runs once on mount
 
-
- 
-  
   // Check if there's no data to display
   const noDataToShow = recoveryData.length === 0 && !loading;
- 
 
   return (
     <div className="recovery-container">

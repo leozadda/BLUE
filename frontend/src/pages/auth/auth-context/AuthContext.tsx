@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authFetch } from '../token/authFetch';
 
 // Define the user info interface based on your API response
-interface UserInfo {
+type UserInfo = {
   id: string;
   email: string;
   google_auth: boolean;
@@ -14,7 +14,10 @@ interface UserInfo {
   newsletter: boolean;
   active: boolean;
   trial_period_ends_at: string | null;
-}
+  language: string;  // <-- Add missing properties
+  subscription: any; // <-- Add subscription (set correct type if known)
+};
+
 
 // Define the shape of our auth context with added user info
 interface AuthContextType {

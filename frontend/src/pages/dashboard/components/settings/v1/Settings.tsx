@@ -4,10 +4,16 @@ import { PersonStanding, CircleDollarSign, Dumbbell } from 'lucide-react';
 import { User, initialUser } from './User';
 import Popup from '../components/pop-up/PopUp';
 import AccountTab from '../components/account/AccountTab';
-import BillingTab from '../components/billing/BillingTab';
 import WorkoutTab from '../components/workout/WorkoutTab';
 import { authFetch } from '../../../../auth/token/authFetch';
 import { useAuth } from '../../../../auth/auth-context/AuthContext';
+
+// Add this interface right after the existing imports
+interface UnitsSelectorProps {
+  currentUnits: string;
+  onSave: (newUnits: string) => void;
+  onCancel: () => void;
+}
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -228,48 +234,47 @@ export const Settings: React.FC = () => {
     ));
   };
 
-  /**
-   * UnitsSelector component: lets the user choose between metric and imperial systems.
-   * It accepts the current unit setting and callbacks for saving or canceling the change.
-   */
-  const UnitsSelector = ({ currentUnits, onSave, onCancel }) => {
-    const [selectedUnits, setSelectedUnits] = useState(currentUnits);
-    return (
-      <div>
-        <div className="units-options">
-          <label className="units-option">
-            <input
-              type="radio"
-              name="units"
-              value="metric"
-              checked={selectedUnits === 'metric'}
-              onChange={() => setSelectedUnits('metric')}
-            />
-            <span>Centimeters, Meters, & Kilograms.</span>
-          </label>
-          <label className="units-option">
-            <input
-              type="radio"
-              name="units"
-              value="imperial"
-              checked={selectedUnits === 'imperial'}
-              onChange={() => setSelectedUnits('imperial')}
-            />
-            <span>Inches, Feet, & Pounds.</span>
-          </label>
-        </div>
-        <div className="popup-actions">
-          <button 
-            className="action-button" 
-            onClick={() => onSave(selectedUnits)}
-          >
-            Update
-          </button>
-
-        </div>
+/**
+ * UnitsSelector component: lets the user choose between metric and imperial systems.
+ * It accepts the current unit setting and callbacks for saving or canceling the change.
+ */
+const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onCancel }) => {
+  const [selectedUnits, setSelectedUnits] = useState(currentUnits);
+  return (
+    <div>
+      <div className="units-options">
+        <label className="units-option">
+          <input
+            type="radio"
+            name="units"
+            value="metric"
+            checked={selectedUnits === 'metric'}
+            onChange={() => setSelectedUnits('metric')}
+          />
+          <span>Centimeters, Meters, & Kilograms.</span>
+        </label>
+        <label className="units-option">
+          <input
+            type="radio"
+            name="units"
+            value="imperial"
+            checked={selectedUnits === 'imperial'}
+            onChange={() => setSelectedUnits('imperial')}
+          />
+          <span>Inches, Feet, & Pounds.</span>
+        </label>
       </div>
-    );
-  };
+      <div className="popup-actions">
+        <button 
+          className="action-button" 
+          onClick={() => onSave(selectedUnits)}
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  );
+};
 
   /**
    * Handler for changing units.
@@ -374,46 +379,6 @@ export const Settings: React.FC = () => {
     ));
   };
 
-  /**
-   * Handler for subscription upgrade.
-   * Opens a popup with the Stripe payment form.
-   * On successful payment, updates the subscription details and shows a confirmation popup.
-   */
-  const handleSubscriptionUpgrade = () => {
-    openPopup('Subscribe', (
-      <StripePaymentForm 
-        email={user.email}
-        onSuccess={() => {
-         
-          setUser({
-            ...user,
-            subscription: {
-              ...user.subscription,
-              plan: 'premium',
-              price: '$19.99/month',
-              status: 'active',
-              startDate: new Date().toISOString(),
-              nextBillingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            }
-          });
-          closePopup();
-          setTimeout(() => {
-            openPopup('Subscription Activated', (
-              <div className="success-message">
-                <div className="success-icon">✓</div>
-                <h3>Your Premium Plan is Active!</h3>
-                <p>Thank you for subscribing to B-LU-E Premium. Your 7-day free trial has started.</p>
-                <p>You'll be charged $19.99/month after your trial ends.</p>
-                <button className="action-button" onClick={closePopup}>Got it</button>
-              </div>
-            ));
-          }, 500);
-        }}
-        onCancel={closePopup}
-      />
-    ));
-  };
-
   return (
     <div className="settings-container">
       <div className="settings-content">
@@ -458,19 +423,14 @@ export const Settings: React.FC = () => {
         {/* Render Active Tab Content */}
         <div role="tabpanel" aria-label={`${activeTab} settings`}>
           {activeTab === 'account' && (
-            <AccountTab
-              user={user}
-              onEmailChange={handleEmailChange}
-              onPasswordChange={handlePasswordChange}
-              
-              onLogout={handleLogout}
+            <AccountTab 
+              user={user} 
+              onEmailChange={handleEmailChange} 
+              onPasswordChange={handlePasswordChange} 
+              onUnitsChange={handleUnitsChange}  // ✅ Add this line
+              onLogout={handleLogout} 
             />
-          )}
-          {activeTab === 'billing' && (
-            <BillingTab
-              user={user}
-              onSubscriptionUpgrade={handleSubscriptionUpgrade}
-            />
+
           )}
 
           {activeTab === 'workout' && (

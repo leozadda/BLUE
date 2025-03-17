@@ -8,6 +8,9 @@ import { useAuth } from "../../../auth/auth-context/AuthContext";
 // Define base API URL (this is the address of your backend server)
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+type MessageState = { type: "success" | "error"; text: string } | null;
+
+
 // **********************************************************************
 // Conversion helper functions
 // These functions convert between metric and imperial units.
@@ -15,10 +18,11 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 // - lbToKg: converts pounds to kilograms.
 // - cmToIn: converts centimeters to inches.
 // - inToCm: converts inches to centimeters.
-const kgToLb = (kg) => kg * 2.20462;  // Multiply kg by 2.20462 to get the value in pounds.
-const lbToKg = (lb) => lb / 2.20462;   // Divide lb by 2.20462 to get the value in kilograms.
-const cmToIn = (cm) => cm * 0.393701;    // Multiply cm by 0.393701 to convert to inches.
-const inToCm = (inch) => inch / 0.393701;  // Divide inches by 0.393701 to convert to centimeters.
+const kgToLb = (kg: number): number => kg * 2.20462; // Multiply kg by 2.20462 to get the value in pounds.
+const lbToKg = (lb: number): number => lb / 2.20462; // Divide lb by 2.20462 to get the value in kilograms.
+const cmToIn = (cm: number): number => cm * 0.393701; // Multiply cm by 0.393701 to convert to inches.
+const inToCm = (inch: number): number => inch / 0.393701; // Divide inches by 0.393701 to convert to centimeters.
+
 
 // **********************************************************************
 // Measurements Component
@@ -49,7 +53,7 @@ const Measurements = () => {
     }); // Default measurements (20 cm each).
     const [file, setFile] = useState(null); // No file is uploaded initially.
     const [loading, setLoading] = useState(true); // Start in a "loading" state.
-    const [message, setMessage] = useState(null); // No message by default.
+    const [message, setMessage] = useState<MessageState>(null); // No message by default.
     const [hasLoadedData, setHasLoadedData] = useState(false); // Flag to indicate if previous measurements have been loaded.
     const [metricSystem, setMetricSystem] = useState(true); // Default to metric system.
 
@@ -57,7 +61,8 @@ const Measurements = () => {
     // ------------------------------------------------------------------
     // Helper function for making API requests that need authentication.
     // This function adds the required Authorization header using the token.
-    const makeAuthenticatedRequest = async (url, options = {}) => {
+    const makeAuthenticatedRequest = async (url: string, options: RequestInit = {}): Promise<Response> => {
+
 
         // Merge the credentials option with any other options passed in.
         const response = await authFetch(`${API_BASE_URL}${url}`, {
@@ -136,49 +141,6 @@ const Measurements = () => {
         fetchLatestMeasurement();
     }, []); // Runs only once when the component mounts.
 
-    // ------------------------------------------------------------------
-    // Handlers for file drop events (for progress photo upload).
-    // This function handles what happens when a file is dropped into the drop zone.
-    const handleDrop = (event) => {
-        event.preventDefault(); // Prevent default behavior (like opening the file).
-        const uploadedFile = event.dataTransfer.files[0]; // Get the first file from the drop event.
-       
-
-        if (uploadedFile) {
-            // Define allowed file types and maximum file size (5MB).
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-
-           
-           
-
-            // Check if the file type is one of the allowed types.
-            if (!validTypes.includes(uploadedFile.type)) {
-                console.error("🔍 handleDrop - Invalid file type");
-                setMessage({ type: "error", text: "Please upload only images (JPEG, PNG, GIF)" });
-                return;
-            }
-
-            // Check if the file size is within the allowed limit.
-            if (uploadedFile.size > maxSize) {
-                console.error("🔍 handleDrop - File too large");
-                setMessage({ type: "error", text: "File size must be less than 5MB" });
-                return;
-            }
-
-            // If the file is valid, update the state with the uploaded file.
-            setFile(uploadedFile);
-           
-            // Clear any previous messages.
-            setMessage(null);
-        }
-    };
-
-    // ------------------------------------------------------------------
-    // Prevent default behavior for drag over events.
-    const handleDragOver = (event) => {
-        event.preventDefault(); // This allows the file to be dropped.
-    };
 
     // ------------------------------------------------------------------
     // Function to reset all values back to their defaults.
@@ -222,12 +184,9 @@ const Measurements = () => {
                 chest: measurement.Chest,
             };
 
-           
-
             // Since we're not uploading a file, we'll send the data directly as JSON
             // instead of using FormData
-           
-            
+        
             // Make an authenticated POST request to save the user's measurement data.
             await makeAuthenticatedRequest("/save-user-measurement", {
                 method: "POST",
@@ -244,9 +203,13 @@ const Measurements = () => {
             setFile(null);
         } catch (error) {
             console.error("🔍 handleSubmit - Error:", error);
-            // If there is an error, display an error message.
-            setMessage({ type: "error", text: error.message || "Failed to save measurements" });
-        }
+            
+            if (error instanceof Error) {
+                setMessage({ type: "error", text: error.message });
+            } else {
+                setMessage({ type: "error", text: "An unknown error occurred" });
+            }
+        }        
     };
 
     // ------------------------------------------------------------------

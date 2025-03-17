@@ -19,9 +19,9 @@ type TimeRange = 'week' | 'month' | 'year';
 type MuscleGroup = string;
 
 // Keep VolumeData type dynamic using Record to handle any muscle group
-type VolumeData = {
-  date: string;
-} & Record<MuscleGroup, number>;
+type VolumeData = Record<string, number>; // Ensures all properties are numbers
+type VolumeEntry = VolumeData & { date: string }; // Adds date separately
+
 
 // API response will be an array of records
 type ApiVolumeRecord = {
@@ -95,8 +95,9 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
         <p style={{ margin: 0, fontWeight: 'bold' }}>{formatTooltipDate(label)}</p>
         {payload.map((entry, index) => (
           <p key={`tooltip-${index}`} style={{ margin: 0 }}>
-            {`${entry.name}: ${entry.value.toFixed(1)}`}
-          </p>
+              {entry.value !== undefined ? `${entry.name}: ${entry.value.toFixed(1)}` : `${entry.name}: N/A`}
+            </p>
+
         ))}
       </div>
     );
@@ -180,14 +181,18 @@ const MuscleVolume = () => {
     }
     
     // Then, convert grouped data to array format
-    Object.entries(groupedByPeriod).forEach(([timeRange, periodData]) => {
-      result[timeRange as TimeRange] = Object.entries(periodData)
-        .map(([period, muscleData]) => ({
-          date: period,
-          ...muscleData
-        }))
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    });
+// Convert grouped data to array format
+Object.entries(groupedByPeriod).forEach(([timeRange, periodData]) => {
+  result[timeRange as TimeRange] = Object.entries(periodData)
+    .map(([period, muscleData]) => ({
+      date: period, // Keep date as a string
+      ...muscleData, // Spread only valid number properties
+    }) as VolumeEntry) // Explicitly cast to the correct type
+    .filter(entry => Object.keys(entry).some(key => key !== "date")) // Ensure at least one volume key
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+});
+
+
     
    
     return result;
@@ -340,7 +345,7 @@ const MuscleVolume = () => {
             <YAxis 
               stroke="#FFFFFF"
               domain={['auto', 'auto']}
-              tickFormatter={(value) => Math.round(value)}
+              tickFormatter={(value) => Math.round(value).toString()}
               style={axisStyle}
               tick={{ fill: '#FFFFFF' }}
             />

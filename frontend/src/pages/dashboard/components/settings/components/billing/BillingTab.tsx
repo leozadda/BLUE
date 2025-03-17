@@ -100,12 +100,18 @@ const BillingTab: React.FC<BillingTabProps> = ({ user, onSubscriptionUpgrade }) 
         console.error('Failed to cancel subscription with status:', response.status);
         alert('Failed to cancel subscription. Please try again later.');
       }
-    } catch (error) {
-      console.error('Error cancelling subscription:', error);
-      console.error('Error type:', error.name);
-      console.error('Error message:', error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error cancelling subscription:', error);
+        console.error('Error type:', error.name);
+        console.error('Error message:', error.message);
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+      
       alert('An unexpected error occurred while cancelling your subscription.');
     }
+    
   };
 
   // SIMPLIFIED LOGIC: Check if the user is a premium user
@@ -156,8 +162,3 @@ const BillingTab: React.FC<BillingTabProps> = ({ user, onSubscriptionUpgrade }) 
 };
 
 export default BillingTab;
-
-/*
-- Renews on {user.nextBillingDate ? formatDate(user.nextBillingDate) : 'Unknown date'}
-{user.trial_period_ends_at ? formatDate(user.trial_period_ends_at) : ''}
-*/
