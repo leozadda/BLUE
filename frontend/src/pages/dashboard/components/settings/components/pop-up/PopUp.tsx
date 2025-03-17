@@ -1,6 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import './Popup.css';
+import './PopUp.css';
 
 /**
  * Props for the Popup component
