@@ -1,5 +1,5 @@
 const express = require('express');
-const VerifyToken = require('/Users/leo/Documents/blue/backend/routes/user/auth/VerifyToken.js');
+const VerifyToken = require('./VerifyToken.js');
 const router = express.Router();
 
 // Simple endpoint to verify if the user is authenticated
