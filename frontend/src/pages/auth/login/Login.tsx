@@ -128,7 +128,9 @@ const Login = () => {
 
       if (response.ok) {
         const data: UserData = await response.json();
-
+        
+       
+        
         // Check auth status to update context
         const isAuthenticated = await checkAuthStatus();
         
