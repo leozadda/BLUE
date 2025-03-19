@@ -24,25 +24,25 @@ body {
 
 /* Ensure full viewport height on all devices, including Safari */
 html, body {
-  height: 100dvh; /* Dynamic viewport height to account for Safari's shrinking/expanding address bar */
+  /* Use dvh which adjusts to Safari's dynamic viewport height */
+  height: 100dvh;
   width: 100vw;
   margin: 0;
   padding: 0;
   background-color: blue; /* Ensures the entire viewport is covered */
+  overflow: hidden; /* Prevent bouncing/scrolling */
 }
 
-/* Ensure root element covers the viewport correctly */
+/* Root element styles */
 #root { 
   height: 100dvh; /* Dynamic viewport height */
   width: 100vw;
   margin: 0;
   padding: 0;
-  background-color: blue; /* Ensures the entire viewport is covered */
-}
-
-/* Ensure safe area padding to avoid issues with Safari’s dynamic search bar */
-body {
-  padding-top: env(safe-area-inset-top);
+  background-color: blue;
+  /* Allow content to scroll within the fixed container */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Loading screen styling */
@@ -56,25 +56,54 @@ body {
   z-index: 9999;
 }
 
-/* Debugging logs for Safari viewport issues */
-@media screen and (max-width: 768px) {
-  html, body {
-    height: 100dvh; /* Ensures mobile Safari uses dynamic viewport height */
+/* Apply safe area insets to account for notches and UI elements */
+@supports (padding: max(0px)) {
+  body {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 }
 
+/* Mobile-specific adjustments */
+@media screen and (max-width: 768px) {
+  /* Ensure content fills the available space */
+  html, body, #root {
+    height: 100dvh;
+  }
+  
+  /* Create a scrollable container for content if needed */
+  .content-container {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+  }
+}
+
+/* Debug options for testing - uncomment to see viewport boundaries */
+/*
+body::after {
+  content: "viewport height: " attr(data-height);
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  z-index: 10000;
+}
+
 @media (orientation: portrait) {
-  /* Debugging for portrait mode */
   body::after {
-    content: "Viewport Debug: Portrait Mode - height set to 100dvh";
-    display: none; /* Change to block if you need to see it for debugging */
+    content: "Portrait: 100dvh";
   }
 }
 
 @media (orientation: landscape) {
-  /* Debugging for landscape mode */
   body::after {
-    content: "Viewport Debug: Landscape Mode - height set to 100dvh";
-    display: none;
+    content: "Landscape: 100dvh";
   }
 }
+*/
