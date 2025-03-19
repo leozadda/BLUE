@@ -5,7 +5,7 @@
     background-color: blue;
     height: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: left;
     flex-direction: column;
   }

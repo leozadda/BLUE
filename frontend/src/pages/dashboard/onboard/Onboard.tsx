@@ -173,22 +173,44 @@ const Onboard: React.FC = () => {
   }, [currentStep, isVisible, navigate, location.pathname, isLoading]);
 
   // Position tooltip - keeping the same logic
-  useEffect(() => {
-    if (!isVisible || isLoading) return;
+// Position tooltip - update this logic
+useEffect(() => {
+  if (!isVisible || isLoading) return;
+  
+  const targetElement = document.querySelector(onboardingSteps[currentStep].target);
+  const tooltipElement = document.getElementById('onboarding-tooltip');
 
-   
-    
-    const targetElement = document.querySelector(onboardingSteps[currentStep].target);
-    const tooltipElement = document.getElementById('onboarding-tooltip');
+  if (targetElement && tooltipElement) {
+    const targetRect = targetElement.getBoundingClientRect();
+    const tooltipRect = tooltipElement.getBoundingClientRect();
+    const position = onboardingSteps[currentStep].position;
 
-    if (targetElement && tooltipElement) {
-      const targetRect = targetElement.getBoundingClientRect();
-      const tooltipRect = tooltipElement.getBoundingClientRect();
-      const position = onboardingSteps[currentStep].position;
+    let top = 0;
+    let left = 0;
 
-      let top = 0;
-      let left = 0;
-
+    // Adjust the positioning logic for the logo specifically
+    if (onboardingSteps[currentStep].target === '.Company-Logo') {
+      // Special case for logo positioning
+      switch (position) {
+        case 'bottom':
+          top = targetRect.bottom + 20; // Add more offset for better position
+          left = targetRect.left + targetRect.width / 2 - tooltipRect.width / 2;
+          // Adjust for sidebar positioning
+          if (window.innerWidth > 768) {
+            // For desktop, center relative to the sidebar
+            left = targetRect.left + targetRect.width / 2;
+          } else {
+            // For mobile, position more to the right
+            left = targetRect.left + targetRect.width / 2 + 20;
+          }
+          break;
+        default:
+          // Other positions use default logic
+          top = targetRect.bottom + 10;
+          left = targetRect.left + targetRect.width / 2 - tooltipRect.width / 2;
+      }
+    } else {
+      // Original positioning logic for other elements
       switch (position) {
         case 'top':
           top = targetRect.top - tooltipRect.height - 10;
@@ -210,18 +232,18 @@ const Onboard: React.FC = () => {
           top = targetRect.bottom + 10;
           left = targetRect.left;
       }
-
-      // Boundary checks
-      top = Math.max(10, Math.min(top, window.innerHeight - tooltipRect.height - 10));
-      left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
-
-     
-      tooltipElement.style.top = `${top}px`;
-      tooltipElement.style.left = `${left}px`;
-    } else {
-      console.warn('⚠️ Target element or tooltip not found in DOM');
     }
-  }, [currentStep, isVisible, isLoading]);
+
+    // Boundary checks
+    top = Math.max(10, Math.min(top, window.innerHeight - tooltipRect.height - 10));
+    left = Math.max(10, Math.min(left, window.innerWidth - tooltipRect.width - 10));
+
+    tooltipElement.style.top = `${top}px`;
+    tooltipElement.style.left = `${left}px`;
+  } else {
+    console.warn('⚠️ Target element or tooltip not found in DOM');
+  }
+}, [currentStep, isVisible, isLoading]);
 
   // Next button handler - now saves to server
   const handleNext = () => {

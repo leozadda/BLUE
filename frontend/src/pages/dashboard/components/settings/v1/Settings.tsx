@@ -5,6 +5,8 @@ import { User, initialUser } from './User';
 import Popup from '../components/pop-up/PopUp';
 import AccountTab from '../components/account/AccountTab';
 import WorkoutTab from '../components/workout/WorkoutTab';
+// Add import for BillingTab - using the exact file path that matches your project structure
+import BillingTab from '../components/billing/BillingTab';
 import { authFetch } from '../../../../auth/token/authFetch';
 import { useAuth } from '../../../../auth/auth-context/AuthContext';
 
@@ -23,7 +25,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
  * IMPORTANT: It now fetches user information (including google_auth and metric_system) from the API so that AccountTab can correctly hide email/password options.
  */
 export const Settings: React.FC = () => {
-  // Active tab state: either 'account' or 'billing'
+  // Active tab state: either 'account' or 'billing' or 'workout'
   const [activeTab, setActiveTab] = useState<'account' | 'billing' | 'workout'>('account');
   // User state holds current user data; updated after fetching from the API.
   const [user, setUser] = useState<User>(initialUser);
@@ -379,6 +381,23 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
     ));
   };
 
+  /**
+   * Handler for subscription upgrade.
+   * This will be passed to the BillingTab component.
+   * Currently it's just a placeholder - you'll implement actual subscription upgrade logic here.
+   */
+  const handleSubscriptionUpgrade = () => {
+    // You could implement a redirect to payment page or open a subscription modal here
+    // For now this is just a placeholder
+    
+    // Example implementation (commented out):
+    // window.location.href = '/payment';
+    // OR:
+    // openPopup('Upgrade Subscription', (...subscription options...));
+  };
+
+  // Debug logs for current active tab and user state
+
   return (
     <div className="settings-container">
       <div className="settings-content">
@@ -388,7 +407,9 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
     {/* TAB FOR ACCOUNT SETTINGS */}
           <button
             className={`tab-button ${activeTab === 'account' ? 'active' : ''}`}
-            onClick={() => setActiveTab('account')}
+            onClick={() => {
+              setActiveTab('account');
+            }}
             aria-selected={activeTab === 'account'}
             role="tab"
           >
@@ -399,7 +420,9 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
       {/* TAB FOR BILLING SETTINGS */}
           <button
             className={`tab-button ${activeTab === 'billing' ? 'active' : ''}`}
-            onClick={() => setActiveTab('billing')}
+            onClick={() => {
+              setActiveTab('billing');
+            }}
             aria-selected={activeTab === 'billing'}
             role="tab"
           >
@@ -410,7 +433,10 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
       {/* TAB FOR WORKOUT SETTINGS */}
           <button
             className={`tab-button ${activeTab === 'workout' ? 'active' : ''}`}
-            onClick={() => setActiveTab('workout')}
+            onClick={() => {
+              console.log("🖱️ DEBUG: Workout tab clicked");
+              setActiveTab('workout');
+            }}
             aria-selected={activeTab === 'workout'}
             role="tab"
           >
@@ -430,7 +456,14 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
               onUnitsChange={handleUnitsChange}  // ✅ Add this line
               onLogout={handleLogout} 
             />
+          )}
 
+          {/* NEW CODE: Add rendering for billing tab */}
+          {activeTab === 'billing' && (
+            <BillingTab 
+              user={user}
+              onSubscriptionUpgrade={handleSubscriptionUpgrade}
+            />
           )}
 
           {activeTab === 'workout' && (

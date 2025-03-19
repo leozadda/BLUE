@@ -8,18 +8,12 @@ router.get('/get-latest-measurement', async (req, res) => {
         // Get the user's ID from their login token
         const userId = req.user.id;
         
-
-        // Ask the database for the most recent measurement
-        // This query does three things:
-        // 1. Gets all measurement data (that's what m.* means)
-        // 2. Also gets any photo/video info if it exists (pm.media_url, pm.media_type)
-        // 3. Orders by date and gets only the most recent one (LIMIT 1)
+        // First try with a simpler query without joining progress_media
         const result = await pool.query(
-            `SELECT m.*, pm.media_url, pm.media_type
-             FROM measurement m
-             LEFT JOIN progress_media pm ON m.id = pm.measurement_id
-             WHERE m.user_id = $1
-             ORDER BY m.date DESC
+            `SELECT *
+             FROM measurement
+             WHERE user_id = $1
+             ORDER BY date DESC
              LIMIT 1`,
             [userId]
         );

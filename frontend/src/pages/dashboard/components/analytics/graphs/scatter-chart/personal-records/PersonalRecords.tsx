@@ -165,14 +165,20 @@ const PersonalRecords: React.FC<PersonalRecordsProps> = ({ isMetricSystem }) => 
   // Style for "Nothing to show" message as specified
   const noContentStyle = {
     display: 'flex',
+    flex: "100%",
     justifyContent: 'center',
     alignItems: 'center',
-    height: 'auto',
     color: 'white',
     fontFamily: "Hoefler Text",
     fontSize: "2em",
     fontWeight: "500",
     fontStyle: "normal",
+    width: "auto",
+    height: "auto",
+    background: "blue",
+    borderRadius: ".3em",
+    border: "solid 1px white",
+    margin: ".6em"
   };
 
   // Check if we have any PRs

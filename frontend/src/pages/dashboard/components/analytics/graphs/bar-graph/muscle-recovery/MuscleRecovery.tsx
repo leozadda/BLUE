@@ -146,14 +146,20 @@ const MuscleRecoveryGraph = () => {
       {noDataToShow ? (
         <div className="recovery-empty-state" style={{
           display: 'flex',
+          flex: "100%",
           justifyContent: 'center',
           alignItems: 'center',
-          height: 'auto',
           color: 'white',
           fontFamily: "Hoefler Text",
           fontSize: "2em",
           fontWeight: "500",
           fontStyle: "normal",
+          width: "auto",
+          height: "auto",
+          background: "blue",
+          borderRadius: ".3em",
+          border: "solid 1px white",
+          margin: ".6em"
         }}>
           Nothing to show
         </div>

@@ -6,45 +6,75 @@ body {
   padding: 0;
 }
 
+/* Box-sizing for all elements */
 * {
   box-sizing: border-box;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari, and Opera */
 *::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
+/* Hide scrollbar for IE, Edge, and Firefox */
 * {
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
+/* Ensure full viewport height on all devices, including Safari */
 html, body {
-  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height to account for Safari's shrinking/expanding address bar */
   width: 100vw;
   margin: 0;
   padding: 0;
   background-color: blue; /* Ensures the entire viewport is covered */
 }
 
-
-#root {  /* or whatever your root element ID/class is */
-  height: 100vh;
+/* Ensure root element covers the viewport correctly */
+#root { 
+  height: 100dvh; /* Dynamic viewport height */
   width: 100vw;
   margin: 0;
   padding: 0;
   background-color: blue; /* Ensures the entire viewport is covered */
-
 }
 
+/* Ensure safe area padding to avoid issues with Safari’s dynamic search bar */
+body {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Loading screen styling */
 .Loading-Screen {
   background-color: blue;
-  height: 100vh;
+  height: 100dvh; /* Dynamic height */
   width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
+}
+
+/* Debugging logs for Safari viewport issues */
+@media screen and (max-width: 768px) {
+  html, body {
+    height: 100dvh; /* Ensures mobile Safari uses dynamic viewport height */
+  }
+}
+
+@media (orientation: portrait) {
+  /* Debugging for portrait mode */
+  body::after {
+    content: "Viewport Debug: Portrait Mode - height set to 100dvh";
+    display: none; /* Change to block if you need to see it for debugging */
+  }
+}
+
+@media (orientation: landscape) {
+  /* Debugging for landscape mode */
+  body::after {
+    content: "Viewport Debug: Landscape Mode - height set to 100dvh";
+    display: none;
+  }
 }

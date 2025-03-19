@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChartSpline, Dumbbell, CalendarDays, Ruler, Settings, Menu, X } from "lucide-react";
+import { ChartNoAxesGantt, ChartSpline, Dumbbell, CalendarDays, Ruler, Settings, Menu, X } from "lucide-react";
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -48,7 +48,7 @@ const Sidebar = () => {
   return (
     <>
       <div className="hamburger-button" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={30} /> : <Menu size={30} />}
+        {isOpen ? <X size={0} /> : <ChartNoAxesGantt size={30} />}
       </div>
       
       {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)}></div>}

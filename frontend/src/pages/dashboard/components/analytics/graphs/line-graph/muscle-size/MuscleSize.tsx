@@ -355,16 +355,21 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
         <div 
           className="no-data-container" 
           style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            height: 'auto', 
-            color: 'white', 
-            fontFamily: "Hoefler Text", 
-            fontSize: "2em", 
-            fontWeight: "500", 
+            display: 'flex',
+            flex: "100%",
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'white',
+            fontFamily: "Hoefler Text",
+            fontSize: "2em",
+            fontWeight: "500",
             fontStyle: "normal",
-            minHeight: '300px' // Match the height of the chart container
+            width: "auto",
+            height: "auto",
+            background: "blue",
+            borderRadius: ".3em",
+            border: "solid 1px white",
+            margin: ".6em"
           }}
         >
           Nothing to show

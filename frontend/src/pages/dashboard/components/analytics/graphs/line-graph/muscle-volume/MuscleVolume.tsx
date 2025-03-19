@@ -309,16 +309,21 @@ Object.entries(groupedByPeriod).forEach(([timeRange, periodData]) => {
         <div 
           className="no-data-message" 
           style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            height: 'auto', 
-            color: 'white', 
-            fontFamily: "Hoefler Text", 
-            fontSize: "2em", 
-            fontWeight: "500", 
+            display: 'flex',
+            flex: "100%",
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'white',
+            fontFamily: "Hoefler Text",
+            fontSize: "2em",
+            fontWeight: "500",
             fontStyle: "normal",
-            minHeight: '300px' // Adding minimum height to match chart height
+            width: "auto",
+            height: "auto",
+            background: "blue",
+            borderRadius: ".3em",
+            border: "solid 1px white",
+            margin: ".6em"
           }}
         >
           Nothing to show

@@ -65,7 +65,7 @@ body {
   height: 100%;
   min-height: 300px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: left;
   flex-direction: column;
 }
@@ -114,7 +114,18 @@ body {
     width: 100%;
     height: 100%;
     height: auto;
+    min-height: 500px !important;
 
+  }
+
+  .chart-container {
+    padding: 2em;
+    height: 100%;
+    min-height: 300px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    flex-direction: column;
   }
 }
 

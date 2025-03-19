@@ -6,7 +6,7 @@
   
 .Measurements{
     width: 100%; /* This will make it 100% of its parent container */
-    background-color: rgb(0, 0, 200);
+    background-color: rgb(0, 0, 255);
     color: white;
     -webkit-overflow-scrolling: touch;
     position: relative;
@@ -186,7 +186,7 @@
 
 .Measurements-Message{
     font-family: "Hoefler Text";
-    font-size: 10em;
+    font-size: 9rem;
     font-weight: 500;
     font-style: normal;
     text-align: center;
@@ -218,6 +218,30 @@
 .Measurements-Message-Button:hover{
     background-color: white;
     color: blue;
+}
+
+.Measurements-Message-Grid{
+    display: flex !important;
+    flex-direction:column !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2rem;
+    padding: 0rem;
+    background-color: blue;
+    height: auto;
+    width: auto;
+    margin: 0em;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-radius: 0;
+    background-color: blue;
+    margin: 0;
+    overflow-y: auto;
+    width: 100%;
+    border-radius: 0;
+    padding: 4em 2em 4em 2em;
+    height: 100%; /* Subtract margin to prevent overflow */
 }
 
 @media (max-width: 768px) {
@@ -252,11 +276,11 @@
         height: 100%; /* Subtract margin to prevent overflow */
     }
     .Measurements-Message-Grid{
-        display: flex;
-        flex-direction:column;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
+        display: flex !important;
+        flex-direction:column !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: center !important;
         gap: 2rem;
         padding: 0rem;
         background-color: blue;
@@ -353,7 +377,7 @@
     }
     .Measurements-Message{
         font-family: "Hoefler Text";
-        font-size: 6em;
+        font-size: 4em;
         font-weight: 500;
         font-style: normal;
         text-align: center;

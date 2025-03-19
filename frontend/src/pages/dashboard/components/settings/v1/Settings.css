@@ -196,8 +196,8 @@ input.popup-input {
 
   .settings-tabs {
     flex-wrap: wrap;
-        gap: .5rem;
-        margin-top: 2em;
+        gap: 0rem;
+        margin-top: 3em;
         margin-bottom: 1rem;
         border-bottom: 0px solid white;
         z-index: 1000;
@@ -217,3 +217,18 @@ input.popup-input {
     padding: 0.5rem 1rem;
   }
 }
+@media (max-width: 640px) {
+  .settings-tabs {
+      justify-content: space-between; /* Distribute space evenly */
+  }
+  
+  .tab-button {
+      flex: 1; /* Allow each button to grow equally */
+      min-width: 30%; /* Maintain minimum width */
+      max-width: 33%; /* Ensure no button takes too much space */
+      justify-content: center;
+      align-items: center;
+  }
+}
+
+
