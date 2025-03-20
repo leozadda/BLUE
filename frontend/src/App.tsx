@@ -16,6 +16,9 @@ import Payment from './pages/payment/Payment';
 import { AuthProvider, useAuth } from './pages/auth/auth-context/AuthContext';
 import './App.css';
 
+// DEVELOPMENT TESTING FLAG - SET TO TRUE TO BYPASS AUTH CHECKS
+const DEV_BYPASS_AUTH = true;
+
 function debugViewport() {
   console.log("Window inner height:", window.innerHeight);
   console.log("Document documentElement.clientHeight:", document.documentElement.clientHeight);
@@ -31,6 +34,12 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 // PrivateRoute: Protects dashboard routes.
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated, isLoading, authChecked } = useAuth();
+  
+  // FOR TESTING: Bypass authentication check completely
+  if (DEV_BYPASS_AUTH) {
+    console.log("🚨 DEV MODE: Authentication bypassed for testing");
+    return children;
+  }
   
   // Wait until authentication check is complete before making any decision
   if (isLoading || !authChecked) {
@@ -54,6 +63,12 @@ function PrivateRoute({ children }: { children: JSX.Element }) {
 // Only allows access if user is authenticated AND their trial has expired
 function PaymentRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated, isLoading, authChecked, userInfo } = useAuth();
+
+  // FOR TESTING: Bypass payment route checks completely
+  if (DEV_BYPASS_AUTH) {
+    console.log("🚨 DEV MODE: Payment route checks bypassed for testing");
+    return children;
+  }
 
   if (isLoading || !authChecked) {
     return (
@@ -83,6 +98,12 @@ function PaymentRoute({ children }: { children: JSX.Element }) {
 // AuthRedirect: Used on login/signup pages to redirect already-authenticated users to dashboard.
 function AuthRedirect({ children }: { children: JSX.Element }) {
   const { isAuthenticated, isLoading, authChecked } = useAuth();
+
+  // FOR TESTING: Bypass auth redirect completely
+  if (DEV_BYPASS_AUTH) {
+    console.log("🚨 DEV MODE: Auth redirect bypassed for testing");
+    return children;
+  }
 
   // Wait until authentication check is complete before making any decision
   if (isLoading || !authChecked) {
