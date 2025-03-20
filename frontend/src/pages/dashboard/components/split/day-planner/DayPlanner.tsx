@@ -543,21 +543,25 @@ return (
         {exercises
           .filter(ex => ex.name.toLowerCase().includes(searchTerm.toLowerCase()))
           .map(exercise => (
-            <div 
-              key={exercise.id}
-              className="exercise-item"
-              onClick={() => {
-                setSelectedExercise(exercise);
-              }}>
-              <div className='exercise-name'>{exercise.name}</div>
-              <div className="muscle-ratios">
-                {exercise.muscleTargets.map(({ muscle, percentage }) => (
-                  <div key={muscle}>
-                    {muscle}: {percentage.toFixed(0)}%
-                  </div>
-                ))}
-              </div>
+
+
+          <div 
+            key={exercise.id}
+            className={`exercise-item ${selectedExercise?.id === exercise.id ? 'active' : ''}`}
+            onClick={() => {
+              setSelectedExercise(exercise);
+            }}>
+            <div className='exercise-name'>{exercise.name}</div>
+            <div className="muscle-ratios">
+              {exercise.muscleTargets.map(({ muscle, percentage }) => (
+                <div key={muscle}>
+                  {muscle}: {percentage.toFixed(0)}%
+                </div>
+              ))}
             </div>
+          </div>
+
+
           ))}
       </div>
     </div>
@@ -613,7 +617,7 @@ return (
           <input
             type="range"
             min="0"
-            max="50"
+            max="30"
             value={reps}
             onChange={(e) => {
               const newReps = Number(e.target.value);

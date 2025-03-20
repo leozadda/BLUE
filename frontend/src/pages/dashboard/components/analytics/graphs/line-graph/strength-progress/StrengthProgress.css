@@ -41,7 +41,7 @@
   .time-range-button {
     background: transparent;
     color: white;
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     cursor: pointer;
@@ -65,7 +65,7 @@
   .muscle-group-button {
     background: transparent;
     color: white;
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     cursor: pointer;

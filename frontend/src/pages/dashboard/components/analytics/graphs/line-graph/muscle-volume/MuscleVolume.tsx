@@ -322,7 +322,7 @@ Object.entries(groupedByPeriod).forEach(([timeRange, periodData]) => {
             height: "auto",
             background: "blue",
             borderRadius: ".3em",
-            border: "solid 1px white",
+            border: "1px solid rgba(255, 255, 255, 0.588) !important",
             margin: ".3em"
           }}
         >

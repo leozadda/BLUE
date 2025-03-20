@@ -290,7 +290,7 @@ const BodyWeightGraph: React.FC<BodyWeightGraphProps> = ({ isMetricSystem }) => 
               style={{
                 background: timeRange === period ? 'white' : 'transparent',
                 color: timeRange === period ? 'blue' : 'white',
-                border: '1px solid white',
+                border: '1px solid rgba(255, 255, 255, 0.588)',
                 padding: '0.25rem 0.5rem',
                 borderRadius: '0.25rem',
                 cursor: 'pointer',
@@ -320,7 +320,7 @@ const BodyWeightGraph: React.FC<BodyWeightGraphProps> = ({ isMetricSystem }) => 
           height: "auto",
           background: "blue",
           borderRadius: ".3em",
-          border: "solid 1px white",
+          border: "1px solid rgba(255, 255, 255, 0.588)",
           margin: ".3em"
         }}>
           Nothing to show

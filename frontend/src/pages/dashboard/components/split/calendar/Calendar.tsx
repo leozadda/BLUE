@@ -1,5 +1,6 @@
 // Calendar.tsx
 import React, { useState, useEffect } from 'react';
+import {  ArrowLeft, ArrowRight  } from 'lucide-react';
 import './Calendar.css';
 
 // Define the props interface for type safety
@@ -75,11 +76,11 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, initialSelectedDate }
   return (
     <div className="calendar-container">
       <div className="calendar-header">
-        <button onClick={prevMonth} className="nav-button">←</button>
+        <button onClick={prevMonth} className="nav-button"><ArrowLeft  strokeWidth={3} /></button>
         <h2 className="current-month">
           {months[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h2>
-        <button onClick={nextMonth} className="nav-button">→</button>
+        <button onClick={nextMonth} className="nav-button"><ArrowRight strokeWidth={3} /></button>
       </div>
 
       <div className="weekday-header">

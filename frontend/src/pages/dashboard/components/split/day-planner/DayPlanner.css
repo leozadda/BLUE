@@ -2,17 +2,21 @@
 .workout-day {
     height: auto !important;
     width: 100% !important;
-    margin: 1em;
-    padding: 1em;
+    margin: 0em;
+    padding: 0em;
     background-color: blue;
     border-radius: .3em;
     color: white;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-y: scroll;
+    overflow-x: hidden !important;
+    padding: 1em 3em 3em 3em;
+    
   }
   .workout-date{
     text-align: center;
     width: 100%;
+    margin-bottom: 1em;
   }
   
   /* Exercise search section */
@@ -24,7 +28,7 @@
     width: 100%;
     padding: 0.75rem;
     background-color: blue;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .3em;
     color: white;
     font-size: 1rem;
@@ -38,7 +42,7 @@
   .exercise-list {
     max-height: 200px;
     overflow-y: auto;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .3em;
     margin-top: 0.5em;
   }
@@ -59,7 +63,7 @@
     font-weight: 900;
     font-size: 1.3em;
   }
-  
+
   /* Muscle ratios display */
   .muscle-ratios {
     display: flex;
@@ -69,6 +73,18 @@
     font-size: 0.8em;
     color: rgba(255, 255, 255, 0.8);
     padding: .5em 0 .5em 0;
+  }
+
+  .exercise-item.active {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+  }
+  
+  /* Ensure .muscle-ratios and its children inherit the color */
+  .exercise-item.active .muscle-ratios,
+  .exercise-item.active .muscle-ratios div {
+    background-color: inherit;
+    color: inherit; /* Inherit the color from the parent */
   }
   
   /* Set type selector */
@@ -87,7 +103,7 @@
   .set-type-btn {
     padding: .65rem .65rem;
     background-color: blue;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .3em;
     color: white;
     cursor: pointer;
@@ -129,7 +145,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     color: white;
     transition: all 0.2s ease;
   }
@@ -197,7 +213,7 @@
     margin-top: 1em;
     background-color: blue;
     color: white;
-    border: solid white 2px;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     font-family: "Andale Mono", AndaleMono, monospace;
     font-size: 1.3em;
     font-weight: light;
@@ -207,6 +223,10 @@
   }
   
   .timer-control button:hover {
+    background-color: white;
+    color: blue;
+  }
+  .timer-control button:active {
     background-color: white;
     color: blue;
   }
@@ -248,17 +268,17 @@
     width: 100%;
     text-align: center;
     padding: .5em;
-    border: solid 2px white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
   }
   .reset-set-btn:hover{
     background-color: blue;
     color: white;
-    border: solid 2px white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
   }
   .add-set-btn:hover{
     background-color: blue;
     color: white;
-    border: solid 2px white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
   }
   
   /* Sets list */
@@ -268,7 +288,7 @@
   
   .set-item {
     padding: 0.75rem;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: 4px;
     margin-bottom: 0.5em;
     background-color: rgba(255, 255, 255, 0.05);
@@ -439,7 +459,7 @@ input[type="range"] {
 .set-delete-button:hover{
   background-color: blue;
   color: white;
-  border: solid 1px white;
+  border: 1px solid rgba(255, 255, 255, 0.588);
 }
 
 /* ------------------------------------------------------------------------ */
@@ -452,14 +472,22 @@ input[type="range"] {
 
   .workout-day {
     height: auto;
-    width: auto;
-    margin: 1em;
+    width: 90% !important;
+    margin: 0em;
     padding: 1em;
     background-color: blue;
-    border-radius: .3em;
+    border-radius: .5em;
     color: white;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-y: scroll;
+    overflow-x: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+  }
+
+  .workout-date{
+    text-align: center;
+    width: 100%;
+    margin: .5em 0 .5em 0;
   }
   
   /* Exercise search section */
@@ -471,8 +499,8 @@ input[type="range"] {
     width: 100%;
     padding: 0.75rem;
     background-color: blue;
-    border: 2px solid white;
-    border-radius: .3em;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+    border-radius: .5em;
     color: white;
     font-size: 1rem;
   }
@@ -485,22 +513,30 @@ input[type="range"] {
   .exercise-list {
     max-height: 200px;
     overflow-y: auto;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .3em;
-    margin-top: 0.5em;
+    padding: 0.5em;
   }
   
   .exercise-item {
     padding: 0.5rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.516);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: 1;
+    border-radius: .5em;
   }
   
   .exercise-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
+  
 
   .exercise-name{
     font-weight: 900;
@@ -510,12 +546,24 @@ input[type="range"] {
   /* Muscle ratios display */
   .muscle-ratios {
     display: flex;
-    justify-content: left;
-    align-items: center;
+    justify-content: space-between;
+    align-items: space-between;
     gap: 0.3em;
     font-size: .8em;
     color: rgba(255, 255, 255, 0.8);
     padding: .5em 0 .5em 0;
+  }
+
+  .exercise-item.active {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+  }
+  
+  /* Ensure .muscle-ratios and its children inherit the color */
+  .exercise-item.active .muscle-ratios,
+  .exercise-item.active .muscle-ratios div {
+    background-color: inherit;
+    color: inherit; /* Inherit the color from the parent */
   }
   
   /* Set type selector */
@@ -538,8 +586,8 @@ input[type="range"] {
   .set-type-btn {
     padding: .65rem .65rem;
     background-color: blue;
-    border: 2px solid white;
-    border-radius: .3em;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+    border-radius: .5em;
     color: white;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -580,7 +628,7 @@ input[type="range"] {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: 2px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     color: white;
     transition: all 0.2s ease;
   }
@@ -623,7 +671,7 @@ input[type="range"] {
     width: 100%;
     padding: 0.75rem;
     background-color: white;
-    border-radius: .3em;
+    border-radius: .5em;
     color: blue;
     cursor: pointer;
     font-size: 1rem;
@@ -635,12 +683,16 @@ input[type="range"] {
     font-family: "Andale Mono", AndaleMono, monospace;
     font-size: 1.3em;
     font-weight: light;
-    border-radius: .3em;
+    border-radius: .5em;
     text-align: center;
     padding: .5em;
   }
   
   .timer-control button:hover {
+    background-color: white;
+    color: blue;
+  }
+  .timer-control button:active {
     background-color: white;
     color: blue;
   }
@@ -664,7 +716,7 @@ input[type="range"] {
     width: 100%;
     padding: 0.75rem;
     background-color: white;
-    border-radius: .3em;
+    border-radius: .5em;
     color: blue;
     cursor: pointer;
     font-size: 1rem;
@@ -676,7 +728,7 @@ input[type="range"] {
     text-transform: uppercase;
     font-size: 1.3em;
     font-weight: light;
-    border-radius: .3em;
+    border-radius: .5em;
     border: none;
     width: 100%;
     text-align: center;
@@ -697,8 +749,8 @@ input[type="range"] {
   
   .set-item {
     padding: 0.75rem;
-    border: 2px solid white;
-    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+    border-radius: .5em;
     margin-bottom: 0.5em;
     background-color: rgba(255, 255, 255, 0.05);
   }
@@ -714,7 +766,7 @@ input[type="range"] {
   margin-left: .5em;
 }
   .reps-label{
-    margin: 1em;
+    margin: 1em 0em 1em 0em;
   }
   .reps{
     font-size: 1.3em;
@@ -730,10 +782,10 @@ input[type="range"] {
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
-    width: 100%;
+    width: 90%;
     height: 10px;
     background: white; /* Change slider track color */
-    border-radius: .3em;
+    border-radius: .5em;
     outline: none;
     margin-top: .5em;
   }
@@ -749,7 +801,7 @@ input[type="range"] {
     width: 30px;
     height: 30px;
     background: white; /* Change slider thumb color */
-    border-radius: .6em;
+    border-radius: .5em;
     cursor: pointer;
     border: 4px solid blue;
   }
@@ -758,7 +810,7 @@ input[type="range"] {
     width: 30px;
     height: 30px;
     background: white;
-    border-radius: .6em;
+    border-radius: .5em;
     cursor: pointer;
     border: 2px solid blue;
   }
@@ -766,6 +818,24 @@ input[type="range"] {
 .timer-control{
   display: flex;
   justify-content: space-around;
+}
+.timer-control button{
+  border: 1px solid rgba(255, 255, 255, 0.588);
+}
+
+.reps-slider{
+
+  width: 100%;
+}
+
+
+.set-stats-container{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  gap: 0em;
+  width: 100%;
+  font-size: 1em;
 }
 
 

@@ -161,7 +161,7 @@ const Login = () => {
   return (
     <div className="Login">
       <div className="Login-Container">
-        <h1>B-L-U-E</h1>
+      <h1 onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>B-L-U-E</h1>
 {/*   This should handle the Google option */}
         <div className="google-login">
           <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>

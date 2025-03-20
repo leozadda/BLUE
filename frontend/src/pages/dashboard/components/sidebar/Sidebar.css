@@ -87,7 +87,7 @@ a {
     /* FIX: Adjusted margin to add more space on the left side */
     margin: 0 1em 0 1em;
     max-height: 6vh;
-    border-radius: .75em;
+    border-radius: .5em;
     transition: all 0.3s ease;
     overflow: hidden;
 }
@@ -96,8 +96,8 @@ a {
 .Lifts-Tab:hover,
 .Split-Tab:hover,
 .Measurements-Tab:hover {
-    background-color: rgb(255, 255, 255);
-    color: blue;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgb(255, 255, 255);
     transition: all 0.3s ease;
 }
 
@@ -107,9 +107,9 @@ a {
 .Split-Tab.active,
 .Measurements-Tab.active,
 .Settings-Button.active {
-    background-color: rgb(0, 0, 220);
-    color: white;
-    border-radius: .5em;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 255);
+    border-radius: .3em;
 }
 
 .Settings-Button {
@@ -128,8 +128,8 @@ a {
 }
 
 .Settings-Button:hover {
-    background-color: rgb(255, 255, 255);
-    color: blue;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgb(255, 255, 255);
 }
 
 .Settings-Button p {
@@ -139,7 +139,22 @@ a {
     font-variant: normal;
 }
 
-
+/* Mobile hamburger button */
+.hamburger-button {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 999; /* Decreased z-index to be below the sidebar */
+    background-color: blue;
+    border-radius: .3em;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Overlay when sidebar is open on mobile */
 .sidebar-overlay {
@@ -164,25 +179,8 @@ a {
         transform: translateX(0);
     }
     
-    /* Mobile hamburger button */
     .hamburger-button {
-        display: none;
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        z-index: 999; /* Decreased z-index to be below the sidebar */
-        border-radius: .9em;
-        width: 50px;
-        height: 40px;
-        cursor: pointer;
-        color: rgb(0, 0, 255);
-        justify-content: center;
-        align-items: center;
-        background-color: white;
         display: flex;
-        flex: 100%;
-        justify-content: center;
-        align-self:center;
     }
     
     .sidebar-overlay {
@@ -210,16 +208,5 @@ a {
     
     body.sidebar-open {
         padding-left: 250px;
-    }
-    .Sidebar-Container {
-        pointer-events: none;
-    }
-    
-    .Sidebar {
-        pointer-events: auto;
-    }
-    
-    .hamburger-button {
-        pointer-events: auto;
     }
 }

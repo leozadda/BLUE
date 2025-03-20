@@ -308,7 +308,7 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
               style={{
                 background: timeRange === period ? 'white' : 'transparent',
                 color: timeRange === period ? 'blue' : 'white',
-                border: '1px solid white',
+                border: '1px solid rgba(255, 255, 255, 0.588)',
                 padding: '0.25rem 0.5rem',
                 borderRadius: '0.25rem',
                 cursor: 'pointer',
@@ -336,7 +336,7 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
               style={{
                 background: selectedMuscles.has(muscle as MuscleGroup) ? 'white' : 'transparent',
                 color: selectedMuscles.has(muscle as MuscleGroup) ? 'blue' : 'white',
-                border: '1px solid white',
+                border: '1px solid rgba(255, 255, 255, 0.588)',
                 padding: '0.25rem 0.5rem',
                 borderRadius: '0.25rem',
                 cursor: 'pointer',
@@ -368,7 +368,7 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
             height: "auto",
             background: "blue",
             borderRadius: ".3em",
-            border: "solid 1px white",
+            border: "1px solid rgba(255, 255, 255, 0.588)",
             margin: ".3em"
           }}
         >

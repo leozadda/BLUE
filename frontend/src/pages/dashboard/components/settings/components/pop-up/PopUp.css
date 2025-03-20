@@ -21,7 +21,7 @@
     overflow-y: auto;
     border-radius: .6em;
     padding: 1em;
-    border: solid 2px white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     /* Optional: add margin to ensure it's not flush against viewport edges */
     margin: 1rem;
 }
@@ -31,7 +31,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    border-bottom: 2px solid white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
   }
   
   .popup-header h2 {
@@ -71,7 +71,7 @@
     width: 100%;
     padding: 0.5rem;
     border-radius: .5em;
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     background-color: blue;
     color: white;
     margin-bottom: 1rem;
@@ -89,7 +89,7 @@
   }
   
   .plan-card {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: 6px;
     padding: 1rem;
     flex: 1;

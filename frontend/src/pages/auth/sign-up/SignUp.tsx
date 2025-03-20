@@ -157,7 +157,7 @@ const SignUp = () => {
   return (
     <div className="Sign-Up">
       <div className="Sign-Up-Container">
-        <h1>B-L-U-E</h1>
+      <h1 onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>B-L-U-E</h1>
         {/* Google sign-up section */}
         <div className="google-sign-up">
           <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>

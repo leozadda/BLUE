@@ -71,7 +71,7 @@ html, body{
     top: 50%;
     transform: translateY(-50%); /* Center it vertically */
     padding: 5px 10px;
-    border: solid 1px white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .3em;
 }
 
@@ -83,7 +83,7 @@ html, body{
 
 .header {
     padding: 3em 0 3em 0;
-    border-bottom: solid white 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     flex-wrap: wrap;
     text-align: center;
     align-items: center;
@@ -144,12 +144,12 @@ html, body{
 .header button:hover {
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
-    outline: solid 1px white;
+    outline: 1px solid rgba(255, 255, 255, 0.588);
 }
 
     .problem {
         padding: 2em;
-        border-bottom: solid white 1px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.588);
         display: flex;
         flex-wrap: wrap;
         justify-content: center; /* Center horizontally */
@@ -220,7 +220,7 @@ li > a:hover{
 
 .solution{
     padding: 4em;
-    border-bottom: solid white 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     display: flex;
     flex-wrap: wrap;
     text-align: center;
@@ -267,13 +267,13 @@ li > a:hover{
 .solution-child button:hover{
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
-    outline: solid 1px white;
+    outline: 1px solid rgba(255, 255, 255, 0.588);
 }
 
 
 .features {
     padding: 5em 0 5em 0;
-    border-bottom: solid white 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     display: flex;
     flex-wrap: wrap;
     text-align: center;
@@ -318,7 +318,7 @@ li > a:hover{
 /* FAQ Section */
 .faq-section {
     padding: 5em 0 5em 0;
-    border-bottom: solid white 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     display: flex;
     flex-wrap: wrap;
     text-align: center;
@@ -408,7 +408,7 @@ li > a:hover{
 
   .last-call-to-action {
     padding: 4em 0 4em 0;
-    border-bottom: solid white 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     display: flex; /* Add this */
     flex-wrap: wrap; /* Keep this */
     justify-content: center; /* Add this to center horizontally */
@@ -446,7 +446,7 @@ li > a:hover{
 .last-call-to-action button:hover {
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
-    outline: solid 1px white;
+    outline: 1px solid rgba(255, 255, 255, 0.588);
 }
 
 .footer{
@@ -535,7 +535,7 @@ li > a:hover{
 
     .header{
         padding: 3em 0 3em 0;
-        border-bottom: solid white 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.588);
         display: flex;
         flex-wrap: wrap;
         text-align: center;
@@ -685,7 +685,7 @@ li > a:hover{
 
     .features {
         padding: 5em 0 5em 0;
-        border-bottom: solid white 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.588);
         display: flex;
         flex-wrap: wrap;
         justify-content: center; /* Center content horizontally */
@@ -735,7 +735,7 @@ li > a:hover{
 /* FAQ Section */
 .faq-section {
     padding: 5em 0 5em 0;
-    border-bottom: solid white 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
     display: flex;
     flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center content vertically */
@@ -837,7 +837,7 @@ li > a:hover{
 }
       .last-call-to-action {
         padding: 6em 0 6em 0;
-        border-bottom: solid white 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.588);
         display: flex; /* Add this */
         flex-wrap: wrap; /* Keep this */
         justify-content: center; /* Add this to center horizontally */
@@ -873,7 +873,7 @@ li > a:hover{
     .last-call-to-action button:hover {
         background-color: rgb(17, 0, 255);
         color: rgb(255, 255, 255);
-        outline: solid 1px white;
+        outline: 1px solid rgba(255, 255, 255, 0.588);
     }
 
     /* This is a single-line comment *//* This is a single-line comment */

@@ -123,6 +123,7 @@ const PersonalRecords: React.FC<PersonalRecordsProps> = ({ isMetricSystem }) => 
       ...base,
       background: 'transparent',
       borderColor: 'white',
+      border: '1px solid rgba(255, 255, 255, 0.588)',
       cursor: 'pointer',
       padding: '0',
       fontSize: '12px',
@@ -137,7 +138,7 @@ const PersonalRecords: React.FC<PersonalRecordsProps> = ({ isMetricSystem }) => 
     menu: (base: any) => ({
       ...base,
       background: 'blue',
-      border: '1px solid white',
+      border: '1px solid rgba(255, 255, 255, 0.588)',
       width: 'auto', // Make dropdown width match content
       minWidth: '100%', // Ensure dropdown isn't smaller than control
     }),
@@ -177,7 +178,7 @@ const PersonalRecords: React.FC<PersonalRecordsProps> = ({ isMetricSystem }) => 
     height: "auto",
     background: "blue",
     borderRadius: ".3em",
-    border: "solid 1px white",
+    border: "1px solid rgba(255, 255, 255, 0.588)",
     margin: ".3em"
   };
 

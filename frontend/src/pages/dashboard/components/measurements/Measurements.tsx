@@ -302,7 +302,7 @@ const Measurements = () => {
                             step={metricSystem ? 0.1 : parseFloat((0.1 * 2.20462).toFixed(2))}
                             size={300}
                             valueColor="#FFFFFF"
-                            rangeColor="rgba(255, 255, 255, 0.2)"
+                            rangeColor="rgba(255, 255, 255, 0.10)"
                             textColor="#FFFFFF"
                         />
                     </div>
@@ -334,7 +334,7 @@ const Measurements = () => {
                                     step={metricSystem ? 0.1 : parseFloat((0.1 * 0.393701).toFixed(2))}
                                     size={160}
                                     valueColor="#FFFFFF"
-                                    rangeColor="rgba(255, 255, 255, 0.2)"
+                                    rangeColor="rgba(255, 255, 255, 0.1)"
                                     textColor="#FFFFFF"
                                 />
                             </div>
