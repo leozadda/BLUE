@@ -462,7 +462,7 @@ const StrengthProgress: React.FC<StrengthProgressProps> = ({ isMetricSystem }) =
             background: "blue",
             borderRadius: ".3em",
             border: "solid 1px white",
-            margin: ".6em"
+            margin: ".3em"
           }}
         >
           Nothing to show

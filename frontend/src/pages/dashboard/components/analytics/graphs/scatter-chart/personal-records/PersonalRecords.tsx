@@ -178,7 +178,7 @@ const PersonalRecords: React.FC<PersonalRecordsProps> = ({ isMetricSystem }) => 
     background: "blue",
     borderRadius: ".3em",
     border: "solid 1px white",
-    margin: ".6em"
+    margin: ".3em"
   };
 
   // Check if we have any PRs

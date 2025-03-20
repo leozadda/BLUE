@@ -369,7 +369,7 @@ const MuscleSize: React.FC<MuscleSizeProps> = ({ isMetricSystem }) => {
             background: "blue",
             borderRadius: ".3em",
             border: "solid 1px white",
-            margin: ".6em"
+            margin: ".3em"
           }}
         >
           Nothing to show
