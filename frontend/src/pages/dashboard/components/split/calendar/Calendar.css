@@ -4,6 +4,7 @@
       height: 400px;
       background: blue;
       border-radius: .3em;
+      margin: 2em;
       padding: 3em;
       font-family: Arial, sans-serif;
       color: white;
@@ -146,6 +147,7 @@
   flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.588);
   border-radius: .5em;
+  margin: 1em;
 }
 
 .calendar-grid {

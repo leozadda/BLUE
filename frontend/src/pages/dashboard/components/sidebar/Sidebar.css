@@ -87,7 +87,7 @@ a {
     /* FIX: Adjusted margin to add more space on the left side */
     margin: 0 1em 0 1em;
     max-height: 6vh;
-    border-radius: .5em;
+    border-radius: .75em;
     transition: all 0.3s ease;
     overflow: hidden;
 }
@@ -96,8 +96,8 @@ a {
 .Lifts-Tab:hover,
 .Split-Tab:hover,
 .Measurements-Tab:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: blue;
     transition: all 0.3s ease;
 }
 
@@ -107,9 +107,9 @@ a {
 .Split-Tab.active,
 .Measurements-Tab.active,
 .Settings-Button.active {
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 255);
-    border-radius: .3em;
+    background-color: rgb(0, 0, 220);
+    color: white;
+    border-radius: .5em;
 }
 
 .Settings-Button {
@@ -128,8 +128,8 @@ a {
 }
 
 .Settings-Button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: blue;
 }
 
 .Settings-Button p {
@@ -145,16 +145,15 @@ a {
     position: fixed;
     top: 1rem;
     left: 1rem;
-    z-index: 999; /* Decreased z-index to be below the sidebar */
+    z-index: 1001; /* Decreased z-index to be below the sidebar */
     background-color: blue;
     border-radius: .3em;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     color: white;
     justify-content: center;
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.588);
 }
 
 /* Overlay when sidebar is open on mobile */
@@ -211,3 +210,75 @@ a {
         padding-left: 250px;
     }
 }
+
+
+/* Move this inside the media query and change display to flex */
+@media (max-width: 768px) {
+    /* Other styles... */
+    
+    .hamburger-button {
+        display: flex;  /* Change from none to flex */
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 999;  /* Change back to 999 to be below sidebar */
+        background-color: blue;
+        border-radius: .3em;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        color: white;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+/* Add this at the bottom of your CSS file for testing */
+
+/* This adds a visible outline to help identify what's happening with the hamburger */
+.hamburger-button {
+    /* No changes to your original styling */
+    /* This just adds diagnostic styling */
+    outline: 1px solid rgba(255, 255, 255, 0.588) !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Add a visual indicator to show when hamburger is clicked */
+  .hamburger-button::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 2px dotted yellow;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .hamburger-button:active::before {
+    opacity: 1;
+  }
+  
+  /* Debug message that appears on small screens */
+  body::after {
+    content: "MOBILE DEBUG MODE";
+    position: fixed;
+    top: 60px;
+    left: 10px;
+    background: transparent;
+    color: transparent;
+    padding: 5px 10px;
+    font-size: 12px;
+    z-index: 9999;
+    pointer-events: none;
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    body::after {
+      display: block;
+    }
+  }
