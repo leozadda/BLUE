@@ -9,25 +9,22 @@
  @media (min-width: 769px) {
   /* Base styles for Split component */
   .Split {
-    /* Positioning and size */
-    position: fixed !important; /* Fixed positioning to viewport */
+    /* Positioning and size - DO NOT CHANGE, matches other components */
+    position: fixed !important;
     top: 0 !important;
-    left: 16% !important; /* Accounts for sidebar width */
-    width: 84% !important; /* Matches Main-Container width */
-    height: 100vh !important; /* Full viewport height */
+    left: 16% !important;
+    width: 84% !important;
+    height: 100% !important;
     
     /* Box model properties */
-    padding: 1.5em !important; /* Unified with other components */
+    padding: 1.5em !important;
     margin: 0 !important;
     box-sizing: border-box !important;
     
     /* Appearance */
     background-color: rgb(0, 0, 200);
-    
-    /* Overflow handling - critical for iOS Safari */
-    overflow-y: auto !important; /* Changed from scroll to auto like other components */
+    overflow-y: auto;
     overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on iOS */
     
     /* Flexbox layout */
     display: flex !important;
@@ -37,9 +34,8 @@
     /* Typography */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #ffffff;
-    
-    /* Safe area handling for iOS - matches other components */
     padding-bottom: calc(1.5em + env(safe-area-inset-bottom, 0px)) !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Styles for the grid inside Split component */
@@ -47,10 +43,10 @@
     /* Size and layout */
     width: 100% !important;
     height: 100% !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     
     /* Box model */
-    padding: 2em; /* Consistent padding with other containers */
+    padding: 2em;
     border-radius: .6em;
     
     /* Positioning */
@@ -58,10 +54,7 @@
     
     /* Appearance */
     background-color: blue;
-    
-    /* Overflow handling - critical for iOS Safari */
-    overflow-y: auto !important; /* Changed from scroll to auto */
-    overflow-x: hidden !important;
+    overflow-y: auto;
     
     /* Flexbox layout */
     display: flex;
@@ -70,11 +63,8 @@
     gap: 0em;
     justify-content: space-between;
     align-items: top;
-    
-    /* Border */
+    overflow-x: hidden !important;
     border: 1px solid rgba(255, 255, 255, 0.588);
-    
-    /* Safe area handling for iOS */
     padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
     -webkit-overflow-scrolling: touch !important;
   }
@@ -98,69 +88,45 @@
  * Completely separate from desktop styles to avoid inheritance issues
  */
 @media (max-width: 768px) {
-  /* Mobile styles for Split container */
+  /* Mobile styles for Split container - EXACTLY matching other components */
   .Split {
-    /* Full viewport positioning */
-    position: fixed !important; 
+    position: fixed !important;
     top: 0 !important;
-    left: 0 !important; /* Mobile takes full width */
-    width: 100vw !important; /* Use viewport width to match other components */
-    height: 100vh !important; /* Full viewport height */
-    
-    /* Box model */
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
     margin: 0 !important;
-    padding: 0 !important; /* Remove padding for mobile like other components */
-    box-sizing: border-box !important;
-    
-    /* Appearance */
-    background-color: blue;
-    
-    /* Overflow handling - critical for iOS Safari */
-    overflow-y: auto !important; /* Changed from scroll to auto like other components */
+    overflow-y: auto;
     overflow-x: hidden !important;
-    
-    /* Flexbox layout */
+    background-color: blue;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    
-    /* Typography */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #ffffff;
-    
-    /* Safe area handling for iOS - matches other components */
-    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    box-sizing: border-box !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
-  /* Mobile styles for the grid layout */
+  /* Mobile styles for the grid layout - EXACTLY matching other grid components */
   .Split-Grid {
-    /* Layout */
+    width: 100% !important;
+    padding: 2rem;
+    margin: 0 !important;
+    border: none;
+    height: 100% !important;
+    overflow-y: auto;
+    overflow-x: hidden !important;
+    background-color: blue;
+    border-radius: .6em;
+    position: relative;
     display: flex;
     flex-direction: column; /* Stack elements vertically on mobile */
     gap: .5em;
-    
-    /* Size and positioning */
-    width: 100% !important; /* Full width to match container */
-    height: 100% !important;
-    margin: 0 !important;
-    position: relative;
-    
-    /* Box model */
-    padding: 2rem; /* Consistent padding with other mobile containers */
-    border: none; /* Remove border on mobile like other components */
-    
-    /* Alignment */
     justify-content: start;
     align-items: center;
-    
-    /* Appearance */
-    background-color: blue;
-    border-radius: .6em;
-    
-    /* Overflow handling - critical for iOS Safari */
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
@@ -170,7 +136,7 @@
     width: 100%; /* Full width on mobile */
     height: auto; /* Automatic height based on content */
     overflow-x: hidden !important;
-    margin: 1em;
+    margin: 1em 0;
     display: flex;
     justify-content: center;
     align-items: center;
