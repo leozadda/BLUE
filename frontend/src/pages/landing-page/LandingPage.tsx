@@ -13,7 +13,6 @@ import { FaDumbbell } from "react-icons/fa";
 import head from './assets/head.png';
 import devil from './assets/devil.png';    
 
-
 function LandingPage() {
   // State to track which FAQ item is open
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
