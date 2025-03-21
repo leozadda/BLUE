@@ -251,6 +251,9 @@
         left: 0 !important;
         padding: 0 !important;
         margin: 0 !important;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        overscroll-behavior-x: none; /* Modern replacement */
     }
       .Measurements-Grid {
         display: flex;
@@ -274,6 +277,10 @@
         border-radius: 0;
         padding: 4em 2em 4em 2em;
         height: 100%; /* Subtract margin to prevent overflow */
+        overflow-y: scroll;
+        overflow-x: hidden;
+        overscroll-behavior-x: none; /* Modern replacement */
+        width: 100%;
     }
     .Measurements-Message-Grid{
         display: flex !important;
@@ -328,7 +335,7 @@
     .small-knobs {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        gap: 3rem;
         justify-content: center;
         align-items: center;
         width: 100%;

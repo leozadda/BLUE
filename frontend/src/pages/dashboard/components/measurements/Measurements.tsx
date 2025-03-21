@@ -300,9 +300,9 @@ const Measurements = () => {
                             min={metricSystem ? 40 : parseFloat(kgToLb(40).toFixed(1))}
                             max={metricSystem ? 150 : parseFloat(kgToLb(150).toFixed(1))}
                             step={metricSystem ? 0.1 : parseFloat((0.1 * 2.20462).toFixed(2))}
-                            size={300}
+                            size={250}
                             valueColor="#FFFFFF"
-                            rangeColor="rgba(255, 255, 255, 0.10)"
+                            rangeColor="rgba(255, 255, 255, 0.15)"
                             textColor="#FFFFFF"
                         />
                     </div>
@@ -332,9 +332,9 @@ const Measurements = () => {
                                     min={metricSystem ? 20 : parseFloat(cmToIn(20).toFixed(1))}
                                     max={metricSystem ? 150 : parseFloat(cmToIn(150).toFixed(1))}
                                     step={metricSystem ? 0.1 : parseFloat((0.1 * 0.393701).toFixed(2))}
-                                    size={160}
+                                    size={125}
                                     valueColor="#FFFFFF"
-                                    rangeColor="rgba(255, 255, 255, 0.1)"
+                                    rangeColor="rgba(255, 255, 255, 0.15)"
                                     textColor="#FFFFFF"
                                 />
                             </div>

@@ -96,7 +96,7 @@ a {
 .Lifts-Tab:hover,
 .Split-Tab:hover,
 .Measurements-Tab:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
     color: rgb(255, 255, 255);
     transition: all 0.3s ease;
 }
@@ -128,7 +128,7 @@ a {
 }
 
 .Settings-Button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
     color: rgb(255, 255, 255);
 }
 

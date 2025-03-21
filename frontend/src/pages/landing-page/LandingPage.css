@@ -883,6 +883,7 @@ li > a:hover{
         height: auto;
         margin: 0;
         text-align: center;
+        font-weight: 300;
     }
 
     .footer-child{

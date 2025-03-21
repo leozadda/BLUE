@@ -7,6 +7,10 @@
       padding: 3em;
       font-family: Arial, sans-serif;
       color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     .calendar-header {
@@ -56,9 +60,9 @@
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      width: 300px;
-      height: 300px;
+      gap: 0px;
+      width: inherit;
+      height: inherit;
     }
 
     .calendar-day {
@@ -82,9 +86,6 @@
       border-radius: .3em;
     }
 
-    .calendar-day.today {
-      border: 2px solid blue;
-    }
 
     .calendar-day.selected {
       background-color: rgb(255, 255, 255);
@@ -124,19 +125,37 @@
     @media screen and (max-width: 600px)
 {
 
-  .calendar-container {
-    width: 340px;
-    height: 400px;
-    background: blue;
-    border-radius: .5em;
-    padding: 1em;
-    font-family: Arial, sans-serif;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.588);
-    display: flex;
-    justify-content: top;
-    flex-direction: column;
-  }
+/* Ensure padding and border are included in width/height calculations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.calendar-container {
+  width: 350px;
+  height: 400px;
+  background: blue;
+  border-radius: 0.3em;
+  padding: 2em;
+  font-family: Arial, sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.588);
+  border-radius: .5em;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  width: 100%;  /* Use 100% to respect the container’s inner width */
+  height: 100%;
+}
+
 
   .current-month {
     margin: 0;
@@ -158,7 +177,8 @@
     justify-content: center;
     color: white;
     font-weight: 400;
-
+    padding: 0;
+    margin: 0;
   }
 
 }

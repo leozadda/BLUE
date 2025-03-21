@@ -471,6 +471,11 @@
     left: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    position: relative;
   }
 
   .LogWorkout-container {
@@ -479,6 +484,10 @@
     margin: 0;
     padding-top: 2em;
     max-height: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    overscroll-behavior-x: none; /* Modern replacement */
+    width: 100%;
   }
   
   .LogWorkout-header {
