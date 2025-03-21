@@ -1,4 +1,3 @@
-// In Dashboard.tsx
 import React, { useState, useEffect } from "react";
 import Sidebar from "./components/sidebar/Sidebar";
 import Onboard from "./onboard/Onboard";
@@ -7,6 +6,17 @@ import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Add effect to listen for sidebar state changes
   useEffect(() => {
@@ -43,8 +53,8 @@ const Dashboard = () => {
       <div 
         className="Sidebar-Container" 
         style={{
-          position: window.innerWidth <= 768 ? 'fixed' : undefined,
-          pointerEvents: window.innerWidth <= 768 && !isSidebarOpen ? 'none' : undefined
+          position: isMobile ? 'fixed' : undefined,
+          pointerEvents: isMobile && !isSidebarOpen ? 'none' : undefined
         }}
       >
         <Sidebar />
