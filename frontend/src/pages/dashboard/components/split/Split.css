@@ -123,6 +123,7 @@
     border-radius: .6em;
     position: relative;
     overflow-x: hidden !important;
+    border: none;
   }
 
   /* Mobile styles for calendar and day sections */

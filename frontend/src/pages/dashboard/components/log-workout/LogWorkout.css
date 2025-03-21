@@ -489,6 +489,7 @@
     overflow-x: hidden;
     overscroll-behavior-x: none; /* Modern replacement */
     width: 100%;
+    border: none;
   }
   
   .LogWorkout-header {

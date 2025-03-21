@@ -193,6 +193,7 @@ input.popup-input {
     width: 100% !important;
     padding: 2rem;
     margin: 0 !important;
+    border: none;
   }
 
   .settings-tabs {

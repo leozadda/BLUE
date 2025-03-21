@@ -255,6 +255,7 @@
         overflow-y: scroll;
         overflow-x: hidden;
         overscroll-behavior-x: none; /* Modern replacement */
+        border: none;
     }
       .Measurements-Grid {
         display: flex;
