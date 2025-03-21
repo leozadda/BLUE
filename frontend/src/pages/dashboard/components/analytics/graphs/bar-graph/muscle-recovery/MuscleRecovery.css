@@ -1,5 +1,5 @@
 .recovery-container {
-    border: 0px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.588);
     border-radius: .6em;
     padding: 1.5em;
     background-color: blue;
