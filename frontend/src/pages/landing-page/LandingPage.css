@@ -929,3 +929,16 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+/* Add these to your CSS */
+.faq-question {
+    -webkit-tap-highlight-color: transparent; /* Prevents gray flash on tap */
+    cursor: pointer; /* Ensures cursor shows it's clickable */
+    user-select: none; /* Prevents text selection on tap */
+    /* Keep your existing styles */
+}
+
+/* Make sure the entire button area is clickable */
+.faq-question-text, .faq-icon {
+    pointer-events: none; /* This prevents events from these elements interfering */
+}

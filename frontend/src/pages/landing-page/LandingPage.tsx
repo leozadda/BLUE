@@ -131,10 +131,14 @@ function LandingPage() {
           <div className="faq-accordion">
             {faqData.map((item, index) => (
               <div key={index} className="faq-item">
-                <button
-                  className={`faq-question ${activeIndex === index ? "active" : ""}`}
-                  onClick={() => toggleAccordion(index)}
-                >
+                  <button
+                    className={`faq-question ${activeIndex === index ? "active" : ""}`}
+                    onClick={() => toggleAccordion(index)}
+                    onTouchEnd={(e) => {
+                      e.preventDefault(); // Prevent default behavior
+                      toggleAccordion(index);
+                    }}
+                  >
                   <span className="faq-question-text">{item.question}</span>
                   {activeIndex === index ? (
                     <RiEyeLine className="faq-icon" /> // Closed eye icon when open
