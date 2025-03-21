@@ -10,7 +10,7 @@
   border-radius: .3em;
   color: white;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 1px solid rgba(255, 255, 255, 0.588);
+  border: none;
   /* Remove nested scrolling */
   overflow: visible;
 }
@@ -451,6 +451,7 @@ input[type="range"]::-moz-range-thumb {
     padding: 1em;
     width: 100% !important;
     border-radius: .5em;
+    border: 1px solid rgba(255, 255, 255, 0.588);
   }
 
   .workout-date {

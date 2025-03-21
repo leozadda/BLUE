@@ -67,6 +67,7 @@
     border: 1px solid rgba(255, 255, 255, 0.588);
     padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
     -webkit-overflow-scrolling: touch !important;
+    padding-top: 0em !important;
   }
 
   /* Styles for the calendar section */
@@ -128,6 +129,7 @@
     justify-content: start;
     align-items: center;
     -webkit-overflow-scrolling: touch !important;
+    padding-top: 2em !important;
   }
 
   /* Mobile styles for calendar and day sections */
