@@ -60,6 +60,40 @@
     -webkit-overflow-scrolling: touch !important;
 }
 
+/* Replace your existing .Measurements class with this */
+.Measurements {
+    position: fixed !important;
+    top: 0 !important;
+    left: 16% !important;
+    width: 84% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    padding: 1.5em !important;
+    padding-bottom: calc(1.5em + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Replace your existing .Measurements-Grid class with this */
+  .Measurements-Grid {
+    width: 100% !important;
+    background-color: blue;
+    border-radius: .6em;
+    padding: 2em;
+    padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
+    position: relative;
+    overflow-y: auto;
+    height: 100% !important;
+    margin: 0 auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.588);
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+
 .Measurements-Grid h2 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -420,3 +454,23 @@
     
     }
 }
+
+  /* Update the mobile media query */
+  @media (max-width: 768px) {
+    .Measurements {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      padding: 0 !important;
+      padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    }
+  
+    .Measurements-Grid {
+      width: 100% !important;
+      padding: 2rem;
+      margin: 0 !important;
+      border: none;
+    }
+  }
