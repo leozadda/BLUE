@@ -112,7 +112,7 @@
   align-items: center;
   justify-content: center;
   background-color: blue;
-  border: 1px solid rgba(255, 255, 255, 0.588);;
+  border: 1px solid rgba(255, 255, 255, 0.588);
   border-radius: 0.3em;
   padding: 0.5em;
   width: 36px;
@@ -380,10 +380,11 @@
   grid-column: 1 / -1;
   padding: 2em;
   background-color: blue;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.588);
   border-radius: 0.75em;
   text-align: center;
   color: white;
+  margin-top: 1em;
 }
 
 /* Loading and error states */
@@ -509,6 +510,8 @@
     margin: 0;
     justify-content: center;
     padding: 1em;
+    max-width: 160px !important;
+    min-width: 140px !important;
   }
   
   .LogWorkout-days {

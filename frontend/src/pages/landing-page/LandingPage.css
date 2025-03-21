@@ -618,7 +618,7 @@ li > a:hover{
     }
 
     .solution {
-        border-top: solid white 2px;
+        border-top: 1px solid rgba(255, 255, 255, 0.588);
         max-width: 100%;
         height: auto;
         padding: 1em;

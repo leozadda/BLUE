@@ -48,7 +48,7 @@ const Sidebar = () => {
   return (
     <>
       <div className="hamburger-button" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={0} /> : <ChartNoAxesGantt size={30} />}
+        {isOpen ? <X size={30} /> : <ChartNoAxesGantt size={30} />}
       </div>
       
       {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)}></div>}

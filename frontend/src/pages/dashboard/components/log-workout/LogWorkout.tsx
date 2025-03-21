@@ -912,7 +912,7 @@ const LogWorkout = () => {
           })
         ) : (
           <div className="No-workout">
-            <p>No workout planned</p>
+            <p>No Workout Planned</p>
           </div>
         )}
       </div>
