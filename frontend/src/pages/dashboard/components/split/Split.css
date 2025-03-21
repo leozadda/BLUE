@@ -34,6 +34,8 @@
     /* Typography */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #ffffff;
+    padding-bottom: calc(1.5em + env(safe-area-inset-bottom, 0px)) !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Styles for the grid inside Split component */
@@ -63,6 +65,8 @@
     align-items: top;
     overflow-x: hidden !important;
     border: 1px solid rgba(255, 255, 255, 0.588);
+    padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Styles for the calendar section */
@@ -105,6 +109,11 @@
     align-items: center;
     box-sizing: border-box;
     overflow-x: hidden !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
   }
 
   /* Mobile styles for the grid layout */
