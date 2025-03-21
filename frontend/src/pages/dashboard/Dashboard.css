@@ -71,7 +71,7 @@
     /* Remove the width: 0% for Sidebar-Container */
     .Sidebar-Container {
         position: fixed; /* Position it fixed so it can overlay */
-        width: 50% !important; /* Match width from Sidebar.css */
+        width: 60% !important; /* Match width from Sidebar.css */
         z-index: 1000;
     }
 
