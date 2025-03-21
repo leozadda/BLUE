@@ -47,6 +47,39 @@
   padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
   -webkit-overflow-scrolling: touch !important;
 }
+
+.LogWorkout-Main-Container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 16% !important;
+  width: 84% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  padding: 1.5em !important;
+  padding-bottom: calc(1.5em + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Replace your existing .LogWorkout-container class with this */
+.LogWorkout-container {
+  width: 100% !important;
+  background-color: blue;
+  border-radius: .6em;
+  padding: 2em;
+  padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  overflow-y: auto;
+  height: 100% !important;
+  margin: 0 auto !important;
+  border: 1px solid rgba(255, 255, 255, 0.588);
+  -webkit-overflow-scrolling: touch !important;
+}
+
 /* Header section styles */
 .LogWorkout-header {
   display: flex;
@@ -633,5 +666,42 @@
     .Counter-item span {
       min-width: 60px;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .LogWorkout-Main-Container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .LogWorkout-container {
+    width: 100% !important;
+    padding: 2rem;
+    margin: 0 !important;
+    border: none;
+  }
+}
+@media (max-width: 768px) {
+  .LogWorkout-Main-Container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .LogWorkout-container {
+    width: 100% !important;
+    padding: 2rem;
+    margin: 0 !important;
+    border: none;
   }
 }
