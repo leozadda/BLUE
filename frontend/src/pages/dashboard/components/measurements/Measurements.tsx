@@ -56,6 +56,18 @@ const Measurements = () => {
     const [message, setMessage] = useState<MessageState>(null); // No message by default.
     const [hasLoadedData, setHasLoadedData] = useState(false); // Flag to indicate if previous measurements have been loaded.
     const [metricSystem, setMetricSystem] = useState(true); // Default to metric system.
+    
+    // NEW: Store the initial values loaded from API for reset functionality
+    const [initialDate, setInitialDate] = useState(new Date().toISOString().split('T')[0]);
+    const [initialBodyWeight, setInitialBodyWeight] = useState(0);
+    const [initialMeasurement, setInitialMeasurement] = useState({
+        Arms: 0,
+        Thighs: 0,
+        Calves: 0,
+        Forearms: 0,
+        Chest: 0,
+        Waist: 0,
+    });
 
 
     // ------------------------------------------------------------------
@@ -108,20 +120,29 @@ const Measurements = () => {
                 // Make an authenticated request to get the latest measurement.
                 const response = await makeAuthenticatedRequest("/get-latest-measurement");
                 const data = await response.json();
-                console.log("API response data:", data);
-
+               
                 // Set the date from the returned data (or use today's date if none is provided).
-                setDate(data.date || new Date().toISOString().split('T')[0]);
-                // Set the body weight (in kg) and other measurements (in cm).
-                setBodyWeight(data.body_weight || 0);
-                setMeasurement({
+                const loadedDate = data.date || new Date().toISOString().split('T')[0];
+                const loadedBodyWeight = data.body_weight || 0;
+                const loadedMeasurement = {
                     Arms: data.arms || 0,
                     Thighs: data.thighs || 0,
                     Calves: data.calves || 0,
                     Forearms: data.forearms || 0,
                     Chest: data.chest || 0,
                     Waist: data.waist || 0,
-                });
+                };
+                
+                // Set current values
+                setDate(loadedDate);
+                setBodyWeight(loadedBodyWeight);
+                setMeasurement(loadedMeasurement);
+                
+                // NEW: Store initial values for reset functionality
+                setInitialDate(loadedDate);
+                setInitialBodyWeight(loadedBodyWeight);
+                setInitialMeasurement(loadedMeasurement);
+                
                 setHasLoadedData(true); // Indicate that measurements have been loaded.
             } catch (error) {
                 console.error("🔍 fetchLatestMeasurement - Error:", error);
@@ -143,23 +164,12 @@ const Measurements = () => {
 
 
     // ------------------------------------------------------------------
-    // Function to reset all values back to their defaults.
-    // (Defaults are stored in metric units.)
+    // Function to reset all values back to their initial loaded values.
     const resetValues = () => {
-       
-        // Reset the date to today's date.
-        setDate(new Date().toISOString().split('T')[0]);
-        // Reset the body weight to the default (40 kg).
-        setBodyWeight(0);
-        // Reset all body measurements to their default values (20 cm each).
-        setMeasurement({
-            Arms: 0,
-            Thighs: 0,
-            Calves: 0,
-            Forearms: 0,
-            Chest: 0,
-            Waist: 0,
-        });
+        // Reset to the values loaded from the API
+        setDate(initialDate);
+        setBodyWeight(initialBodyWeight);
+        setMeasurement({...initialMeasurement});
         // Clear any uploaded file.
         setFile(null);
         // Clear any messages.
@@ -201,6 +211,11 @@ const Measurements = () => {
             setMessage({ type: "success", text: "Saved" });
             // Clear the file from state.
             setFile(null);
+            
+            // NEW: Update the initial values to match the newly saved values
+            setInitialDate(date);
+            setInitialBodyWeight(bodyWeight);
+            setInitialMeasurement({...measurement});
         } catch (error) {
             console.error("🔍 handleSubmit - Error:", error);
             
