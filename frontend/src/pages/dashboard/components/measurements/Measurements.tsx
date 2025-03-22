@@ -108,7 +108,7 @@ const Measurements = () => {
                 // Make an authenticated request to get the latest measurement.
                 const response = await makeAuthenticatedRequest("/get-latest-measurement");
                 const data = await response.json();
-               
+                console.log("API response data:", data);
 
                 // Set the date from the returned data (or use today's date if none is provided).
                 setDate(data.date || new Date().toISOString().split('T')[0]);

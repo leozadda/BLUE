@@ -343,8 +343,8 @@ const LogWorkout = () => {
         repRangeMax: set.rep_range_max ?? 0,
         averageReps: Math.round(((set.rep_range_min ?? 0) + (set.rep_range_max ?? 0)) / 2),
         targetRestPeriod: set.target_rest_period_seconds ?? 0,
-        setType: set.set_type_name ?? "",
-        setTypeId: set.set_type_id ?? 1,
+        setType: set.setTypeName ?? "",
+        setTypeId: set.setTypeId ?? 1,
         planId: organizedWorkout.planId,
         phaseNumber: set.phase_number ?? 1
       }));
@@ -373,6 +373,7 @@ const LogWorkout = () => {
         credentials: "include", // This ensures cookies are sent with the request.
       });
       const data: ApiResponse = await response.json();
+      console.log("API response data:", data);
       
       if (data.success) {
        
@@ -663,6 +664,8 @@ const LogWorkout = () => {
           console.error(`[SAVE-ERROR] Missing exerciseId for set with name ${set.exerciseName}!`);
           throw new Error(`Missing exerciseId for set with name ${set.exerciseName}`);
         }
+
+      
         
         if (!setsByExercise[set.exerciseId]) {
           setsByExercise[set.exerciseId] = {
@@ -670,6 +673,7 @@ const LogWorkout = () => {
             setTypeId: set.setTypeId,
             exerciseId: set.exerciseId,
             baseWeight: saveWeight(set.weight),
+            scheduledDate: formatDate(selectedDate),
             phases: []
           };
         }
