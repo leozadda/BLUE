@@ -549,7 +549,7 @@ li > a:hover{
         font-size: .2em;
         font-weight: 100;
         position: absolute;
-        right: 7em; /* Adjust spacing from the right */
+        right: 25px; /* Adjust spacing from the right */
         top: 50%;
         transform: translateY(-50%); /* Center it vertically */
         padding: 5px 10px;
@@ -928,7 +928,7 @@ li > a:hover{
         padding-top: .5em;
         flex: 30%;
         font-size: .8em;
-        font-weight: 400 !important;
+        font-weight: 900 !important;
     }
     .footer  h2{
         text-align: center;

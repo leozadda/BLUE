@@ -16,10 +16,10 @@ const handleDecline = () => {
   return (
     <div className="service-container">
       <div className="service-content">
-        <h1 className="service-title">Terms of Service</h1>
+        <div className="service-title"><h1>Terms of Service</h1></div>
 
         <div className="service-section">
-          <h2 className="section-title">1. Acceptance of Terms</h2>
+          <h2 className="service-section-title">1. Acceptance of Terms</h2>
           <p className="service-text">
             By accessing and using b-lu-e.com, you accept and agree to be bound by the terms and provisions of this agreement.
           </p>

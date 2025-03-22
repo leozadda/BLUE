@@ -7,7 +7,7 @@ export const PrivacyPolicy: React.FC = () => {
   return (
     <div className="privacy-container">
       <div className="privacy-content">
-        <h1 className="privacy-title">Privacy Policy</h1>
+        <div className="privacy-title"><h1>Privacy Policy</h1></div>
 
         <div className="privacy-section">
           <h2 className="privacy-section-title">1. Information We Collect</h2>
