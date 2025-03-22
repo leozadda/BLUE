@@ -13,7 +13,7 @@ router.get('/get-latest-measurement', async (req, res) => {
             `SELECT *
              FROM measurement
              WHERE user_id = $1
-             ORDER BY date DESC
+             ORDER BY date DESC, created_at DESC
              LIMIT 1`,
             [userId]
         );
