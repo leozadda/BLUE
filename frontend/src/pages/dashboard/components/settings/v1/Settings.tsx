@@ -414,7 +414,7 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
             role="tab"
           >
             <PersonStanding size={20} />
-            <span>Account</span>
+            <span>User</span>
           </button>
 
       {/* TAB FOR BILLING SETTINGS */}
@@ -427,21 +427,20 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
             role="tab"
           >
             <CircleDollarSign size={20} />
-            <span>Billing</span>
+            <span>Pay</span>
           </button>
 
       {/* TAB FOR WORKOUT SETTINGS */}
           <button
             className={`tab-button ${activeTab === 'workout' ? 'active' : ''}`}
             onClick={() => {
-              console.log("🖱️ DEBUG: Workout tab clicked");
               setActiveTab('workout');
             }}
             aria-selected={activeTab === 'workout'}
             role="tab"
           >
             <Dumbbell  size={20} />
-            <span>Workout</span>
+            <span>Lifts</span>
           </button>
 
         </nav>

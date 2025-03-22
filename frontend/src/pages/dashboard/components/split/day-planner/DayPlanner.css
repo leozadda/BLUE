@@ -314,6 +314,9 @@
   gap: .3em;
   padding: .5em 0;
 }
+.reps-slider{
+  width: 100%;
+}
 
 .reps {
   font-size: 1.3em;
@@ -514,7 +517,7 @@ input[type="range"]::-moz-range-thumb {
   }
 
   input[type="range"] {
-    width: 90%;
+    width: 100%;
     height: 10px;
     margin-top: .5em;
   }

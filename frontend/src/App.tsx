@@ -16,15 +16,6 @@ import Payment from './pages/payment/Payment';
 import { AuthProvider, useAuth } from './pages/auth/auth-context/AuthContext';
 import './App.css';
 
-function debugViewport() {
-  console.log("Window inner height:", window.innerHeight);
-  console.log("Document documentElement.clientHeight:", document.documentElement.clientHeight);
-  console.log("Using dynamic viewport height (dvh)");
-}
-
-window.addEventListener("resize", debugViewport);
-debugViewport(); // Run on load
-
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 

@@ -128,7 +128,7 @@ const BillingTab: React.FC<BillingTabProps> = ({ user, onSubscriptionUpgrade }) 
 
   return (
     <section className="settings-section billing-section">
-      <h2>Subscription</h2>
+      <h2>Payment</h2>
       
       <div className="setting-item">
         <div className="setting-info">

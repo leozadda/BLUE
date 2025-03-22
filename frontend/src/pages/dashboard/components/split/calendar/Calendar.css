@@ -19,6 +19,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      flex: 100;
     }
 
     .current-month {
@@ -84,14 +85,15 @@
     .calendar-day:hover:not(.empty) {
       background-color: white;
       color: blue;
-      border-radius: .3em;
+      border-radius: 2em;
     }
 
 
     .calendar-day.selected {
       background-color: rgb(255, 255, 255);
       color: blue;
-      border: solid white 1px;
+      border: none;
+      border-radius: .5em;
     }
 
 
@@ -138,7 +140,7 @@
   height: 400px;
   background: blue;
   border-radius: 0.3em;
-  padding: 2em;
+  padding: 4em 1em 4em 1em;
   font-family: Arial, sans-serif;
   color: white;
   display: flex;
@@ -181,6 +183,20 @@
     font-weight: 400;
     padding: 0;
     margin: 0;
+  }
+
+  .calendar-day:hover:not(.empty) {
+    background-color: white;
+    color: blue;
+    border-radius: .5em;
+  }
+
+
+  .calendar-day.selected {
+    background-color: rgb(255, 255, 255);
+    color: blue;
+    border: none;
+    border-radius: 2em;
   }
 
 }

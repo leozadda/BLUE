@@ -25,7 +25,7 @@ const WorkoutTab: React.FC<WorkoutTabProps> = ({
 }) => {
   return (
     <section className="settings-section workout-section">
-      <h2>Workout</h2>
+      <h2>Lifts</h2>
 
       {/* Units Section */}
       <div className="setting-item">

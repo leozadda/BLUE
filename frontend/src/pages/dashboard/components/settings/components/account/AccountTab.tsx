@@ -39,7 +39,7 @@ const AccountTab: React.FC<AccountTabProps> = ({
 }) => {
   return (
     <section className="settings-section account-section">
-      <h2>Account</h2>
+      <h2>User</h2>
       
       {/* Email Section */}
       <div className="setting-item">

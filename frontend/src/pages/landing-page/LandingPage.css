@@ -79,6 +79,7 @@ html, body{
 .logo-login:hover{
     background-color: white;
     color: blue;
+    text-decoration: line-through;
 }
 
 .header {
@@ -145,6 +146,7 @@ html, body{
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
     outline: 1px solid rgba(255, 255, 255, 0.588);
+    text-decoration: line-through;
 }
 
     .problem {
@@ -268,6 +270,7 @@ li > a:hover{
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
     outline: 1px solid rgba(255, 255, 255, 0.588);
+    text-decoration: line-through;
 }
 
 
@@ -302,6 +305,14 @@ li > a:hover{
         width: 100%;
         padding-top: 2em;
     }
+
+.grid-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
 
 /* To control all icons together */
 .feature-icon {
@@ -350,6 +361,11 @@ li > a:hover{
   
   .faq-item {
     border-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
   }
   
   .faq-question {
@@ -366,10 +382,14 @@ li > a:hover{
     font-size: 2em;
     font-weight: 500;
     font-style: normal;
+    background-color: blue;
+    border: none;
+    box-shadow: 0 0 10px 10px blue;
+    border-radius: .3em;
   }
   .faq-question:hover{
-    opacity: 50%;
-    animation: fadeIn .8s ease-in forwards;
+    text-decoration: line-through;
+    animation: none;
   }
 
   .faq-question-text {
@@ -390,19 +410,22 @@ li > a:hover{
   .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease, padding 0.5s ease;
+    transition: max-height 1s ease, padding 1s ease;
+    width: 90%;
+
   }
   
   .faq-answer.open {
     max-height: 200px; /* Adjust based on content */
-    padding: 1rem 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensure padding is included in width calculations */
   }
   
   .faq-answer p {
     font-family: "Andale Mono", AndaleMono, monospace;
     font-size: 1.2em;
     font-weight: light;
-    padding: 1em 0 1em 0;
+    padding: 0;
     text-align: left
   }
 
@@ -447,6 +470,7 @@ li > a:hover{
     background-color: rgb(17, 0, 255);
     color: rgb(255, 255, 255);
     outline: 1px solid rgba(255, 255, 255, 0.588);
+    text-decoration: line-through;
 }
 
 .footer{
@@ -505,6 +529,9 @@ li > a:hover{
     .topbar{
         margin: 0;
         padding: 1em;
+    }
+    .topbar p{
+        animation: marquee 20s linear infinite;
     }
     .logo{
         padding: 0;
@@ -671,7 +698,7 @@ li > a:hover{
         font-style: normal;
         max-width: 70vw;
         margin: 0 auto; /* Add this to center the paragraph */
-        padding: 0 0 2em 0;
+        padding: 0;
     }
     
     .solution-child > button {
@@ -702,22 +729,22 @@ li > a:hover{
         flex: 100%;
         max-width: 80vw;
         margin: 0 auto; /* Center the h1 within its container */
-        padding-bottom: 1em; /* Add spacing below the heading */
+        padding-bottom: .5em; /* Add spacing below the heading */
     }
     
     .features-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* Two columns */
         grid-template-rows: auto; /* Rows adjust to content */
-        gap: 20px; /* Add gap between grid items */
+        gap: 10px; /* Add gap between grid items */
         justify-content: center; /* Center grid horizontally */
         align-content: center; /* Center grid vertically */
         justify-items: center; /* Center items within their grid cells */
         font-family: "Andale Mono", AndaleMono, monospace;
         color: white;
-        max-width: 80vw; /* Constrain grid width */
+        max-width: 85vw; /* Constrain grid width */
         margin: 0 auto; /* Center the grid within its container */
-        padding: 2em 0 2em 0; /* Add padding */
+        padding: 0; /* Add padding */
     }
     
     /* To control all icons together */
@@ -744,6 +771,7 @@ li > a:hover{
     width: 100%;
     box-sizing: border-box; /* Ensure padding is included in width calculations */
     overflow: hidden; /* Prevent content from overflowing */
+    
 }
 
 .faq-container {
@@ -768,7 +796,7 @@ li > a:hover{
     font-weight: 500;
     font-style: normal;
     margin: 0 auto; /* Center the title */
-    padding-bottom: 1em; /* Add spacing below the title */
+    padding-bottom: .5em; /* Add spacing below the title */
     width: 100%; /* Ensure title doesn't overflow */
     box-sizing: border-box; /* Ensure padding is included in width calculations */
 }
@@ -798,6 +826,10 @@ li > a:hover{
     font-weight: 500;
     font-style: normal;
     box-sizing: border-box; /* Ensure padding is included in width calculations */
+    background-color: blue;
+    border: none;
+    box-shadow: 0 0 10px 10px blue;
+    border-radius: .3em;
 }
 
 .faq-question-text {
@@ -818,33 +850,34 @@ li > a:hover{
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease, padding 0.5s ease;
+    transition: max-height 1s ease, padding 1s ease;
+    width: 100%;
     box-sizing: border-box; /* Ensure padding is included in width calculations */
 }
 
 .faq-answer.open {
     max-height: 200px; /* Adjust based on content */
-    padding: 1rem 0;
+    padding: 0;
 }
 
 .faq-answer p {
     font-family: "Andale Mono", AndaleMono, monospace;
     font-size: 1.2em;
     font-weight: light;
-    padding: 1em 0 1em 0;
+    padding: 0;
     text-align: left;
     box-sizing: border-box; /* Ensure padding is included in width calculations */
 }
-      .last-call-to-action {
-        padding: 6em 0 6em 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.588);
-        display: flex; /* Add this */
-        flex-wrap: wrap; /* Keep this */
-        justify-content: center; /* Add this to center horizontally */
-        align-items: center; /* Keep this to center vertically */
-        text-align: center; /* Keep this for text alignment */
-        width: 100vw;
-    }
+.last-call-to-action {
+    padding: 6em 0 6em 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.588);
+    display: flex; /* Add this */
+    flex-wrap: wrap; /* Keep this */
+    justify-content: center; /* Add this to center horizontally */
+    align-items: center; /* Keep this to center vertically */
+    text-align: center; /* Keep this for text alignment */
+    width: 100vw;
+}
     
     .last-call-to-action h1 {
         font-family: "Hoefler Text";
@@ -883,7 +916,6 @@ li > a:hover{
         height: auto;
         margin: 0;
         text-align: center;
-        font-weight: 300;
     }
 
     .footer-child{
@@ -892,15 +924,17 @@ li > a:hover{
         height: auto;
     }
     
-    .footer-child > h1{
+    .footer-child h1{
         padding-top: .5em;
         flex: 30%;
-        font-size: .65em;
+        font-size: .8em;
+        font-weight: 400 !important;
     }
-    .footer > h2{
+    .footer  h2{
         text-align: center;
         font-size: .5em;
         margin-bottom: .5;
+        font-weight: 400 !important;
     }
     
 
