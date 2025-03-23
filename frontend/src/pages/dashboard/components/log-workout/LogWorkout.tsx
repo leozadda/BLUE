@@ -221,12 +221,41 @@ const LogWorkout = () => {
   }, [timerTick, feedbackMessage]);
 
   // Helper functions for formatting dates
-  // Modified date formatting to use device timezone
-  const formatDate = (date: Date): string => {
-    // Convert to ISO string but keep local date parts
-    const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-    return localDate.toISOString().split('T')[0];
-  };
+// 1. Let's first update the formatDate function to strip the time component
+const formatDate = (date: Date): string => {
+  // Create a copy of the date to avoid mutations
+  const dateCopy = new Date(date);
+  // Format as YYYY-MM-DD without time component
+  return `${dateCopy.getFullYear()}-${String(dateCopy.getMonth() + 1).padStart(2, '0')}-${String(dateCopy.getDate()).padStart(2, '0')}`;
+};
+
+// 2. Parse API dates consistently by stripping the time component
+const parseApiDate = (dateString: string): Date => {
+  const date = new Date(dateString);
+  // Reset the time to midnight to ensure consistent comparisons
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
+// 3. When setting the selectedDate, normalize it to midnight
+const setNormalizedDate = (date: Date) => {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  setSelectedDate(normalized);
+};
+
+// 4. Update the navigation functions
+const goToPreviousDay = () => {
+  const prevDay = new Date(selectedDate);
+  prevDay.setDate(prevDay.getDate() - 1);
+  setNormalizedDate(prevDay);
+};
+
+const goToNextDay = () => {
+  const nextDay = new Date(selectedDate);
+  nextDay.setDate(nextDay.getDate() + 1);
+  setNormalizedDate(nextDay);
+};
 
 
   const getReadableDate = (date: Date): string => {
@@ -238,7 +267,7 @@ const LogWorkout = () => {
     });
   };
 
-  // Navigation functions to go to previous or next day
+`  // Navigation functions to go to previous or next day
   const goToPreviousDay = () => {
     const prevDay = new Date(selectedDate);
     prevDay.setDate(prevDay.getDate() - 1);
@@ -251,7 +280,7 @@ const LogWorkout = () => {
     nextDay.setDate(nextDay.getDate() + 1);
     setSelectedDate(nextDay);
    
-  };
+  };`
 
     // Fetch the user's unit preference (metric or imperial) from the user info
     useEffect(() => {
@@ -274,80 +303,88 @@ const LogWorkout = () => {
     } 
   }, [userId, selectedDate]);
 
-  // GROUP SETS BY EXERCISE FUNCTION
-  // Groups sets by exercise for easier handling in UI
+// GROUP SETS BY EXERCISE FUNCTION
+  // This function needs to properly handle the weight calculations
   const groupSetsByExercise = (sets: WorkoutSet[]): GroupedExercise[] => {
-   
-    
     const exerciseMap: { [key: number]: GroupedExercise } = {};
+    
     sets.forEach(set => {
-     
-      
       if (!exerciseMap[set.exercise_id]) {
         exerciseMap[set.exercise_id] = {
           exerciseId: set.exercise_id,
           name: set.exercise_name,
-          category: set.exercise_category || '', // Fallback to empty string if not defined
-          equipment: set.equipment || 'None', // Added equipment with fallback
-          targetedMuscles: set.targeted_muscles || [], // Add muscle groups
+          category: set.exercise_category || '', 
+          equipment: set.equipment || 'None',
+          targetedMuscles: set.targeted_muscles || [],
           sets: []
         };
-       
       }
       
-      const baseWeight = parseFloat(set.planned_base_weight || "0") || 0;
+      // IMPORTANT: Parse the values correctly
+      const baseWeight = parseFloat(set.planned_base_weight || "0");
       const modifier = set.weight_modifier || 1;
       const calculatedWeight = baseWeight * modifier;
+      
+      // Calculate average reps
+      const minReps = set.rep_range_min || 0;
+      const maxReps = set.rep_range_max || 0;
+      const avgReps = Math.round((minReps + maxReps) / 2);
       
       exerciseMap[set.exercise_id].sets.push({
         setNumber: set.set_number || 0,
         weight: calculatedWeight,
-        repRangeMin: set.rep_range_min || 0,
-        repRangeMax: set.rep_range_max || 0,
-        averageReps: Math.round(((set.rep_range_min || 0) + (set.rep_range_max || 0)) / 2),
+        repRangeMin: minReps,
+        repRangeMax: maxReps,
+        averageReps: avgReps,
         targetRestPeriod: set.target_rest_period_seconds || 0,
         setType: set.set_type_name || "",
         setTypeId: set.set_type_id || 1,
         planId: set.plan_id,
         phaseNumber: set.phase_number || 1
       });
-      
-     
     });
     
-    // Sort exercises by their sets in order
-    const sortedExercises = Object.values(exerciseMap).map(exercise => {
+    // Convert to array and sort
+    return Object.values(exerciseMap).map(exercise => {
       exercise.sets.sort((a, b) => a.setNumber - b.setNumber);
       return exercise;
     });
-    
-   
-    return sortedExercises;
   };
+
 
   // PROCESS ORGANIZED WORKOUT DATA FUNCTION
   // Process workout data from the new API format
   const processOrganizedWorkoutData = (organizedWorkout: any): GroupedExercise[] => {
-   
-    
     if (!organizedWorkout || !organizedWorkout.exercises || !Array.isArray(organizedWorkout.exercises)) {
       console.error('[DATA-PROCESSING] Invalid organized workout data structure:', organizedWorkout);
       return [];
     }
     
     const groupedExercises: GroupedExercise[] = organizedWorkout.exercises.map((exercise: any) => {
-      const mappedSets = exercise.sets.map((set: any) => ({
-        setNumber: set.phase_number ?? 0,
-        weight: parseFloat(set.planned_base_weight ?? "0"),
-        repRangeMin: set.rep_range_min ?? 0,
-        repRangeMax: set.rep_range_max ?? 0,
-        averageReps: Math.round(((set.rep_range_min ?? 0) + (set.rep_range_max ?? 0)) / 2),
-        targetRestPeriod: set.target_rest_period_seconds ?? 0,
-        setType: set.setTypeName ?? "",
-        setTypeId: set.setTypeId ?? 1,
-        planId: organizedWorkout.planId,
-        phaseNumber: set.phase_number ?? 1
-      }));
+      const mappedSets = exercise.sets.map((set: any) => {
+        // Properly parse the base weight and apply modifier
+        const baseWeight = parseFloat(set.planned_base_weight ?? "0");
+        const modifier = set.weight_modifier ?? 1;
+        const calculatedWeight = baseWeight * modifier;
+        
+        // Calculate average reps
+        const minReps = set.rep_range_min ?? 0;
+        const maxReps = set.rep_range_max ?? 0;
+        const avgReps = Math.round((minReps + maxReps) / 2);
+        
+        return {
+          setNumber: set.phase_number ?? 0,
+          weight: calculatedWeight,
+          repRangeMin: minReps,
+          repRangeMax: maxReps,
+          averageReps: avgReps,
+          targetRestPeriod: set.target_rest_period_seconds ?? 0,
+          setType: set.setTypeName ?? "",
+          setTypeId: set.setTypeId ?? 1,
+          planId: organizedWorkout.planId,
+          phaseNumber: set.phase_number ?? 1
+        };
+      });
     
       // Sort the sets by phase number
       mappedSets.sort((a: any, b: any) => a.phaseNumber - b.phaseNumber);
@@ -361,80 +398,79 @@ const LogWorkout = () => {
         sets: mappedSets
       };
     });
-   
+    
     return groupedExercises;
   };
 
   // FETCH WORKOUT DATA FUNCTION
-  // Fetch workout data from backend API for the selected date
+  // The main issue is here - we need to make sure we're using the right data
   const fetchWorkoutData = async () => {
     try {
       const response = await authFetch(`${API_BASE_URL}/get-sets-for-day?userId=${userId}&date=${formatDate(selectedDate)}`, {
-        credentials: "include", // This ensures cookies are sent with the request.
+        credentials: "include",
       });
       const data: ApiResponse = await response.json();
-      console.log("API response data:", data);
       
-      if (data.success) {
-       
-        
-        let groupedExercises: GroupedExercise[] = [];
-        
-        // Check if we have the new organizedWork
-        // Check if we have the new organizedWorkout format
-        if (data.organizedWorkout) {
-         
-          groupedExercises = processOrganizedWorkoutData(data.organizedWorkout);
-        } 
-        // Fallback to the old format if organizedWorkout is not available
-        else if (Array.isArray(data.sets)) {
-         
-         
-          groupedExercises = groupSetsByExercise(data.sets);
-        }
-        
-       
-        setWorkoutData(groupedExercises);
-        
-        // Initialize completedSets for each set
-        const initialCompletedSets: { [key: string]: CompletedSet } = {};
-        groupedExercises.forEach((exercise, exIdx) => {
-          exercise.sets.forEach((set, setIdx) => {
-            const key = `${exIdx}-${setIdx}`;
-            initialCompletedSets[key] = {
-              exerciseId: exercise.exerciseId,
-              exerciseName: exercise.name,
-              equipment: exercise.equipment || 'None', // Add equipment information
-              weight: set.weight,
-              reps: set.averageReps,
-              setNumber: set.setNumber,
-              planId: set.planId,
-              phaseNumber: set.phaseNumber,
-              setTypeId: set.setTypeId,
-              isCompleted: false,
-              isActive: false,
-              timerRunning: false,
-              timerStart: undefined,
-              actualRestPeriod: undefined,
-            };
-           
-          });
-        });
-        setCompletedSets(initialCompletedSets);
-        
-        // Debug: log sets with target rest periods
-        groupedExercises.forEach((exercise, exIdx) => {
-          exercise.sets.forEach((set, setIdx) => {
-            if (set.targetRestPeriod > 0) {
-             
-            }
-          });
-        });
-      } else {
+      if (!data.success) {
         throw new Error('API returned unsuccessful response');
+        return;
       }
+      
+      // Process the data
+      let groupedExercises: GroupedExercise[] = [];
+      
+      if (data.sets && data.sets.length > 0) {
+        // Use the direct API data if available
+        groupedExercises = groupSetsByExercise(data.sets);
+      } 
+      else if (data.organizedWorkout) {
+        groupedExercises = processOrganizedWorkoutData(data.organizedWorkout);
+      }
+      
+      if (groupedExercises.length === 0) {
+        console.warn("No exercises found in the response");
+        setWorkoutData([]);
+        setCompletedSets({});
+        setLoading(false);
+        return;
+      }
+      
+      setWorkoutData(groupedExercises);
+      
+      // Initialize the completed sets from processed data
+      const initialCompletedSets: { [key: string]: CompletedSet } = {};
+      
+      groupedExercises.forEach((exercise, exIdx) => {
+      
+        exercise.sets.forEach((set, setIdx) => {
+          const key = `${exIdx}-${setIdx}`;
+          
+          initialCompletedSets[key] = {
+            exerciseId: exercise.exerciseId,
+            exerciseName: exercise.name,
+            equipment: exercise.equipment || 'None',
+            weight: set.weight,
+            reps: set.averageReps,
+            setNumber: set.setNumber,
+            planId: set.planId,
+            phaseNumber: set.phaseNumber,
+            setTypeId: set.setTypeId,
+            isCompleted: false,
+            isActive: false,
+            timerRunning: false,
+            timerStart: undefined,
+            actualRestPeriod: undefined,
+          };
+        });
+      });
+      
+      setCompletedSets(initialCompletedSets);
+      setLoading(false);
+      
     } catch (err) {
       console.error('[DATA] Fetch error:', err);
+      setError('Failed to load workout data.');
+      setLoading(false);
     }
   };
 
@@ -479,6 +515,30 @@ const LogWorkout = () => {
       console.error('[ADD-SET] Error adding set to split:', err);
       setFeedbackMessage(`Error adding set: ${err.message || 'Unknown error'}`);
       return null;
+    }
+  };
+
+  // Add this function to your LogWorkout component
+  const removeSetFromSplit = async (setId: number) => {
+    try {
+      const response = await authFetch(`${API_BASE_URL}/remove-set-from-split?userId=${userId}&setId=${setId}`, {
+        method: 'DELETE',
+        credentials: "include",
+      });
+      
+      const result = await response.json();
+      console.log(`[DELETE] Remove set ${setId} response:`, result);
+      
+      if (result.success) {
+        console.log(`[DELETE] Successfully removed set ${setId}`);
+        return true;
+      } else {
+        console.error(`[DELETE] Failed to remove set ${setId}: ${result.message}`);
+        return false;
+      }
+    } catch (err: any) {
+      console.error(`[DELETE] Error removing set ${setId}:`, err);
+      return false;
     }
   };
 
@@ -634,14 +694,12 @@ const LogWorkout = () => {
       // Stop any running timers before saving
       Object.keys(completedSets).forEach(key => {
         if (completedSets[key].timerRunning) {
-         
           stopTimer(key);
         }
       });
-
+  
       // Filter active sets (ones that user interacted with)
       const activeSets = Object.values(completedSets).filter(set => set.isActive);
-     
       
       if (activeSets.length === 0) {
         console.warn('[SAVE] No active sets to save');
@@ -653,19 +711,12 @@ const LogWorkout = () => {
       // Group sets by exercise for backend API
       const setsByExercise: { [key: number]: any } = {};
       
-      // Debug log for all active sets
-      activeSets.forEach((set, idx) => {
-       
-      });
-      
       // Group the sets by exercise ID
       activeSets.forEach(set => {
         if (!set.exerciseId) {
           console.error(`[SAVE-ERROR] Missing exerciseId for set with name ${set.exerciseName}!`);
           throw new Error(`Missing exerciseId for set with name ${set.exerciseName}`);
         }
-
-      
         
         if (!setsByExercise[set.exerciseId]) {
           setsByExercise[set.exerciseId] = {
@@ -687,22 +738,19 @@ const LogWorkout = () => {
       });
       
       const setsToSave = Object.values(setsByExercise);
-     
-
-      
+  
       // Additional validation before saving
       setsToSave.forEach((exerciseSet, index) => {
-       
         if (!exerciseSet.exerciseId) {
           console.error(`[SAVE-ERROR] Missing exerciseId for set ${index + 1}!`);
           throw new Error(`Missing exerciseId for set ${index + 1}`);
         }
       });
       
-      // Save each exercise set one by one
+      // Save each exercise set one by one and collect setIds for deletion
+      const setIdsToRemove = [];
+      
       for (const exerciseSet of setsToSave) {
-       
-        
         if (!exerciseSet.exerciseId) {
           throw new Error(`Missing exerciseId for set with userId ${exerciseSet.userId}`);
         }
@@ -710,29 +758,45 @@ const LogWorkout = () => {
         // Call the log-completed-set API
         const response = await authFetch(`${API_BASE_URL}/log-completed-set`, {
           method: 'POST',
-          credentials: "include", // This ensures cookies are sent with the request.,
+          credentials: "include",
           body: JSON.stringify(exerciseSet)
         });
         
         const result = await response.json();
-       
         
         if (!result.success) {
           throw new Error('Save failed: ' + (result.error || 'Unknown error'));
         }
+        
+        // Store set IDs for deletion if available in the response
+        if (result.setIds && Array.isArray(result.setIds)) {
+          setIdsToRemove.push(...result.setIds);
+        } else if (result.setId) {
+          setIdsToRemove.push(result.setId);
+        }
       }
       
-      // Refresh the workout data after saving
+      // Delete all sets that were successfully logged
+      if (setIdsToRemove.length > 0) {
+        console.log(`[DELETE] Removing ${setIdsToRemove.length} logged sets`);
+        
+        for (const setId of setIdsToRemove) {
+          await removeSetFromSplit(setId);
+        }
+      }
+      
+      // Refresh the workout data after saving and deleting
       await fetchWorkoutData();
       setIsSaving(false);
       setFeedbackMessage('Workout saved successfully!');
-     
     } catch (err: any) {
       console.error('[SAVE] Error:', err);
       setError('Save failed: ' + (err.message || 'Unknown error'));
       setIsSaving(false);
       setFeedbackMessage('Save failed: ' + (err.message || 'Unknown error'));
     }
+
+    
   };
 
   // Format time to display in minutes and seconds (e.g., "1:05")

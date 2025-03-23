@@ -57,6 +57,7 @@
 .pr-list {
   margin-top: 2em;
   padding: 0 1em;
+  flex: 100;
 }
 
 .pr-item {
