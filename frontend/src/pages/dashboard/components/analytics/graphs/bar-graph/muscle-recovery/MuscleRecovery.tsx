@@ -75,7 +75,6 @@ const MuscleRecoveryGraph = () => {
     const fetchRecoveryData = async () => {
       
       try {
-        
         // Make fetch request with authorization header
         const response = await authFetch(`${API_BASE_URL}/muscle-recovery-status`, {
           method: 'GET',
@@ -95,7 +94,7 @@ const MuscleRecoveryGraph = () => {
             item.recovery_percentage !== null && 
             item.recovery_percentage < 100
           );
-          
+
           // Ensure all numeric values are actual numbers to prevent errors
           const safeData = filteredData.map((item: MuscleRecoveryData) => ({
             ...item,
@@ -103,8 +102,7 @@ const MuscleRecoveryGraph = () => {
             days_since_trained: item.days_since_trained !== null ? Number(item.days_since_trained) : null,
             recovery_rate: Number(item.recovery_rate)
           }));
-          
-          
+        
           
           setRecoveryData(safeData);
         } else {
@@ -123,7 +121,6 @@ const MuscleRecoveryGraph = () => {
        finally {
         // Set loading to false regardless of success or failure
         setLoading(false);
-       
       }
     };
     // Call the fetch function when component mounts
@@ -132,7 +129,7 @@ const MuscleRecoveryGraph = () => {
 
   // Check if there's no data to display
   const noDataToShow = recoveryData.length === 0 && !loading;
-
+  
   return (
     <div className="recovery-container">
       <div className="recovery-header">
@@ -168,11 +165,6 @@ const MuscleRecoveryGraph = () => {
           <BarChart
             data={recoveryData}
             margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
-            onMouseMove={(e) => {
-              if (e && e.activePayload) {
-               
-              }
-            }}
           >
             <XAxis
               dataKey="muscle_group"
@@ -181,23 +173,26 @@ const MuscleRecoveryGraph = () => {
               tick={{ fill: '#FFFFFF' }}
               tickFormatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
             />
+            {/* IMPORTANT CHANGE: Modified YAxis domain to make small values visible */}
             <YAxis
               stroke="#FFFFFF"
               style={axisStyle}
               tick={{ fill: '#FFFFFF' }}
-              domain={[0, 100]}
-              tickFormatter={(value) => `${value}%`}
+              domain={[0, 1]} // Changed from [0, 100] to [0, 1] to make small percentages visible
+              // This formats the tick values - converts the 0-1 decimal back to percentages for display
+              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
             />
             <Tooltip 
               content={<CustomTooltip />}
               cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
             />
-            <Bar
-              dataKey="recovery_percentage"
-              name="Recovery"
-              fill="white"
-              radius={[4, 4, 0, 0]}
-            />
+          <Bar
+            dataKey="recovery_percentage"
+            name="Recovery"
+            fill="white"
+            fillOpacity={1} // Ensures the bar is fully opaque
+            radius={[4, 4, 0, 0]}
+          />
           </BarChart>
         </ResponsiveContainer>
       )}

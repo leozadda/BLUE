@@ -527,10 +527,8 @@ const goToNextDay = () => {
       });
       
       const result = await response.json();
-      console.log(`[DELETE] Remove set ${setId} response:`, result);
       
       if (result.success) {
-        console.log(`[DELETE] Successfully removed set ${setId}`);
         return true;
       } else {
         console.error(`[DELETE] Failed to remove set ${setId}: ${result.message}`);
@@ -778,7 +776,6 @@ const goToNextDay = () => {
       
       // Delete all sets that were successfully logged
       if (setIdsToRemove.length > 0) {
-        console.log(`[DELETE] Removing ${setIdsToRemove.length} logged sets`);
         
         for (const setId of setIdsToRemove) {
           await removeSetFromSplit(setId);

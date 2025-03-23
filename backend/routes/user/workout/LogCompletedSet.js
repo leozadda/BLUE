@@ -7,10 +7,8 @@ router.post('/log-completed-set', async (req, res) => {
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
-        console.log('[LOG] Transaction started');
 
         const { userId, setTypeId, exerciseId, baseWeight, scheduledDate, phases } = req.body;
-        console.log('[LOG] Received request body:', { userId, setTypeId, exerciseId, baseWeight, scheduledDate });
 
         // Validate input
         if (!userId || !setTypeId || !exerciseId || !baseWeight || !phases?.length) {
@@ -27,11 +25,10 @@ router.post('/log-completed-set', async (req, res) => {
             [userId, setTypeId, exerciseId, baseWeight]
         );
         const setExecutionId = setResult.rows[0].id;
-        console.log(`[LOG] Created set execution ID: ${setExecutionId}`);
 
         // Insert phases
         for (const [index, phase] of phases.entries()) {
-            console.log(`[LOG] Processing phase ${index + 1}:`, phase);
+
             await client.query(
                 `INSERT INTO user_set_phase_executions 
                  (user_set_execution_id, phase_number, actual_reps, 
@@ -41,13 +38,6 @@ router.post('/log-completed-set', async (req, res) => {
                  phase.actualWeight, phase.actualRestPeriodSeconds]
             );
         }
-
-        // Get scheduled sets to delete
-        console.log(`[LOG] Fetching scheduled sets for deletion`, {
-            userId,
-            exerciseId,
-            scheduledDate
-        });
         
         const deleteQuery = `
             SELECT uwps.id 
@@ -59,10 +49,8 @@ router.post('/log-completed-set', async (req, res) => {
             
         const deleteResult = await client.query(deleteQuery, [userId, exerciseId, scheduledDate]);
         const setIds = deleteResult.rows.map(row => row.id);
-        console.log(`[LOG] Found ${setIds.length} sets to delete:`, setIds);
 
         await client.query('COMMIT');
-        console.log('[LOG] Transaction committed');
 
         res.json({ 
             success: true, 
@@ -80,7 +68,6 @@ router.post('/log-completed-set', async (req, res) => {
         });
     } finally {
         client.release();
-        console.log('[LOG] Client released');
     }
 });
 

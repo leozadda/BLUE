@@ -6,12 +6,21 @@ const pool = require('../../../database/db.js');
 router.get('/muscle-volume-history', async (req, res) => {
   try {
     // Get the userId from req.user
-    // Since VerifyToken sets req.user with id from decoded.userId or decoded.id
     const userId = req.user && (req.user.userId || req.user.id);
     
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized: no user ID in token' });
     }
+
+    // First, let's run a small test query to see if there's any data at all
+    const testQuery = `
+      SELECT COUNT(*) 
+      FROM user_set_executions use
+      JOIN user_set_phase_executions uspe ON use.id = uspe.user_set_execution_id
+      WHERE use.user_id = $1
+    `;
+    
+    const testResult = await pool.query(testQuery, [userId]);
 
     const query = `
       WITH execution_data AS (
@@ -21,13 +30,12 @@ router.get('/muscle-volume-history', async (req, res) => {
           mg.name AS body_part,
           use.base_weight * (emt.effort_percentage / 100.0) * uspe.actual_reps AS effective_volume
         FROM user_set_executions use
-        JOIN user_set_phase_executions uspe 
-          ON use.id = uspe.user_set_execution_id
-        JOIN exercise_muscle_targets emt 
-          ON use.exercise_id = emt.exercise_id
-        JOIN muscle_groups mg 
-          ON mg.id = emt.muscle_group_id
+        JOIN user_set_phase_executions uspe ON use.id = uspe.user_set_execution_id
+        JOIN exercises ex ON ex.id = use.exercise_id
+        JOIN exercise_muscle_targets emt ON use.exercise_id = emt.exercise_id
+        JOIN muscle_groups mg ON mg.id = emt.muscle_group_id
         WHERE use.user_id = $1
+          AND uspe.completed_at IS NOT NULL
       )
       -- Daily aggregation for the past week (today and previous 6 days)
       SELECT
@@ -66,6 +74,7 @@ router.get('/muscle-volume-history', async (req, res) => {
     `;
 
     const { rows } = await pool.query(query, [userId]);
+    
     res.json(rows);
   } catch (error) {
     console.error('Error executing volume history query:', error);

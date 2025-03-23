@@ -6,8 +6,7 @@ const pool = require('../../../database/db.js');
 
 // Get user's onboarding status
 router.get('/onboarding/status', async (req, res) => {
-  console.log('🔍 Getting onboarding status for user:', req.user.id);
-  
+
   try {
     // Get user ID from the request (should be added by VerifyToken middleware)
     const userId = req.user.id;

@@ -86,7 +86,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
       <div style={{ 
         backgroundColor: 'white', 
         padding: '10px', 
-        border: '0px solid white',
+        border: '1px solid white',
         borderRadius: '.3em',
         fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
         fontSize: '12px',
