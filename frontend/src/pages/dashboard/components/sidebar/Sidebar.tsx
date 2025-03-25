@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChartNoAxesGantt, ChartSpline, Dumbbell, CalendarDays, Ruler, Settings, Menu, X } from "lucide-react";
+import { ChartNoAxesGantt, ChartSpline, Dumbbell, CalendarDays, Ruler, Settings, Menu, X, Bot } from "lucide-react";
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -117,6 +117,13 @@ const Sidebar = () => {
               <p>Measure</p>
             </div>
           </div>
+          <div onClick={() => handleNavigation("/dashboard/coach")}>
+            <div className={`Coach-Tab ${isActive('/dashboard/coach') ? 'active' : ''}`}>
+            <Bot />
+              <p>Coach</p>
+            </div>
+          </div>
+
         </div>
         <div onClick={() => handleNavigation("/dashboard/settings")}>
           <div className={`Settings-Button ${isActive('/dashboard/settings') ? 'active' : ''}`}>

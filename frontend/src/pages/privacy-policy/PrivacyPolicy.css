@@ -9,6 +9,12 @@
   overflow: scroll;
 }
 
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 .privacy-content {
   width: 70%;
   height: auto;
@@ -16,8 +22,10 @@
   flex-direction: column;
   align-items: center;
   padding: 4em;
-  border-radius: .8em
+  border-radius: .8em;
+  animation: fadeIn 0.5s ease-in forwards;
 }
+
 
 .privacy-title{
   font-family: "Hoefler Text";
@@ -30,6 +38,7 @@
   text-transform: uppercase;
   text-decoration: line-through;
 }
+
 
 .privacy-section {
   width: 100%;

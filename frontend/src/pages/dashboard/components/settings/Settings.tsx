@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './Settings.css';
 import { PersonStanding, CircleDollarSign, Dumbbell } from 'lucide-react';
 import { User, initialUser } from './User';
-import Popup from '../components/pop-up/PopUp';
-import AccountTab from '../components/account/AccountTab';
-import WorkoutTab from '../components/workout/WorkoutTab';
+import Popup from './components/pop-up/PopUp';
+import AccountTab from './components/account/AccountTab';
+import WorkoutTab from './components/workout/WorkoutTab';
 // Add import for BillingTab - using the exact file path that matches your project structure
-import BillingTab from '../components/billing/BillingTab';
-import { authFetch } from '../../../../auth/token/authFetch';
-import { useAuth } from '../../../../auth/auth-context/AuthContext';
+import BillingTab from './components/billing/BillingTab';
+import { authFetch } from '../../../auth/token/authFetch';
+import { useAuth } from '../../../auth/auth-context/AuthContext';
 
 // Add this interface right after the existing imports
 interface UnitsSelectorProps {
@@ -344,6 +344,12 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
     );
   };
 
+
+  const handleEditRatios = () => {}
+  const handleCreateSet = () => {}
+  const handleCreateExercise = () => {}
+
+
   /**
    * Handler for logging out.
    * Opens a confirmation popup; if confirmed, uses AuthContext logout method,
@@ -466,10 +472,13 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
           )}
 
           {activeTab === 'workout' && (
-            <WorkoutTab
-              user={user}
-              onUnitsChange={handleUnitsChange}
-            />
+            <WorkoutTab 
+            user={user} 
+            onUnitsChange={handleUnitsChange} 
+            onEditRatios={handleEditRatios} 
+            onCreateSet={handleCreateSet} 
+            onCreateExercise={handleCreateExercise} 
+          />
           )}
         </div>
 

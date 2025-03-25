@@ -29,6 +29,11 @@
     padding-bottom: calc(1.5em + env(safe-area-inset-bottom, 0px)) !important;
     -webkit-overflow-scrolling: touch !important;
 }
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
 .Measurements-Grid {
     display: flex;  
     flex-direction: column;
@@ -145,6 +150,7 @@
     flex-direction: row;
     align-items: center;
     gap: 3em;
+    animation: fadeIn 0.5s ease-in forwards;
 }
 
 .knob-section {
@@ -181,6 +187,7 @@
     display: flex;
     gap: 0rem !important;
     margin-top: 1rem !important;
+    animation: fadeIn 0.5s ease-in forwards;
 }
 
 .button {

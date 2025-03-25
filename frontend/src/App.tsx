@@ -9,9 +9,10 @@ import Split from './pages/dashboard/components/split/Split';
 import CustomerService from './pages/customer-service/CustomerService';
 import PrivacyPolicy from './pages/privacy-policy/PrivacyPolicy';
 import TermsOfService from './pages/terms-of-service/TermsOfService';
-import { Settings } from './pages/dashboard/components/settings/v1/Settings';
+import { Settings } from './pages/dashboard/components/settings/Settings';
 import Lift from './pages/dashboard/components/log-workout/LogWorkout';
 import Measurements from './pages/dashboard/components/measurements/Measurements';
+import Coach from './pages/dashboard/components/coach/Coach';
 import Payment from './pages/payment/Payment';
 import { AuthProvider, useAuth } from './pages/auth/auth-context/AuthContext';
 import './App.css';
@@ -138,6 +139,7 @@ function App() {
               <Route path="lift" element={<Lift />} />
               <Route path="split" element={<Split/>} />
               <Route path="measure" element={<Measurements />} />
+              <Route path="coach" element={<Coach />} />
               <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>

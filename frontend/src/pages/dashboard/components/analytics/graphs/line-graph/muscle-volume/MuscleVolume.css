@@ -7,6 +7,7 @@
   
   .Chart-Header {
     margin: .5em;
+    animation: fadeIn 0.5s ease-in forwards;
   }
   
   .chart-title {
@@ -96,6 +97,10 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
 
 /*  
   .muscle-group-button.chest.active {

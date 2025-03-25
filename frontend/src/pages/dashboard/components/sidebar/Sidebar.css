@@ -88,6 +88,7 @@ a {
     flex-direction: row; 
     white-space: nowrap; 
     font-style: italic !important;
+    animation: fadeIn 0.5s ease-in forwards;
 }
 
 .Company-Logo h1:hover{
@@ -101,6 +102,7 @@ a {
     overflow: hidden;
     /* FIX: Added padding to the left side of the Navigation-Tabs container */
     padding-left: 1em;
+    animation: fadeIn 0.5s ease-in forwards;
 }
 
 .Navigation-Tabs p {
@@ -116,7 +118,8 @@ a {
 .Analytics-Tab,
 .Lifts-Tab,
 .Split-Tab,
-.Measurements-Tab {
+.Measurements-Tab,
+.Coach-Tab {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -134,7 +137,8 @@ a {
 .Analytics-Tab:hover,
 .Lifts-Tab:hover,
 .Split-Tab:hover,
-.Measurements-Tab:hover {
+.Measurements-Tab:hover,
+.Coach-Tab:hover {
     background-color: none;
     color: rgb(255, 255, 255);
     transition: all .5s ease;
@@ -146,7 +150,8 @@ a {
 .Lifts-Tab.active,
 .Split-Tab.active,
 .Measurements-Tab.active,
-.Settings-Button.active {
+.Settings-Button.active,
+.Coach-Tab.active {
     background-color: rgb(0, 0, 220);
     color: white;
     border-radius: .5em;
@@ -268,7 +273,7 @@ a {
         left: 1rem;
         z-index: 999;  /* Change back to 999 to be below sidebar */
         background-color: blue;
-        border-radius: .3em;
+        border-radius: .5em;
         width: 40px;
         height: 40px;
         cursor: pointer;
@@ -285,7 +290,7 @@ a {
 .hamburger-button {
     /* No changes to your original styling */
     /* This just adds diagnostic styling */
-    outline: 1px solid rgba(255, 255, 255, 0.4) !important;
+    outline: 1px solid rgba(255, 255, 255, 0.588) !important;
     pointer-events: auto !important;
   }
   
@@ -329,3 +334,10 @@ a {
   }
 
 
+
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  

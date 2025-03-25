@@ -45,7 +45,7 @@
     color: white;
     cursor: pointer;
     padding: 0.25rem;
-    border-radius: 50%;
+    border-radius: .3em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,7 +53,9 @@
   }
   
   .close-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgb(255, 255, 255);
+    color: blue;
+    border-radius: .3em;
   }
   
   .popup-body {
@@ -62,7 +64,7 @@
   
   .popup-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 1.5rem;
   }
@@ -127,6 +129,10 @@
     
     .popup-actions {
       flex-direction: row;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
     }
     
     .popup-actions button {

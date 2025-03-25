@@ -7,12 +7,18 @@ interface ExtendedUser {
   metric_system: boolean;
 }
 
+
+
+
 /**
  * Props for the WorkoutTab component
  */
 interface WorkoutTabProps {
   user: ExtendedUser;
   onUnitsChange: () => void;     // Handler for when the user wants to change the unit system.
+  onEditRatios: () => void;
+  onCreateSet: () => void;
+  onCreateExercise: () => void;
 }
 
 /**
@@ -21,7 +27,11 @@ interface WorkoutTabProps {
  */
 const WorkoutTab: React.FC<WorkoutTabProps> = ({
   user,
-  onUnitsChange
+  onUnitsChange,
+  onEditRatios,
+  onCreateSet,
+  onCreateExercise
+
 }) => {
   return (
     <section className="settings-section workout-section">
@@ -41,6 +51,49 @@ const WorkoutTab: React.FC<WorkoutTabProps> = ({
           Update
         </button>
       </div>
+
+      <div className="setting-item">
+        <div className="setting-info">
+          <h3>Recovery rates</h3>
+          <p>Update muscle recovery ratios</p>
+        </div>
+        <button 
+          className="action-button" 
+          onClick={onEditRatios}
+          aria-label="Change raios"
+        >
+          Update
+        </button>
+      </div>
+
+      <div className="setting-item">
+        <div className="setting-info">
+          <h3>Add a set</h3>
+          <p>Make a set to reuse</p>
+        </div>
+        <button 
+          className="action-button" 
+          onClick={onCreateSet}
+          aria-label="Create set"
+        >
+          ADD
+        </button>
+      </div>
+
+      <div className="setting-item">
+        <div className="setting-info">
+          <h3>Add exercise</h3>
+          <p>Make your own exercise</p>
+        </div>
+        <button 
+          className="action-button" 
+          onClick={onCreateExercise}
+          aria-label="Create exercise"
+        >
+          ADD
+        </button>
+      </div>
+
 
     </section>
   );

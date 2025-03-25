@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../../v1/User';
+import { User } from '../../User';
 import { authFetch } from '../../../../../auth/token/authFetch';
 import './BillingTab.css';
 

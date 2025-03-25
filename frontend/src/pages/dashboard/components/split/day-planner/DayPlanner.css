@@ -1,5 +1,10 @@
 /* Fixed DayPlanner CSS with improved layout and scrolling */
 
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 /* Main container styles matching app theme */
 .workout-day {
   width: 100% !important;
@@ -13,6 +18,7 @@
   border: none;
   /* Remove nested scrolling */
   overflow: visible;
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
 .workout-date {

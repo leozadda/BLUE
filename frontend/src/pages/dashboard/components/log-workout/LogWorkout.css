@@ -90,6 +90,12 @@
   border-radius: .2em;
   margin: 0em;
   padding: 1em;
+  
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .LogWorkout-header h1 {
@@ -142,7 +148,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.588);
   /* Added flex-wrap for better mobile display */
   flex-wrap: wrap;
-  animation: slideIn .60s ease-in;
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
 .Date-nav-button {
@@ -423,6 +429,7 @@
   text-align: center;
   color: white;
   margin-top: 1em;
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
 /* Loading and error states */
@@ -705,3 +712,4 @@
     border: none;
   }
 }
+
