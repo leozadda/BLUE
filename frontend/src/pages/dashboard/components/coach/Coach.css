@@ -54,7 +54,7 @@
 
 .default-ai-message h1{
     font-family: "Hoefler Text";
-    font-size: 10em;
+    font-size: 7em;
     font-weight: 500;
     font-style: normal;
     text-align: center;
@@ -65,35 +65,28 @@
 
 .chat-message {
     margin: 5px 0;
-    max-width: 45%;
+    max-width: 55%;
     color: white;
+    line-height: 1.5em;
+    font-size: 1.3em;
+    background-color: blue;
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: .3em;
+    font-family: "Hoefler Text";
+    font-weight: 500;
+    font-style: normal;
+    padding: .8em;
 }
 
 .chat-message-ai {
     align-self: flex-start;
-    background-color: blue;
-    border: 1px solid rgba(255, 255, 255, .8);
-    padding: 1em 1.25em 1em 1.25em;
-    border-radius: .5em;
-    font-family: "Hoefler Text";
-    font-size: 1em;
-    font-weight: 500;
-    font-style: normal;
+    animation: combinedAnimation 1s ease-out forwards;
 }
 
 .chat-message-user {
     align-self: flex-end;
-    background-color: blue;
-    border: 1px solid rgba(255, 255, 255, 0.588);
-    border-radius: .5em;
-    font-family: "Hoefler Text";
-    font-size: 1em;
-    font-weight: 500;
-    font-style: normal;
-    padding: 1em 1.25em 1em 1.25em;
-    font-family: "Hoefler Text";
-    font-size: 1em;
-    font-weight: 500;
+    animation: combinedAnimation 1s ease-out forwards;
+
 }
 
 .chat-input-container {
@@ -101,7 +94,7 @@
     padding: 1rem;
     background-color: blue;
     border-radius: .5em;
-    animation: fadeIn 0.5s ease-in forwards;
+    animation: fadeIn 1s ease-in forwards;
 }
 
 .chat-input {
@@ -115,7 +108,7 @@
     color: white;
     padding: 1em 1.25em 1em 1.25em;
     font-family: "Hoefler Text";
-    font-size: 1em;
+    font-size: 1.25em;
     font-weight: 500;
     font-style: normal;
 }
@@ -140,7 +133,7 @@
     color: white;
     font-family: "Andale Mono", AndaleMono, monospace;
     text-transform: uppercase;
-    font-size: 1em;
+    font-size: 1.25em;
     font-weight: light;
     border-radius: .3em;
     border: 1px solid rgba(255, 255, 255, 0.588);
@@ -158,6 +151,104 @@
     color: blue;
     text-decoration: line-through;
 }
+
+
+/* Updated Chat Messages Animation */
+.chat-message {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: gentleAppearance 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes gentleAppearance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Add this for progressive text reveal (requires JS cooperation) */
+.message-line {
+    overflow: hidden;
+    opacity: 0;
+    animation: lineAppear 0.4s ease-out forwards;
+    animation-delay: 0.3s; /* Delay to match message animation */
+}
+
+@keyframes lineAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+  
+  /* Message Content Styling */
+  .message-line {
+    margin: 0.5rem .5rem;
+    line-height: 1.5;
+  }
+  
+  .message-line:empty {
+    height: 0.5rem;
+  }
+  
+  /* List Styling */
+  .message-list {
+    margin: 0.5rem 0 1.2rem 1rem;
+    padding-left: 1rem;
+    list-style-type: disc;
+  }
+  
+  .message-list li {
+    margin: 0.4rem 0;
+    padding-left: 0.5rem;
+    line-height: 1.4;
+  }
+  
+  /* Headings/Strong Elements */
+  .message-line strong {
+    display: inline-block;
+    font-weight: 600;
+    color: #fff;
+    margin: .5rem 0 0 0rem;
+    padding: 0.1em 0;
+  }
+  
+  /* Numbered Lists (if needed) */
+  .message-line.numbered {
+    margin-left: 2em;
+    position: relative;
+    counter-increment: list-counter;
+  }
+  
+  .message-line.numbered::before {
+    content: counter(list-counter) ". ";
+    position: absolute;
+    left: -2em;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .chat-messages-container {
+    counter-reset: list-counter;
+  }
 
 
 
@@ -188,7 +279,7 @@
         width: 100vw !important;
         height: 100% !important;
         margin: 0;
-        padding: 2em;
+        padding: 1em;
         overflow-y: scroll;
         border: none;
     }
@@ -206,7 +297,7 @@
     
     .default-ai-message h1{
         font-family: "Hoefler Text";
-        font-size: 7em;
+        font-size: 5em;
         font-weight: 500;
         font-style: normal;
         text-align: center;
@@ -216,27 +307,72 @@
 
     .chat-message {
         margin: 10px 0;
-        max-width: 70%;
+        max-width: 90%;
         color: white;
+        border-radius: .3em;
+        font-size: 1.2em;
+        padding: .6em;
+
     }
 
     .chat-input{
         padding: .5em .5em .5em .5em !important;
     }
     .chat-message-user{
-        padding: .75em .75em .75em .75em !important;
-        text-align: center;
-        border-radius: .5em;
     }
     .chat-message-ai{
-        padding: .75em .75em .75em .75em !important;
-        text-align: center;
-        border-radius: .5em;
     }
+
+    .message-list{
+        margin: 0.5rem 0 1.2rem 1.5rem;
+        padding-left: .2rem;
+    }
+    .message-list li {
+        margin: .5rem 0;
+        padding-left: 0rem;
+        line-height: 1.5;
+      }
+
+
+      .message-line{
+        margin: .7em .5em;
+      }
+      .message-line:empty{
+        margin: 0;
+        padding: 0;
+        line-height: 0;
+        font-size: 0;
+      }
+      
+      /* Headings/Strong Elements */
+      .message-line strong {
+        display:inline-flex;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Numbered Lists (if needed) */
+      .message-line.numbered {
+        margin-left: 2em;
+        position: relative;
+        counter-increment: list-counter;
+      }
+      
+      .message-line.numbered::before {
+        content: counter(list-counter) ". ";
+        position: absolute;
+        left: -2em;
+        font-weight: 600;
+        color: #fff;
+      }
+      
+      .chat-messages-container {
+        counter-reset: list-counter;
+      }
+
 }
 
 
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
+

@@ -175,8 +175,9 @@ a {
 }
 
 .Settings-Button:hover {
-    background-color: rgb(255, 255, 255);
-    color: blue;
+    color: white;
+    border-radius: .5em;
+    text-decoration: line-through;
 }
 
 .Settings-Button p {

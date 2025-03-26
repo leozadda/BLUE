@@ -32,6 +32,7 @@ const ListenForPaymentSuccess = require('./routes/payment/ListenForPaymentSucces
 const CancelSubscription = require('./routes/payment/CancelSubscription.js');
 const VerifyAuth = require('./routes/user/auth/VerifyAuth.js');
 const OnboardingRoutes = require('./routes/user/onboard/Onboard.js');
+const AIchat = require('./routes/ai/AIchat.js')
 
 const addSetToSplit = require('./routes/user/workout/AddSetToSplit.js');
 const getAllSetTemplates = require('./routes/user/workout/GetAllSetTemplates.js');
@@ -245,6 +246,10 @@ app.use(removeSetFromSplit);
 
 app.use('/search-for-exercise', VerifyToken);
 app.use(searchForExercise);
+
+//LLM AI Chat
+
+app.use('/ai-chat', AIchat);
 
 // ======================== ERROR HANDLING ============================
 app.use((err, req, res, next) => {

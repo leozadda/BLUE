@@ -232,7 +232,7 @@
 
 .Measurements-Message{
     font-family: "Hoefler Text";
-    font-size: 9rem;
+    font-size: 7rem;
     font-weight: 500;
     font-style: normal;
     text-align: center;
@@ -285,9 +285,10 @@
     margin: 0;
     overflow-y: auto;
     width: 100%;
-    border-radius: 0;
+    border-radius: .5em;
     padding: 4em 2em 4em 2em;
     height: 100%; /* Subtract margin to prevent overflow */
+    border: 1px solid rgba(255, 255, 255, 0.588);
 }
 
 @media (max-width: 768px) {
