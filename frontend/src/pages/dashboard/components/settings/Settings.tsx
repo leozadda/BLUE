@@ -43,16 +43,13 @@ export const Settings: React.FC = () => {
   // Get the user info and logout function from AuthContext
   const { userInfo, userInfoLoading, refreshUserInfo, logout } = useAuth();
 
-
     // ------------------------------------------------------------------
     // Fetch the user's unit preference (metric or imperial) from the user info
     useEffect(() => {
-       
-        
-        // Set the metricSystem state based on the user's preference
-        if(userInfo) {
-            setUser(userInfo);
-        }
+    // Set the metricSystem state based on the user's preference
+    if(userInfo) {
+        setUser(userInfo);
+      }
     }, [userInfo]); // This effect runs whenever userInfo changes
 
     // ------------------------------------------------------------------
@@ -345,9 +342,29 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
   };
 
 
-  const handleEditRatios = () => {}
-  const handleCreateSet = () => {}
-  const handleCreateExercise = () => {}
+  const handleEditRatios = () => {
+    openPopup('Update Ratios', 
+      <div className='COMING-SOON'>
+        "COMING SOON"
+      </div>
+    );
+  }
+
+  const handleCreateSet = () => {
+    openPopup('Update Units', 
+      <div className='COMING-SOON'>
+      "COMING SOON"
+    </div>
+    );
+  }
+
+  const handleCreateExercise = () => {
+    openPopup('Update Units', 
+      <div className='COMING-SOON'>
+      "COMING SOON"
+    </div>
+    );
+  }
 
 
   /**
