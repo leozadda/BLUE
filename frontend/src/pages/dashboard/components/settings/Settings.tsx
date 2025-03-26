@@ -487,15 +487,14 @@ const UnitsSelector: React.FC<UnitsSelectorProps> = ({ currentUnits, onSave, onC
               onSubscriptionUpgrade={handleSubscriptionUpgrade}
             />
           )}
-
           {activeTab === 'workout' && (
             <WorkoutTab 
-            user={user} 
-            onUnitsChange={handleUnitsChange} 
-            onEditRatios={handleEditRatios} 
-            onCreateSet={handleCreateSet} 
-            onCreateExercise={handleCreateExercise} 
-          />
+              user={user} 
+              onUnitsChange={handleUnitsChange} 
+              onEditRatios={handleEditRatios}     // Ensure this is included
+              onCreateSet={handleCreateSet}       // Ensure this is included
+              onCreateExercise={handleCreateExercise} // Ensure this is included
+            />
           )}
         </div>
 
