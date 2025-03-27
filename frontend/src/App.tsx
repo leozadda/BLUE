@@ -17,7 +17,6 @@ import Payment from './pages/payment/Payment';
 import { AuthProvider, useAuth } from './pages/auth/auth-context/AuthContext';
 import './App.css';
 
-
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 // PrivateRoute: Protects dashboard routes.
