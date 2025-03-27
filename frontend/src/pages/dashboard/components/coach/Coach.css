@@ -376,3 +376,23 @@
 
 
 
+.Coach-container {
+    padding-bottom: calc(2em + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: -webkit-fill-available;
+  }
+
+  @media (max-width: 768px) {
+    .Coach-container {
+      padding: 1em !important;
+      padding-bottom: calc(1em + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    
+    .chat-input-container {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
+
+  .chat-messages-container {
+    flex: 1 1 auto;
+    min-height: 0; /* Crucial for flex children scroll */
+  }
