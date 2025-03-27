@@ -71,11 +71,11 @@
     font-size: 1.3em;
     background-color: blue;
     border: 1px solid rgba(255, 255, 255, .8);
-    border-radius: .3em;
+    border-radius: .8em;
     font-family: "Hoefler Text";
     font-weight: 500;
     font-style: normal;
-    padding: .8em;
+    padding: .25em;
 }
 
 .chat-message-ai {
@@ -315,9 +315,9 @@
         margin: 10px 0;
         max-width: 90%;
         color: white;
-        border-radius: .3em;
+        border-radius: .8em;
         font-size: 1.2em;
-        padding: .6em;
+        padding: .15em;
     }
 
     .chat-input{
